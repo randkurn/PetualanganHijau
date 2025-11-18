@@ -48,37 +48,36 @@ public class GamePanel extends JPanel implements Runnable{
         long currentTime;
         long timer = 0;
         int drawCount = 0;
-        
+
         while(gameThread != null) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
             timer += (currentTime - lastTime);
             lastTime = currentTime;
-        
-            if(delta>= 1){
+
+            if(delta >= 1){
                 update();
                 repaint();
                 delta--;
                 drawCount++;
             }
             if(timer >= 1000000000){
-                System.out.println("FPS: " +drawCount);
+                System.out.println("FPS: " + drawCount);
+                drawCount = 0;  // RESET counter
+                timer = 0;       // RESET timer
             }
-        }    
-
-    
-    }
-    public void update(){
-        if(keyH.upPressed == true){
+        }
+    }public void update(){
+        if(keyH.upPressed){
             playerY -= playerSpeed;
         }
-        else if(keyH.downPressed == true){
+        if(keyH.downPressed){
             playerY += playerSpeed;
         }
-        else if(keyH.leftPressed == true){
+        if(keyH.leftPressed){
             playerX -= playerSpeed;
         }
-        else if(keyH.rightPressed == true){
+        if(keyH.rightPressed){
             playerX += playerSpeed;
         }
     }
