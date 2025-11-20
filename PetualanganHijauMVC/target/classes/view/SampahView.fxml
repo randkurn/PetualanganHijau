@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane prefHeight="445.0" prefWidth="718.0" style="-fx-background-color: #e8f5e9;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SampahController">
+
+    <!-- Header -->
+    <Label layoutX="230.0" layoutY="14.0" style="-fx-font-size: 26px; -fx-text-fill: #1b5e20; -fx-font-weight: bold;" text="Laporan Pemilahan Sampah" />
+
+    <!-- Form Area -->
+    <GridPane hgap="20" layoutX="13.0" layoutY="52.0" prefWidth="700" vgap="15">
+        <columnConstraints>
+            <ColumnConstraints halignment="RIGHT" maxWidth="145.0" minWidth="109.0" prefWidth="109.0" />
+            <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="571.0" minWidth="535.0" prefWidth="571.0" />
+        </columnConstraints>
+
+        <Label text="ID Laporan:" />
+        <TextField fx:id="txtId" prefHeight="27.0" prefWidth="526.0" text="S00" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label text="Nama Pelapor:" GridPane.rowIndex="1" />
+        <TextField fx:id="txtNama" prefWidth="400" text="Randy" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="Jenis Sampah:" GridPane.rowIndex="2" />
+        <ComboBox fx:id="cmbJenis" prefWidth="250" promptText="Organik/Anorganik" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label text="Berat (kg):" GridPane.rowIndex="3" />
+        <TextField fx:id="txtBerat" prefHeight="25.0" prefWidth="387.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+        <Label text="Tanggal:" GridPane.rowIndex="4" />
+        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <DatePicker fx:id="dateTanggal" prefWidth="180" />
+            <CheckBox fx:id="chkSekarang" text="Gunakan waktu saat ini" />
+        </HBox>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+    </GridPane>
+
+    <!-- Tombol CRUD -->
+    <HBox layoutX="42.0" layoutY="251.0" spacing="20">
+        <Button fx:id="btnTambah" prefHeight="25.0" prefWidth="210.0" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold;" text="Tambah" />
+        <Button fx:id="btnUbah" prefHeight="25.0" prefWidth="181.0" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold;" text="Ubah" />
+        <Button fx:id="btnHapus" prefHeight="25.0" prefWidth="210.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;" text="Hapus" />
+    </HBox>
+
+    <!-- TableView -->
+    <TableView fx:id="tblSampah" layoutX="13.0" layoutY="292.0" prefHeight="130" prefWidth="700" style="-fx-background-color: white; -fx-border-color: #81c784; -fx-border-radius: 6; -fx-background-radius: 6;">
+        <columns>
+            <TableColumn fx:id="colId" prefWidth="82.0" text="ID" />
+            <TableColumn fx:id="colNama" prefWidth="213.0" text="Nama Pelapor" />
+            <TableColumn fx:id="colJenis" prefWidth="155.0" text="Jenis Sampah" />
+            <TableColumn fx:id="colBerat" prefWidth="100" text="Berat (kg)" />
+            <TableColumn fx:id="colTanggal" prefWidth="150" text="Tanggal" />
+        </columns>
+    </TableView>
+
+</AnchorPane>

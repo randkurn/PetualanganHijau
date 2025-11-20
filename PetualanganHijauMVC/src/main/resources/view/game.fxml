@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:id="root"
+            fx:controller="controller.GameController"
+            prefWidth="1280" prefHeight="720">
+
+    <!-- ==== GAME CANVAS ==== -->
+    <Canvas fx:id="canvas"
+            width="1280" height="720"
+            AnchorPane.leftAnchor="0.0"
+            AnchorPane.topAnchor="0.0" />
+
+    <!-- ==== HUD (NYALA DI ATAS GAME) ==== -->
+    <Label fx:id="lblHP"
+           text="HP: 100"
+           layoutX="20" layoutY="20"
+           style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;" />
+
+</AnchorPane>
