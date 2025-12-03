@@ -70,10 +70,17 @@ public class Player {
         int row = (int)(newY / tileSize);
 
         // collision check
-        if (!map.isBlocked(row, col)) {
-            x = newX;
-            y = newY;
-        }
+int playerSize = 64; // ukuran sprite
+
+// Coba geser X dulu
+if (!map.isBlocked(newX, y, playerSize)) {
+    x = newX;
+}
+
+// Coba geser Y
+if (!map.isBlocked(x, newY, playerSize)) {
+    y = newY;
+}
 
         // direction setting
         if (vy > 0) dir = 0;

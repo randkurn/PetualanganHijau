@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TileMap {
 
@@ -16,13 +18,11 @@ public class TileMap {
 
     private int[][] tiles;
 
-    // Hanya dua PNG
-    private Image dirtTile;
-    private Image stoneTile;
+    private final Map<Integer, TileDefinition> tileDefs = new HashMap<>();
 
     public TileMap(String fileName) {
         loadMap(fileName);
-        loadTileImages();
+        initTileDefinitions();
     }
 
     // ===================== LOAD MAP TXT ======================
@@ -59,10 +59,23 @@ public class TileMap {
         }
     }
 
-    // ===================== LOAD PNG (Hanya Tanah & Batu) ======================
-    private void loadTileImages() {
-        dirtTile  = safeLoad("/assets/tiles/tanah.png");
-        stoneTile = safeLoad("/assets/tiles/batu.png");
+    // ===================== REGISTRASI TILE ======================
+    private void initTileDefinitions() {
+        tileDefs.put(0, tile("/assets/tiles/grass.png", "#7BD67A", false));
+        tileDefs.put(1, tile("/assets/tiles/path.png", "#C48A4A", false));
+        tileDefs.put(2, tile("/assets/tiles/water.png", "#4DA0FF", true));
+        tileDefs.put(3, tile("/assets/tiles/cliff.png", "#5C4B3A", true));
+        tileDefs.put(4, tile("/assets/tiles/beach.png", "#E9D8A6", false));
+        tileDefs.put(5, tile("/assets/tiles/farm.png", "#C58F3D", false));
+        tileDefs.put(6, tile("/assets/tiles/tree.png", "#1B5E20", true));
+        tileDefs.put(7, tile("/assets/tiles/bridge.png", "#C4823C", false));
+        // fallback untuk map lama (tanah/batu)
+        tileDefs.putIfAbsent(8, tile("/assets/tiles/tanah.png", "#B89D72", false));
+        tileDefs.putIfAbsent(9, tile("/assets/tiles/batu.png", "#777777", true));
+    }
+
+    private TileDefinition tile(String path, String fallbackHex, boolean blocked) {
+        return new TileDefinition(safeLoad(path), Color.web(fallbackHex), blocked);
     }
 
     private Image safeLoad(String path) {
@@ -91,55 +104,63 @@ public class TileMap {
                 double drawX = c * size - camX;
                 double drawY = r * size - camY;
 
-                switch (tile) {
+                TileDefinition def = tileDefs.get(tile);
+                if (def == null) {
+                    gc.setFill(Color.BLACK);
+                    gc.fillRect(drawX, drawY, size, size);
+                    continue;
+                }
 
-                    case 0: // rumput (warna hijau)
-                        gc.setFill(Color.web("#7BD67A"));
-                        gc.fillRect(drawX, drawY, size, size);
-                        break;
-
-                    case 1: // tanah (PNG)
-                        if (dirtTile != null) {
-                            gc.drawImage(dirtTile, drawX, drawY, size, size);
-                        } else {
-                            gc.setFill(Color.web("#B89D72"));
-                            gc.fillRect(drawX, drawY, size, size);
-                        }
-                        break;
-
-                    case 2: // air (warna)
-                        gc.setFill(Color.web("#4DA0FF"));
-                        gc.fillRect(drawX, drawY, size, size);
-                        break;
-
-                    case 3: // batu (PNG)
-                        if (stoneTile != null) {
-                            gc.drawImage(stoneTile, drawX, drawY, size, size);
-                        } else {
-                            gc.setFill(Color.web("#777777"));
-                            gc.fillRect(drawX, drawY, size, size);
-                        }
-                        break;
-
-                    default: // fallback
-                        gc.setFill(Color.BLACK);
-                        gc.fillRect(drawX, drawY, size, size);
-                        break;
+                if (def.image != null) {
+                    gc.drawImage(def.image, drawX, drawY, size, size);
+                } else {
+                    gc.setFill(def.fallbackColor);
+                    gc.fillRect(drawX, drawY, size, size);
                 }
             }
         }
     }
 
     // ===================== COLLISION ======================
-    public boolean isBlocked(int r, int c) {
-        try {
-            return tiles[r][c] == 3; // batu = tembok
-        } catch (Exception e) {
-            return true;
-        }
+public boolean isBlocked(double px, double py, int size) {
+
+    int tileSize = tileRendered;
+
+    // posisi tile untuk keempat sudut
+    int left   = (int) (px / tileSize);
+    int right  = (int) ((px + size - 1) / tileSize);
+    int top    = (int) (py / tileSize);
+    int bottom = (int) ((py + size - 1) / tileSize);
+
+    try {
+        return isBlockedTile(tiles[top][left])   ||
+               isBlockedTile(tiles[top][right])  ||
+               isBlockedTile(tiles[bottom][left])||
+               isBlockedTile(tiles[bottom][right]);
+    } catch (Exception e) {
+        return true; // di luar map = blocked
     }
+}
+
+    private boolean isBlockedTile(int tileId) {
+        TileDefinition def = tileDefs.get(tileId);
+        return def == null || def.blocked;
+    }
+
 
     public int getTileSize() {
         return tileRendered;
+    }
+
+    private static class TileDefinition {
+        final Image image;
+        final Color fallbackColor;
+        final boolean blocked;
+
+        TileDefinition(Image image, Color fallbackColor, boolean blocked) {
+            this.image = image;
+            this.fallbackColor = fallbackColor;
+            this.blocked = blocked;
+        }
     }
 }

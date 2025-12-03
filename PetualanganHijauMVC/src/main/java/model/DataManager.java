@@ -40,4 +40,9 @@ public class DataManager {
             e.printStackTrace();
         }
     }
+
+    public static boolean hasSaveData(String filename) {
+        File file = new File(SAVE_FOLDER + filename);
+        return file.exists() && file.length() > 0;
+    }
 }

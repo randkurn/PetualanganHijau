@@ -38,7 +38,7 @@ public class GameController {
 
         gc = canvas.getGraphicsContext2D();
 
-        player = new Player(300, 300);
+        player = new Player(64 * 15, 64 * 14);
         map = new TileMap("map1.txt");
 
         // Bind input setelah Scene siap
