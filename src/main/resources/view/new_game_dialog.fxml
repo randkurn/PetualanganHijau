@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.NewGameDialogController"
+            prefWidth="420" prefHeight="320"
+            style="-fx-background-color: #1b5e20;">
+
+    <VBox spacing="14"
+          AnchorPane.leftAnchor="24.0"
+          AnchorPane.rightAnchor="24.0"
+          AnchorPane.topAnchor="24.0"
+          AnchorPane.bottomAnchor="24.0">
+
+        <Label text="Mulai Petualangan Baru"
+               style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" />
+
+        <Label text="Nama Karakter"
+               style="-fx-text-fill: #dcedc8;" />
+
+        <TextField fx:id="txtName"
+                   promptText="cth: Aria, Bumi, dsb."
+                   style="-fx-background-color: rgba(255,255,255,0.9);" />
+
+        <Label text="Pilih Slot Penyimpanan"
+               style="-fx-text-fill: #dcedc8;" />
+
+        <ChoiceBox fx:id="choiceSlot"
+                   prefWidth="200" />
+
+        <Label fx:id="lblInfo"
+               text=""
+               wrapText="true"
+               style="-fx-text-fill: #ffe082;" />
+
+        <VBox fx:id="buttonBar" spacing="10">
+            <Button fx:id="btnStart"
+                    text="Mulai"
+                    onAction="#startNewGame"
+                    prefWidth="140"
+                    style="-fx-background-color: #66bb6a; -fx-text-fill: #0d2815; -fx-font-weight: bold;" />
+            <Button text="Batal"
+                    onAction="#cancel"
+                    prefWidth="140"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: white;" />
+        </VBox>
+
+    </VBox>
+
+</AnchorPane>
+

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.OptionsController"
+            prefWidth="400" prefHeight="250"
+            style="-fx-background-color: #1b5e20;">
+
+    <VBox spacing="16"
+          alignment="CENTER_LEFT"
+          AnchorPane.leftAnchor="30.0"
+          AnchorPane.rightAnchor="30.0"
+          AnchorPane.topAnchor="30.0"
+          AnchorPane.bottomAnchor="30.0">
+
+        <Label text="Pengaturan Audio"
+               style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;" />
+
+        <Label text="Master Volume"
+               style="-fx-text-fill: white; -fx-font-size: 16px;" />
+
+        <Slider fx:id="sliderVolume"
+                prefWidth="320" />
+
+        <Label fx:id="lblValue"
+               text="100%"
+               style="-fx-text-fill: #dcedc8; -fx-font-size: 16px;" />
+
+        <CheckBox fx:id="chkMute"
+                  text="Matikan suara (mute)"
+                  style="-fx-text-fill: white; -fx-font-size: 15px;" />
+
+        <Button fx:id="btnClose"
+                text="Tutup"
+                onAction="#closeDialog"
+                prefWidth="120"
+                style="-fx-background-color: #66bb6a; -fx-text-fill: #0d2815; -fx-font-weight: bold;" />
+    </VBox>
+
+</AnchorPane>
+
