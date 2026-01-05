@@ -1,0 +1,13 @@
+mother_greeting:Hello, kid! Good morning.
+mother_motivation:Remember, the flood in Purwakarta last night was very severe.\nWe act now, starting from this yard.
+mother_intro:I'll teach you the key: Sort your trash!
+mother_detail:[GREEN] - Organic (Food scraps)\n[YELLOW] - Inorganic (Plastic/Bottles)\n[RED] - Hazardous (Batteries/Chemicals)\n\nTry picking up the trash in front of you with [E]!
+mother_ask:Do you understand the trash types?
+mother_encouragement:Good! Try picking up that green organic trash first.\nI'm waiting for the results!
+mother_repeat:Pay attention to the colors: Green, Yellow, or Red.
+mother_choice_1:Understood!
+mother_choice_2:I don't understand, repeat please.
+mother_response_repeat:Alright, I'll repeat it...
+waste_welcome:Welcome to the Waste Bank!\nWe buy sorted trash.
+waste_exchange:Trade your trash for Gold!
+waste_clean:Let's keep Purwakarta clean!\nCollect trash in your yard.

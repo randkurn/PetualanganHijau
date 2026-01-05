@@ -1,0 +1,18 @@
+mother_greeting:Halo, Nak! Selamat pagi.
+mother_tutorial:Ibu ajarkan kuncinya: Pilah sampahmu!\n\n[HIJAU] - Organik (Sisa makanan)\n[KUNING] - Anorganik (Plastik/Botol)\n[MERAH] - B3 (Baterai/Kimia)\n\nCoba ambil sampah di depanmu dengan tombol [E]!
+mother_ask:Sudah paham jenis-jenis sampahnya?
+mother_encouragement:Bagus! Ayo coba pungut sampah organik hijau itu dulu. Ibu tunggu hasilnya!
+mother_repeat:Perhatikan warnanya ya: Hijau, Kuning, atau Merah.
+mother_choice_1:Paham!
+mother_choice_2:Belum paham, ulangi lagi
+mother_response_repeat:Baiklah, Ibu ulangi lagi ya...
+waste_welcome:Selamat datang di Bank Sampah! Kami membeli sampah yang sudah dipilah.
+waste_exchange:Tukar sampahmu untuk mendapatkan Gold!
+waste_clean:Ayo jaga kebersihan Purwakarta! Kumpulkan sampah di halaman rumah.
+saman_greeting:Halo, %PLAYER%! Rajin sekali bersih-bersih pagi ini.
+saman_advice:Semangat ya bersihin lingkungannya!
+saman_greeting_ch2:Weh, tumben amat... Ada anak muda mau kotor-kotoran pagi gini. Rajin bener, De.
+saman_resp_a:Haha, iseng yang bagus tuh. Daripada nongkrong gak jelas, mending gini. Badan gerak, lingkungan bersih. Tapi sayang De, kalo cuma dipungut terus dibuang ke tong biasa. Ujung-ujungnya numpuk di TPA, jadi gunung sampah lagi.
+saman_resp_b:Nah, itu dia! Bapak demen nih kalo anak muda udah mikir ke situ. Emang bener, selokan mampet tuh gara-gara plastik ginian. Tapi De, kalo cuma dipindah dari selokan ke tong sampah depan, masalahnya gak kelar. Sampahnya cuma pindah tempat doang.
+saman_advice_ch2:Mending gini deh... Itu plastik yang kamu pegang sebenernya ada duitnya lho. Coba bawa ke Bank Sampah di ujung jalan sana. Di sana dikelola beneran, gak cuma ditumpuk. Lumayan buat jajan juga.
+mother_post_ch1:Halo nak, rajin sekali ya.

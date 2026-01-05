@@ -1,0 +1,5 @@
+prolog_title:Prologue: Hope Amidst the Trash
+prolog_1:Once, Purwakarta was a beautiful city with fresh mountain air. But over time, piles of garbage began to take over the corners of the city.
+prolog_2:The legendary Citarum River now struggles against plastic and waste. Every time heavy rain falls, inevitable floods haunt the residents.
+prolog_3:You are a teenager who is fed up with seeing your city drowning in trash. You decide to start making a change.
+prolog_4:This is the Green Adventure - a journey to save the country, one piece of trash at a time. The future of Indonesia is in your hands!

@@ -5,17 +5,19 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>app</groupId>
-  <artifactId>UntitledFarmGame</artifactId>
+  <artifactId>petualangHijau</artifactId>
   <version>1.0</version>
 
-  <name>project</name>
+  <name>petualangHijau</name>
   <!-- FIXME change it to the project's website -->
   <url>https://csil-git1.cs.surrey.sfu.ca/CMPT276F22_Group7/project</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <!-- Skip unit tests by default agar tidak membuka banyak window game saat clean & build -->
+    <maven.test.skip>true</maven.test.skip>
   </properties>
 
   <dependencies>
@@ -92,7 +94,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>app.App</mainClass>
+              <mainClass>controller.App</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>

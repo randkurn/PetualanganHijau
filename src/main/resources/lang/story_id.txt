@@ -1,0 +1,62 @@
+prolog_title:
+prolog_1:Indonesia adalah negeri yang dianugerahi alam yang kaya dan subur.
+prolog_2:Hutan, sungai, dan tanahnya pernah hidup selaras dengan manusia.
+prolog_3:Namun seiring waktu, keindahan itu memudar.
+prolog_4:Sampah menumpuk, sungai tercemar, dan alam mulai rusak.
+prolog_5:Di tengah kerusakan itu, kamu menyadari satu hal.
+prolog_6:Perubahan tidak menunggu. Ia dimulai.
+prolog_7:Kamu memilih bergerak.
+prolog_8:Memungut sampah.
+prolog_9:Menanam pohon.
+prolog_10:Satu langkah kecil, dengan harapan besar.
+prolog_11:Satu langkah kecil memang tidak mengubah segalanya.
+prolog_12:Namun cukup untuk memulai.
+
+ch1_title:CHAPTER 1 — Pagi yang Menggerakkan
+
+scene1_1:Cahaya matahari pagi perlahan menyelinap lewat celah jendela kamar.
+scene1_2:Tirai tipis bergoyang pelan tertiup angin, memantulkan warna hangat ke dinding kamar.
+scene1_3:Alarm ponselmu bergetar pelan di atas meja samping tempat tidur.
+scene1_4:Kamu membuka mata perlahan. Kepala terasa sedikit berat.
+scene1_5:Bukan karena kurang tidur, melainkan karena berita semalam yang masih terngiang.
+scene1_6:Banjir kembali melanda beberapa titik di Purwakarta.
+scene1_7:Jalanan berubah menjadi aliran air kecoklatan. Selokan meluap.
+scene1_8:Sampah kembali disebut sebagai penyebab utama.
+scene1_9:Kamu duduk di tepi tempat tidur dan menarik napas panjang.
+scene1_10:Dari jendela, langit terlihat cerah dan tenang.
+scene1_11:Burung berkicau. Angin pagi berhembus lembut. Hari baru dimulai.
+
+scene2_1:Di meja belajarmu, sebuah buku catatan kecil tergeletak rapi.
+scene2_2:Sampulnya hijau polos dengan sudut-sudut yang mulai sedikit usang.
+scene2_3:Kamu mengambilnya.
+scene2_4:Di sampul depan tertulis dengan tulisan tanganmu sendiri:
+scene2_5:"Mulai dari Rumah, Mulai dari Aku."
+scene2_6:Saat dibuka, halaman pertama berisi daftar sederhana:
+scene2_7:• Bersihkan halaman rumah\n• Pisahkan sampah organik & anorganik\n• Ajak tetangga ikut peduli\n• Tanam satu pohon
+scene2_8:Daftar ini kamu buat dua bulan lalu. Waktu itu niatnya besar, tapi selalu tertunda.
+scene2_9:Namun pagi ini... rasanya berbeda.
+scene2_10:Ada dorongan kecil yang pelan, tapi terus menekan dari dalam.
+scene2_11:Dorongan untuk tidak hanya melihat, tapi mulai bergerak.
+
+scene3_1:Ketukan pelan terdengar dari pintu kamar.
+scene3_2:"Tok... tok..."
+scene3_3:Pintu terbuka perlahan. Ibumu berdiri di sana dengan celemek dapur.
+scene3_4:"Sudah bangun?" tanyanya sambil tersenyum.
+
+scene4_1:Kamu sudah selesai mandi dan sarapan.
+scene4_2:Pakaian rapi. Pikiran lebih tenang.
+scene4_3:Tanpa kamu sadari, langkahmu membawamu keluar rumah.
+
+scene5_1:Sinar matahari pagi menyambutmu lebih hangat dari yang kamu kira.
+scene5_2:Namun pemandangan di depan rumah langsung menyadarkanmu.
+scene5_3:Daun kering berserakan. Plastik nyangkut di pagar.
+scene5_4:Botol minuman tergeletak di pinggir jalan. Sampah mulai menumpuk di sudut selokan.
+scene5_5:Udara masih segar... tapi bau sampah tak bisa disembunyikan.
+scene5_6:Kamu menggenggam buku catatan itu sekali lagi.
+scene5_7:"Baiklah," gumammu pelan. "Mulai dari sini."
+
+tutorial_1:TUTORIAL: Bergerak menggunakan W A S D atau ↑ ↓ ← →
+tutorial_2:Dekati sampah untuk mengambil & membersihkan
+tutorial_3:Tekan [E] untuk berinteraksi dengan objek dan NPC
+
+ch1_end:Halaman rumah kini tampak lebih bersih.\nChapter 1 Selesai — "Langkah kecil telah dimulai."
