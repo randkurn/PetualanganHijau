@@ -6,13 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Mother;
 import model.PakSaman;
-import model.WasteBank;
 
 public class NPCManager {
     private GamePanel gamePanel;
     private List<Mother> mothers;
     private List<PakSaman> pakSamans;
-    private List<WasteBank> wasteBanks;
     private List<model.DanuSaputra> danus;
     private List<model.BuSuci> buSucis;
     private int currentMapIndex = -1;
@@ -23,7 +21,6 @@ public class NPCManager {
         this.gamePanel = gp;
         this.mothers = new ArrayList<>();
         this.pakSamans = new ArrayList<>();
-        this.wasteBanks = new ArrayList<>();
         this.danus = new ArrayList<>();
         this.buSucis = new ArrayList<>();
     }
@@ -40,13 +37,6 @@ public class NPCManager {
         saman.setPosition(worldX, worldY);
         pakSamans.add(saman);
         return saman;
-    }
-
-    public WasteBank createWasteBank(int worldX, int worldY) {
-        WasteBank wasteBank = new WasteBank(gamePanel);
-        wasteBank.setPosition(worldX, worldY);
-        wasteBanks.add(wasteBank);
-        return wasteBank;
     }
 
     public model.DanuSaputra createDanuSaputra(int worldX, int worldY) {
@@ -66,7 +56,6 @@ public class NPCManager {
     public void clearAll() {
         mothers.clear();
         pakSamans.clear();
-        wasteBanks.clear();
         danus.clear();
         buSucis.clear();
     }
@@ -78,9 +67,6 @@ public class NPCManager {
         }
         for (PakSaman saman : pakSamans) {
             saman.update();
-        }
-        for (WasteBank wasteBank : wasteBanks) {
-            wasteBank.update();
         }
         for (model.DanuSaputra danu : danus) {
             danu.update();
@@ -134,25 +120,12 @@ public class NPCManager {
             saman.draw(g2);
             drawDebugNPC(g2, saman, Color.GREEN);
         }
-        for (WasteBank wasteBank : wasteBanks) {
-            wasteBank.draw(g2);
-            drawDebugNPC(g2, wasteBank, Color.BLUE);
-        }
         for (model.DanuSaputra danu : danus) {
             danu.draw(g2);
         }
         for (model.BuSuci suci : buSucis) {
             suci.draw(g2);
         }
-    }
-
-    public boolean tryExchangeTrashAtWasteBank(int interactDistance) {
-        for (WasteBank wasteBank : wasteBanks) {
-            if (wasteBank.canInteract(interactDistance)) {
-                return wasteBank.exchangeTrash(null);
-            }
-        }
-        return false;
     }
 
     private void drawDebugNPC(Graphics2D g2, model.Entity npc, Color color) {
@@ -177,12 +150,6 @@ public class NPCManager {
         for (PakSaman saman : pakSamans) {
             if (saman.canInteract(interactDistance)) {
                 saman.interact();
-                return true;
-            }
-        }
-        for (WasteBank wasteBank : wasteBanks) {
-            if (wasteBank.canInteract(interactDistance)) {
-                wasteBank.interact();
                 return true;
             }
         }
@@ -265,12 +232,7 @@ public class NPCManager {
                 } else if (name.contains("suci") || name.contains("merchant")) {
                     System.out.println("[NPCManager] Bu Suci spawn skipped (spawns after trash exchange)");
                 } else if (name.contains("bank") || name.contains("waste") || name.contains("sampah")) {
-                    if (gamePanel.chapter2Active) {
-                        System.out.println("[NPCManager] Spawning Bank Sampah at (" + worldX + "," + worldY + ")");
-                        createWasteBank(worldX, worldY);
-                    } else {
-                        System.out.println("[NPCManager] Bank Sampah spawn skipped (Chapter 2 only)");
-                    }
+                    System.out.println("[NPCManager] Bank Sampah spawn disabled (Chapter 2 now uses Danu)");
                 }
             }
         }
@@ -288,10 +250,6 @@ public class NPCManager {
         return mothers.isEmpty() ? null : mothers.get(0);
     }
 
-    public WasteBank getWasteBank() {
-        return wasteBanks.isEmpty() ? null : wasteBanks.get(0);
-    }
-
     public model.DanuSaputra getDanuSaputra() {
         return danus.isEmpty() ? null : danus.get(0);
     }
@@ -301,7 +259,7 @@ public class NPCManager {
     }
 
     public int getNPCCount() {
-        return mothers.size() + pakSamans.size() + wasteBanks.size() + danus.size() + buSucis.size();
+        return mothers.size() + pakSamans.size() + danus.size() + buSucis.size();
     }
 
     public void spawnChapter2NPCs() {

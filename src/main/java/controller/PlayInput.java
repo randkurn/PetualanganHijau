@@ -45,13 +45,6 @@ public class PlayInput extends InputHandler {
                 gp.uiM.getTeleportScreen().reset();
                 gp.stateM.setCurrentState(gameState.TELEPORT);
             }
-            case KeyEvent.VK_X -> {
-                if (gp.npcM != null) {
-                    if (gp.npcM.tryExchangeTrashAtWasteBank(gp.tileSize * 2)) {
-                        audio.playSound(3);
-                    }
-                }
-            }
             case KeyEvent.VK_P -> {
                 gp.player.plantTree();
             }
