@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -168,7 +167,14 @@ public class NPCManager {
 
         loadNPCsFromTMX();
 
-        if (gamePanel.mapM.currMap == 5) {
+        // Re-spawn Chapter 2 NPCs if active on correct maps
+        if (gamePanel.chapter2Active || gamePanel.chapter2Finished) {
+            if (gamePanel.mapM.currMap == 5) {
+                spawnChapter2NPCs(); // Danu only in Bank Sampah map
+            }
+            if (gamePanel.mapM.currMap == 1) {
+                spawnBuSuci(26 * gamePanel.tileSize, 58 * gamePanel.tileSize); // Suci only in City map
+            }
         }
 
         System.out.println("[NPCManager] Chapter 1 NPC setup complete. NPCs spawned: " + getNPCCount());
@@ -189,9 +195,6 @@ public class NPCManager {
             if (obj.type == null) {
                 continue;
             }
-
-            int worldX = obj.x;
-            int worldY = obj.y;
 
             String name = obj.name != null ? obj.name.toLowerCase() : "";
             boolean isNPC = "NPC".equalsIgnoreCase(obj.type) || "Decoration".equalsIgnoreCase(obj.type)
@@ -239,11 +242,11 @@ public class NPCManager {
 
     public void spawnChapter2NPCs() {
         if (danus.isEmpty()) {
-            int danuX = 54 * gamePanel.tileSize;
+            int danuX = 52 * gamePanel.tileSize;
             int danuY = 32 * gamePanel.tileSize;
-            System.out.println("[NPCManager] Spawning Danu Saputra at tile (54, 32) = (" + danuX + "," + danuY + ")");
+            System.out.println("[NPCManager] Spawning Danu Saputra at tile (52, 32) = (" + danuX + "," + danuY + ")");
             model.DanuSaputra danu = createDanuSaputra(danuX, danuY);
-            danu.direction = "left";
+            danu.direction = "down";
         }
     }
 

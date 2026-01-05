@@ -16,3 +16,26 @@ saman_resp_a:Haha, iseng yang bagus tuh. Daripada nongkrong gak jelas, mending g
 saman_resp_b:Nah, itu dia! Bapak demen nih kalo anak muda udah mikir ke situ. Emang bener, selokan mampet tuh gara-gara plastik ginian. Tapi De, kalo cuma dipindah dari selokan ke tong sampah depan, masalahnya gak kelar. Sampahnya cuma pindah tempat doang.
 saman_advice_ch2:Mending gini deh... Itu plastik yang kamu pegang sebenernya ada duitnya lho. Coba bawa ke Bank Sampah di ujung jalan sana. Di sana dikelola beneran, gak cuma ditumpuk. Lumayan buat jajan juga.
 mother_post_ch1:Halo nak, rajin sekali ya.
+danu_intro: Ayo, pilah sampahnya dulu di sini! Gue Danu, gue bakal bantu hitung totalnya biar jadi uang.
+danu_after_sort: Nah gitu, rapi kan! Inget ya, selain kebersihan, hijaunya lingkungan juga penting. Kita harus mulai nanem pohon.
+danu_find_suci: Coba cari Bu Suci di daerah selatan (area bawah map), dia jual bibit pohon. Samperin aja ke sana ya!
+danu_exchange_done: Mantap! Totalnya jadi Rp %VALUE% ya.\nUdah masuk saldo. Rajin-rajin ya setor sampah ke sini!
+suci_intro: Eh, ada pelanggan baru. Pasti disuruh si Danu ya? Haha, tuh anak emang bawel.\nNih, buat permulaan, Ibu kasih bibit Pohon Mahoni gratis satu.
+suci_welcome: Selamat datang! Mau beli bibit pohon? Harganya %VALUE% gold per bibit.
+ch2_end_narrative: Langkah awal telah tertanam.\nChapter 2 Selesai — "Harapan mulai tumbuh."\n\nAchievement Unlocked: Tunas Harapan
+obj_bank_sampah: LOKASI BARU TERBUKA: Bank Sampah
+obj_bu_suci: LOKASI BARU TERBUKA: Bu Suci\nOBJEKTIF: Temui Bu Suci di Selatan
+obj_plant: OBJEKTIF: Tanam bibit Mahoni di area hijau dekat rumah.
+achievement_unlocked: ACHIEVEMENT TERBUKA:
+ch1_narrative_1: Satu sampah diambil.
+ch1_narrative_2: Lalu yang lain.
+ch1_narrative_3: Pelan, tapi pasti.
+ch1_narrative_end: Halaman rumah kini tampak lebih bersih.\nChapter 1 Selesai — "Langkah kecil telah dimulai."
+ch2_title: Chapter 2: Jaringan Kebaikan
+ch2_monolog: Kecil banget ya ternyata... Tapi kata orang-orang tadi, ini awal dari sesuatu yang gede.\nOke. Mulai besok, gue bakal pastiin tempat ini bersih biar dia bisa tumbuh.
+monolog_label: Monolog
+system_label: Sistem
+tutorial_move: TUTORIAL: Gerak [WASD].\nInteraksi [E]
+choice_label: Pilih Jawabanmu:
+saman_choice_1: Iseng aja Pak, daripada gabut di rumah.
+saman_choice_2: Biar gak banjir lagi Pak, ngeri liat berita.

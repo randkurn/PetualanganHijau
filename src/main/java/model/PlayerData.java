@@ -20,11 +20,13 @@ public class PlayerData {
 
     public boolean chapter1Active;
     public boolean chapter2Active;
+    public boolean chapter2Finished;
     public int chapter1TrashCount;
     public int chapter2TrashCount;
     public int totalTrashInWorld;
 
     public Set<String> collectedTrash;
+    public Set<String> unlockedAchievements;
 
     public PlayerData() {
         this.worldX = 0;

@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import controller.GamePanel;
 import view.AudioManager;
 import controller.InputHandler;
+import controller.AchievementManager;
 
 public class Player extends Entity {
     Settings settings;
@@ -365,6 +366,14 @@ public class Player extends Entity {
         String key = mapName + "_" + x + "_" + y;
         collectedTrash.add(key);
         System.out.println("[Player] Collected trash: " + key + " (Total: " + collectedTrash.size() + ")");
+
+        // Achievement Logic
+        AchievementManager am = AchievementManager.getInstance(gamePanel);
+        if (collectedTrash.size() == 1) {
+            am.unlockAchievement("Pekerja Pemula", "Mengambil sampah pertama kali.");
+        } else if (collectedTrash.size() == 10) {
+            am.unlockAchievement("Lingkungan Bersih", "Mengumpulkan 10 sampah.");
+        }
     }
 
     public boolean isTrashCollected(String mapName, int x, int y) {

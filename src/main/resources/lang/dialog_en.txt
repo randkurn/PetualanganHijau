@@ -11,3 +11,32 @@ mother_response_repeat:Alright, I'll repeat it...
 waste_welcome:Welcome to the Waste Bank!\nWe buy sorted trash.
 waste_exchange:Trade your trash for Gold!
 waste_clean:Let's keep Purwakarta clean!\nCollect trash in your yard.
+saman_greeting:Hello, %PLAYER%! You're very diligent cleaning up this morning.
+saman_advice:Keep up the spirit in cleaning the environment!
+saman_greeting_ch2:Whoa, that's unusual... A young person wants to get dirty this morning. Very diligent, kid.
+saman_resp_a:Haha, that's a good hobby. Instead of hanging out aimlessly, this is better. Your body moves, the environment is clean. But it's a pity, kid, if it's just picked up and then thrown into a regular bin. In the end, it piles up in the landfill, becoming a trash mountain again.
+saman_resp_b:That's it! I like it when young people think that way. It's true, clogged sewers are because of this plastic. But kid, if it's just moved from the sewer to the trash bin in front, the problem isn't solved. The trash just moves places.
+saman_advice_ch2:Try this instead... That plastic you're holding actually has money in it. Try taking it to the Waste Bank at the end of that road. There it's managed properly, not just piled up. Plus, you get some pocket money.
+danu_intro: Come on, sort the trash here first! I'm Danu, I'll help calculate the total so it becomes money.
+danu_after_sort: There, neat right! Remember, besides cleanliness, a green environment is also important. We must start planting trees.
+danu_find_suci: Try looking for Bu Suci in the southern area (bottom area of the map), she sells tree seeds. Just go there!
+danu_exchange_done: Great! The total is Rp %VALUE%.\nIt's credited to your balance. Be diligent in depositing trash here!
+suci_intro: Oh, a new customer. Danu must have sent you, right? Haha, that kid is indeed talkative.\nHere, for a start, I'll give you one free Mahogany Tree seed.
+suci_welcome: Welcome! Want to buy tree seeds? The price is %VALUE% gold per seed.
+ch2_end_narrative: The first step has been planted.\nChapter 2 Finished — "Hope begins to grow."\n\nAchievement Unlocked: Sprout of Hope
+obj_bank_sampah: NEW LOCATION UNLOCKED: Waste Bank
+obj_bu_suci: NEW LOCATION UNLOCKED: Bu Suci\nOBJECTIVE: Meet Bu Suci in the South
+obj_plant: OBJECTIVE: Plant Mahogany seed in the green area near the house.
+achievement_unlocked: ACHIEVEMENT UNLOCKED:
+ch1_narrative_1: One trash picked up.
+ch1_narrative_2: Then another.
+ch1_narrative_3: Slowly, but surely.
+ch1_narrative_end: The yard looks cleaner now.\nChapter 1 Finished — "A small step has begun."
+ch2_title: Chapter 2: Network of Kindness
+ch2_monolog: It's so small... But as they said, this is the start of something big.\nOkay. Starting tomorrow, I'll make sure this place is clean so it can grow.
+monolog_label: Monolog
+system_label: System
+tutorial_move: TUTORIAL: Move [WASD].\nInteract [E]
+choice_label: Choose your answer:
+saman_choice_1: Just for fun, better than idling at home.
+saman_choice_2: To prevent floods, I'm scared of the news.

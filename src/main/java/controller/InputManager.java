@@ -581,6 +581,7 @@ public class InputManager {
                             String name = gp.uiM.getCharacterNameScreen().getName();
                             gp.player.setPlayerName(name);
                             controller.StoryManager.getInstance().setPlayerName(name);
+                            AchievementManager.getInstance(gp).reset();
                             gp.uiM.loadStory("prolog");
                             gp.stateM.setCurrentState(gameState.STORY);
                         } else {
@@ -740,7 +741,7 @@ public class InputManager {
                     }
                     enter = true;
                     break;
-                
+
                 case KeyEvent.VK_UP:
                 case KeyEvent.VK_W:
                     if (!select) {
@@ -950,9 +951,16 @@ public class InputManager {
                         }
                     }
                 } else {
-                    if (keyCode == KeyEvent.VK_SPACE || keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_E) {
+                    if (keyCode == KeyEvent.VK_SPACE) {
                         audio.playSound(5);
                         gp.uiM.getDialogBox().advanceDialog();
+                    } else if (keyCode == KeyEvent.VK_ENTER) {
+                        // Enter hanya berfungsi jika ini adalah akhir dialog atau ada pilihan
+                        // (Untuk advanceDialog tetap bisa, tapi kita utamakan Space untuk 'Next' biasa)
+                        if (gp.uiM.getDialogBox().isLastSentence()) {
+                            audio.playSound(5);
+                            gp.uiM.getDialogBox().advanceDialog();
+                        }
                     }
                 }
                 e.consume();

@@ -6,32 +6,19 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import view.PlayScreen;
 
 public class PakSaman extends Entity {
 
     GamePanel gamePanel;
     public int screenX, screenY;
-    private int dialogueIndex = 0;
 
     public int goalCol = -1;
     public int goalRow = -1;
     private boolean goalReached = false;
     private boolean followingGoal = false;
 
-    private String[][] dialogues;
-
-    private void loadDialogues() {
-        controller.StoryManager sm = controller.StoryManager.getInstance();
-        dialogues = new String[][] {
-                { sm.getDialog("saman_greeting") },
-                { sm.getDialog("saman_advice") }
-        };
-    }
-
     public PakSaman(GamePanel gp) {
         this.gamePanel = gp;
-        loadDialogues();
 
         speed = 1;
         hitboxDefaultX = 8;
@@ -115,7 +102,6 @@ public class PakSaman extends Entity {
             return;
         }
 
-        
         speed = 0;
         if (speed > 0) {
             animate();
@@ -161,14 +147,22 @@ public class PakSaman extends Entity {
     }
 
     public void interact() {
-        if (gamePanel.uiM == null || gamePanel.uiM.getDialogBox() == null)
+        if (gamePanel.uiM == null || gamePanel.uiM.getPlayScreen() == null)
             return;
-        PlayScreen dialog = gamePanel.uiM.getDialogBox();
 
-        String text = dialogues[dialogueIndex][0];
-        dialog.showDialog(text, "Pak Saman");
+        // Jika sedang dalam cutscene, biarkan CutsceneManager yang handle dialognya
+        if (gamePanel.stateM.getCurrentState() == controller.StateManager.gameState.CUTSCENE) {
+            return;
+        }
 
-        dialogueIndex = (dialogueIndex + 1) % dialogues.length;
+        if (gamePanel.chapter2Active) {
+            gamePanel.uiM.getPlayScreen().showDialog(
+                    "Eh De, udah dipilah belum sampahnya? Bawa ke Danu di ujung jalan sana ya, dia yang ngurusin setorannya sekarang.",
+                    "Pak Saman");
+        } else {
+            gamePanel.uiM.getPlayScreen().showDialog("Halo nak, semangat ya! Jagain kebersihan lingkungan kita.",
+                    "Pak Saman");
+        }
     }
 
     public void draw(Graphics2D g2) {

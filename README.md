@@ -246,14 +246,20 @@ Untitled-Farm-Game-master/
 
 ### 👨‍💻 Development Team
 
-**Petualangan Hijau** was developed by the **CMPT276 F22 Group 7** team at Simon Fraser University.
+**Petualangan Hijau**: Aplikasi Permainan Berbasis Desktop Berorientasi Objek dengan Basis Data
 
-#### Core Contributors
-- **Andrew Hein (ach17)** - Lead Developer, Core Systems
-- **Jeffrey Jin (jjj9)** - UI/UX, Game States, Audio
-- **Long Nguyen (dln3)** - Input System, Controls
-- **Navanza Varel AM (2409181)** - Teleport System, Maps
-- **Rand** - Additional Features, Indonesian Localization
+#### A. Identitas Kelompok
+1. **Nama Kelompok**: Kelompok 3 Aselole
+2. **Anggota**:
+   1. **Navanza Varel (2409181)** as Database Developer
+   2. **Nurjiha (2400515)** as Gameplay Logic Programmer
+   3. **Faiz Bisma Alfarid (2407903)** as Visual Artist & Content Designer
+   4. **Nur Adila Putri (2402926)** as UI/UX Designer
+   5. **M. Randy Kurniawan (2405315)** as Project Manager: Story & Logic Designer
+   6. **M. Khairul Irham Masruri (2402023)** as Gameplay Story Programmer
+
+#### B. Judul Proyek
+“Project Game Simulasi “Petualangan Hijau” Mendorong Perilaku Ramah Lingkungan Melalui Pengalaman Interaktif.”
 
 ### 🎨 Assets & Resources
 

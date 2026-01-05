@@ -54,6 +54,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int chapter1TrashCount = 0;
     public boolean chapter2Active = false;
     public int chapter2TrashCount = 0;
+    public boolean chapter2Finished = false;
 
     private final String[] treeFunFacts = {
             "Tercatat 257.384 ha deforestasi pada 2023, meningkat dari 2022, dengan sebagian besar terjadi di Kalimantan dan Sulawesi.",

@@ -106,11 +106,13 @@ public class SaveManager {
 
         playerData.chapter1Active = gp.chapter1Active;
         playerData.chapter2Active = gp.chapter2Active;
+        playerData.chapter2Finished = gp.chapter2Finished;
         playerData.chapter1TrashCount = gp.chapter1TrashCount;
         playerData.chapter2TrashCount = gp.chapter2TrashCount;
         playerData.totalTrashInWorld = gp.player.getTotalTrashInWorld();
 
         playerData.collectedTrash = gp.player.getCollectedTrash();
+        playerData.unlockedAchievements = AchievementManager.getInstance(gp).getUnlockedAchievements();
 
         TimeManager timeM = TimeManager.getInstance();
         TimeData timeData = new TimeData();
@@ -170,12 +172,19 @@ public class SaveManager {
 
             gp.chapter1Active = data.player.chapter1Active;
             gp.chapter2Active = data.player.chapter2Active;
+            gp.chapter2Finished = data.player.chapter2Finished;
             gp.chapter1TrashCount = data.player.chapter1TrashCount;
             gp.chapter2TrashCount = data.player.chapter2TrashCount;
             gp.player.setTotalTrashInWorld(data.player.totalTrashInWorld);
 
             if (data.player.collectedTrash != null) {
                 gp.player.setCollectedTrash(data.player.collectedTrash);
+            }
+
+            if (data.player.unlockedAchievements != null) {
+                AchievementManager.getInstance(gp).setUnlockedAchievements(data.player.unlockedAchievements);
+            } else {
+                AchievementManager.getInstance(gp).setUnlockedAchievements(new java.util.HashSet<>());
             }
 
             System.out.println("[SaveManager] Loaded - Chapter1: " + gp.chapter1Active + ", Chapter2: "
@@ -194,9 +203,14 @@ public class SaveManager {
             System.out.println("[SaveManager] Reloaded map objects to hide collected trash");
         }
 
-        // Setelah load game, pastikan NPC Chapter 1 juga aktif di map sekarang
+        // Setelah load game, pastikan NPC Chapter 1 & 2 juga aktif di map sekarang
         if (gp.npcM != null) {
             gp.npcM.setupChapter1NPCs();
+            if (gp.chapter2Active || gp.chapter2Finished) {
+                gp.npcM.spawnChapter2NPCs();
+                // Selalu spawn Bu Suci jika di Chapter 2 untuk keamanan (dia di selatan)
+                gp.npcM.spawnBuSuci(26 * gp.tileSize, 58 * gp.tileSize);
+            }
         }
     }
 

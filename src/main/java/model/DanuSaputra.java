@@ -132,8 +132,8 @@ public class DanuSaputra extends Entity {
                     // Step 2: Langsung tawarin setor sampah (sesuai request: nyaranin tukar sampah
                     // dulu)
                     gp.uiM.getPlayScreen().showDialogWithChoices(
-                            "Mau setor sampah sekarang? Pilah sampahnya dulu ya di sini biar gue kasih harga pas.",
-                            "Danu Saputra",
+                            "Ayo pilah sampahnya dulu di sini! Nanti baru gue hitung totalnya. Mau setor sekarang?",
+                            "Danu (Bank Sampah)",
                             new String[] {
                                     "Setor Sampah",
                                     "Nanti Saja"
@@ -164,9 +164,15 @@ public class DanuSaputra extends Entity {
                                             "Danu Saputra", () -> {
                                                 gp.uiM.getPlayScreen().showDialog(
                                                         "Coba cari Bu Suci di daerah selatan (area bawah map), dia jual bibit pohon. Samperin aja ke sana ya!",
-                                                        "Danu Saputra",
-                                                        () -> gp.stateM.setCurrentState(
-                                                                controller.StateManager.gameState.PLAY));
+                                                        "Danu (Bank Sampah)",
+                                                        () -> {
+                                                            if (gp.npcM.getBuSuci() == null) {
+                                                                gp.npcM.spawnBuSuci(26 * gp.tileSize, 58 * gp.tileSize);
+                                                                gp.uiM.showMessage("LOKASI BARU TERBUKA: Bu Suci");
+                                                            }
+                                                            gp.stateM.setCurrentState(
+                                                                    controller.StateManager.gameState.PLAY);
+                                                        });
                                             });
                                 }
                             });

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>dist\PetualangHijau_New.jar</jar>
+  <outfile>build\PetualanganHijau.exe</outfile>
+  <errTitle>Petualangan Hijau - Error</errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>https://www.oracle.com/java/technologies/downloads/</downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon></icon>
+  <jre>
+    <path></path>
+    <bundledJre64Bit>false</bundledJre64Bit>
+    <bundledJreAsFallback>false</bundledJreAsFallback>
+    <minVersion>21</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <runtimeBits>64/32</runtimeBits>
+    <initialHeapSize>512</initialHeapSize>
+    <maxHeapSize>2048</maxHeapSize>
+  </jre>
+  <versionInfo>
+    <fileVersion>1.0.0.0</fileVersion>
+    <txtFileVersion>1.0.0</txtFileVersion>
+    <fileDescription>Petualangan Hijau - Environmental Adventure Game</fileDescription>
+    <copyright>2026 Kelompok 3 Aselole</copyright>
+    <productVersion>1.0.0.0</productVersion>
+    <txtProductVersion>1.0.0</txtProductVersion>
+    <productName>Petualangan Hijau</productName>
+    <companyName>Kelompok 3 Aselole</companyName>
+    <internalName>PetualanganHijau</internalName>
+    <originalFilename>PetualanganHijau.exe</originalFilename>
+    <trademarks></trademarks>
+    <language>INDONESIAN</language>
+  </versionInfo>
+  <messages>
+    <startupErr>Gagal memulai Petualangan Hijau. Pastikan Java 21 atau lebih baru sudah terinstall.</startupErr>
+    <bundledJreErr>Gagal memulai Java Runtime Environment yang disertakan.</bundledJreErr>
+    <jreVersionErr>Game ini memerlukan Java 21 atau lebih baru.
+
+Silakan download dan install dari:
+https://www.oracle.com/java/technologies/downloads/</jreVersionErr>
+    <launcherErr>Terjadi kesalahan saat meluncurkan game:
+%JAVA_HOME%</launcherErr>
+  </messages>
+</launch4jConfig>

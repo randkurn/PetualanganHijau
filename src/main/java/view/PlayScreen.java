@@ -284,13 +284,13 @@ public class PlayScreen extends UI {
 
 		this.message = formatted;
 		if (text.contains("TUTORIAL") || text.contains("OBJEKTIF") || text.contains("TERBUKA")) {
-			this.messageCounter = 300;
+			this.messageCounter = 150; // 3 detik @ 50 FPS
 		} else if (text.contains("Berhasil memungut") || text.contains("Mendapatkan")) {
-			this.messageCounter = 120;
+			this.messageCounter = 80;
 		} else if (text.contains("Total:") || text.contains("Gold") || text.contains("Rp ") || text.contains("saldo")) {
-			this.messageCounter = 180;
-		} else {
 			this.messageCounter = 120;
+		} else {
+			this.messageCounter = 100;
 		}
 	}
 
@@ -407,6 +407,13 @@ public class PlayScreen extends UI {
 		if (callback != null) {
 			callback.run();
 		}
+	}
+
+	public boolean isLastSentence() {
+		if (!dialogActive || dialogLines == null)
+			return true;
+		int maxLines = hasChoices ? 2 : 4;
+		return (currentLineOffset + maxLines >= dialogLines.length);
 	}
 
 	public boolean isActive() {

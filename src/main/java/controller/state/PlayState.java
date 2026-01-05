@@ -92,7 +92,6 @@ public class PlayState extends AbstractGameState {
                 return true;
 
             case KeyEvent.VK_E:
-            case KeyEvent.VK_ENTER:
                 // Check interactive objects first
                 int objIndex = gp.checker.checkObjectCollision(gp.player, true);
                 if (objIndex != 999) {
@@ -106,9 +105,13 @@ public class PlayState extends AbstractGameState {
                 }
 
                 // If no object, try NPCs
-                if (gp.npcM != null) {
+                if (gp.npcM != null && gp.csM.isFinished()) {
                     boolean interacted = gp.npcM.tryInteractWithNearbyNPC((int) (gp.tileSize * 1.5));
                     if (interacted) {
+                        // Reset key to prevent flickering/immediate advance
+                        if (gp.inputM != null && gp.inputM.getPlayInput() != null) {
+                            gp.inputM.getPlayInput().interact = false;
+                        }
                         return true;
                     }
                 }

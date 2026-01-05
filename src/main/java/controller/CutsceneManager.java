@@ -32,8 +32,8 @@ public class CutsceneManager {
 
         if (gp.stateM.getCurrentState() == StateManager.gameState.CUTSCENE ||
                 (gp.stateM.getCurrentState() == StateManager.gameState.DIALOGUE && phase > 0) ||
-                (gp.stateM.getCurrentState() == StateManager.gameState.PLAY
-                        && ((phase >= 20 && phase <= 26) || phase == 34 || phase == 38))) {
+                (gp.stateM.getCurrentState() == StateManager.gameState.INVENTORY && phase > 0) ||
+                (gp.stateM.getCurrentState() == StateManager.gameState.PLAY && phase > 0)) {
             playScene();
         }
     }
@@ -251,7 +251,7 @@ public class CutsceneManager {
             case 212:
                 counter++;
                 if (counter == 1) {
-                    narrativeText = "Satu sampah diambil.";
+                    narrativeText = StoryManager.getInstance().getDialog("ch1_narrative_1");
                 }
                 if (counter > 100) {
                     phase = 213;
@@ -261,7 +261,7 @@ public class CutsceneManager {
             case 213:
                 counter++;
                 if (counter == 1) {
-                    narrativeText = "Lalu yang lain.";
+                    narrativeText = StoryManager.getInstance().getDialog("ch1_narrative_2");
                 }
                 if (counter > 100) {
                     phase = 214;
@@ -271,7 +271,7 @@ public class CutsceneManager {
             case 214:
                 counter++;
                 if (counter == 1) {
-                    narrativeText = "Pelan, tapi pasti.";
+                    narrativeText = StoryManager.getInstance().getDialog("ch1_narrative_3");
                 }
                 if (counter > 100) {
                     phase = 215;
@@ -281,9 +281,10 @@ public class CutsceneManager {
             case 215:
                 counter++;
                 if (counter == 1) {
-                    narrativeText = "Halaman rumah kini tampak lebih bersih.\nChapter 1 Selesai — \"Langkah kecil telah dimulai.\"";
+                    narrativeText = StoryManager.getInstance().getDialog("ch1_narrative_end");
                 }
                 if (counter > 180) {
+                    AchievementManager.getInstance(gp).unlockAchievement("Pahlawan Warga", "Menyelesaikan Chapter 1.");
                     narrativeText = "";
                     phase = 24;
                     counter = 0;
@@ -324,7 +325,7 @@ public class CutsceneManager {
                 counter++;
                 fullBlack = true;
                 if (counter == 1) {
-                    narrativeText = "Chapter 2: Jaringan Kebaikan";
+                    narrativeText = StoryManager.getInstance().getDialog("ch2_title");
                 }
 
                 if (counter > 150) {
@@ -423,11 +424,11 @@ public class CutsceneManager {
                 if (counter == 1) {
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getDialogBox().showDialogWithChoices(
-                            "Pilih Jawabanmu:",
-                            "Pemain",
+                            StoryManager.getInstance().getDialog("choice_label"),
+                            "",
                             new String[] {
-                                    "Iseng aja Pak, daripada gabut di rumah.",
-                                    "Biar gak banjir lagi Pak, ngeri liat berita."
+                                    StoryManager.getInstance().getDialog("saman_choice_1"),
+                                    StoryManager.getInstance().getDialog("saman_choice_2")
                             },
                             (idx, txt) -> currentBranch = (idx == 0) ? "A" : "B");
                 }
@@ -457,19 +458,19 @@ public class CutsceneManager {
                 if (counter == 1) {
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getPlayScreen().showDialog(
-                            "Mending gini deh... Itu plastik yang kamu pegang sebenernya ada duitnya lho.\nCoba bawa ke Danu di ujung jalan sana. Lumayan buat jajan juga.",
+                            StoryManager.getInstance().getDialog("saman_advice_ch2"),
                             "Pak Saman");
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
-                    gp.uiM.showMessage("LOKASI BARU TERBUKA: Danu Saputra");
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("obj_bank_sampah"));
 
                     gp.npcM.spawnChapter2NPCs();
 
                     model.DanuSaputra danu = gp.npcM.getDanuSaputra();
                     if (danu != null) {
-                        danu.worldX = 54 * gp.tileSize;
+                        danu.worldX = 52 * gp.tileSize;
                         danu.worldY = 32 * gp.tileSize;
-                        danu.direction = "left";
+                        danu.direction = "down";
                     }
 
                     gp.player.onPath = true;
@@ -498,23 +499,44 @@ public class CutsceneManager {
                     gp.player.speed = 0;
                     gp.player.direction = "right";
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+
+                    // Gunakan Callback agar menu terbuka tepat setelah dialog ditutup
                     gp.uiM.getPlayScreen().showDialog(
-                            "Halo! Keren udah rajin mungut sampah. Tapi ingat, jangan cuma mungut sampah aja, kita juga harus mulai menanam pohon biar lingkungan makin hijau.",
-                            "Danu Saputra");
-                }
-                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
-                    phase = 36;
-                    counter = 0;
+                            StoryManager.getInstance().getDialog("danu_intro"),
+                            "Danu (Bank Sampah)", () -> {
+                                gp.uiM.getInventoryScreen().resetSorting();
+                                gp.uiM.getInventoryScreen().toggleSortingMode();
+                                gp.stateM.setCurrentState(StateManager.gameState.INVENTORY);
+                                phase = 36;
+                                counter = 0;
+                            });
                 }
                 break;
 
             case 36:
+                // Menunggu pemain selesai sortir sampah (kembali ke state PLAY)
+                if (gp.stateM.getCurrentState() == StateManager.gameState.PLAY) {
+                    counter++;
+                    if (counter == 1) {
+                        gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                        gp.uiM.getPlayScreen().showDialog(
+                                StoryManager.getInstance().getDialog("danu_after_sort"),
+                                "Danu (Bank Sampah)");
+                    }
+                    if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                        phase = 365;
+                        counter = 0;
+                    }
+                }
+                break;
+
+            case 365:
                 counter++;
                 if (counter == 1) {
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getPlayScreen().showDialog(
-                            "Coba cari Bu Suci di daerah selatan (area bawah map), dia jual bibit pohon. Samperin aja ke sana ya! Gue jagain lapak di sini dulu.",
-                            "Danu Saputra");
+                            StoryManager.getInstance().getDialog("danu_find_suci"),
+                            "Danu (Bank Sampah)");
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
                     phase = 37;
@@ -523,9 +545,12 @@ public class CutsceneManager {
                 break;
 
             case 37:
-                // End initial cutscene and let player explore
+                // Kembalikan kontrol dan kecepatan ke pemain
+                gp.player.speed = 4;
+                gp.player.onPath = false;
+
                 gp.stateM.setCurrentState(StateManager.gameState.PLAY);
-                gp.uiM.showMessage("OBJEKTIF: Temui Bu Suci di Selatan");
+                gp.uiM.showMessage("LOKASI BARU TERBUKA: Bu Suci\nOBJEKTIF: Temui Bu Suci di Selatan");
 
                 // Spawn Bu Suci if not already there
                 if (gp.npcM.getBuSuci() == null) {
@@ -580,7 +605,7 @@ public class CutsceneManager {
                 if (counter == 1) {
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getPlayScreen().showDialog(
-                            "Eh, ada pelanggan baru. Pasti disuruh si Danu ya? Haha, tuh anak emang bawel.\nNih, buat permulaan, Ibu kasih bibit Pohon Mahoni gratis satu.",
+                            StoryManager.getInstance().getDialog("suci_intro"),
                             "Bu Suci");
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
@@ -630,7 +655,7 @@ public class CutsceneManager {
                 counter++;
                 if (counter == 1) {
                     gp.uiM.getPlayScreen()
-                            .showMessage("OBJEKTIF: Tanam bibit Mahoni di dekat rumah\n(titik menanampohon5).");
+                            .showMessage(StoryManager.getInstance().getDialog("obj_plant"));
                 }
                 break;
 
@@ -640,8 +665,8 @@ public class CutsceneManager {
                     gp.player.speed = 0;
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getPlayScreen().showDialog(
-                            "Kecil banget ya ternyata... Tapi kata orang-orang tadi, ini awal dari sesuatu yang gede.\nOke. Mulai besok, gue bakal pastiin tempat ini bersih biar dia bisa tumbuh.",
-                            "Monolog");
+                            StoryManager.getInstance().getDialog("ch2_monolog"),
+                            gp.player.getPlayerName());
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
                     phase = 51;
@@ -653,15 +678,17 @@ public class CutsceneManager {
                 counter++;
                 if (counter == 1) {
                     fullBlack = true;
-                    gp.uiM.getPlayScreen().showDialog(
-                            "Chapter 2 Selesai.\nAchievement Unlocked: Tunas Harapan.\nSaldo Bank Sampah: Berhasil.",
-                            "Sistem");
+                    narrativeText = StoryManager.getInstance().getDialog("ch2_end_narrative");
                 }
-                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                if (counter > 240) { // Sekitar 4 detik
                     phase = 0;
                     counter = 0;
+                    narrativeText = "";
                     reset();
+                    gp.player.speed = 4;
+                    gp.player.onPath = false;
                     gp.chapter2Active = false;
+                    gp.chapter2Finished = true;
                     gp.stateM.setCurrentState(StateManager.gameState.PLAY);
                 }
                 break;
@@ -669,7 +696,7 @@ public class CutsceneManager {
             case 8:
                 if (counter == 0) {
                     System.out.println("[Cutscene] Showing Tutorial");
-                    gp.uiM.getPlayScreen().showMessage("TUTORIAL: Gerak [WASD].\nInteraksi [E]");
+                    gp.uiM.getPlayScreen().showMessage(StoryManager.getInstance().getDialog("tutorial_move"));
                 }
                 if (counter > 60) {
                     System.out.println("[Cutscene] All Scenes Complete - PLAY state");

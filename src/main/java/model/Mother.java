@@ -1,6 +1,7 @@
 package model;
 
 import controller.GamePanel;
+import controller.StoryManager;
 import java.awt.Rectangle;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -239,7 +240,7 @@ public class Mother extends Entity {
     private void showFinalChoice(PlayScreen dialog) {
         dialog.showDialogWithChoices(
                 "Kamu memutuskan...",
-                "Ibu",
+                "",
                 new String[] {
                         "Iya Bu, mandi dulu!",
                         "Nanti Bu, sarapan dulu..."
@@ -267,8 +268,8 @@ public class Mother extends Entity {
 
     private void showInitialChoice(PlayScreen dialog) {
         dialog.showDialogWithChoices(
-                "Pilih responmu:",
-                "Ibu",
+                StoryManager.getInstance().getDialog("choice_label"),
+                "",
                 new String[] {
                         "Aku kepikiran berita banjir, Bu.",
                         "Mau mulai beresin rumah, Bu.",
