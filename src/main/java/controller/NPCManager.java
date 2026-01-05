@@ -114,11 +114,9 @@ public class NPCManager {
     public void draw(Graphics2D g2) {
         for (Mother mother : mothers) {
             mother.draw(g2);
-            drawDebugNPC(g2, mother, Color.RED);
         }
         for (PakSaman saman : pakSamans) {
             saman.draw(g2);
-            drawDebugNPC(g2, saman, Color.GREEN);
         }
         for (model.DanuSaputra danu : danus) {
             danu.draw(g2);
@@ -126,18 +124,6 @@ public class NPCManager {
         for (model.BuSuci suci : buSucis) {
             suci.draw(g2);
         }
-    }
-
-    private void drawDebugNPC(Graphics2D g2, model.Entity npc, Color color) {
-        int screenX = npc.worldX - gamePanel.player.worldX + gamePanel.player.screenX;
-        int screenY = npc.worldY - gamePanel.player.worldY + gamePanel.player.screenY;
-
-        // Always draw a small colored square for debugging
-        g2.setColor(color);
-        g2.fillRect(screenX + 10, screenY + 10, 10, 10);
-
-        g2.setColor(Color.WHITE);
-        g2.drawString(npc.getClass().getSimpleName(), screenX, screenY + 40);
     }
 
     public boolean tryInteractWithNearbyNPC(int interactDistance) {
@@ -215,22 +201,11 @@ public class NPCManager {
                 if (name.contains("ibu") || name.contains("mother")) {
                     System.out.println("[NPCManager] Mother spawn skipped (handled by CutsceneManager)");
                 } else if (name.contains("pak") || name.contains("saman")) {
-                    if (gamePanel.chapter2Active) {
-                        System.out.println("[NPCManager] Spawning Pak Saman at (" + worldX + "," + worldY + ")");
-                        PakSaman s = createPakSaman(worldX, worldY);
-                        s.direction = "down";
-                    } else {
-                        System.out.println("[NPCManager] Pak Saman spawn skipped (Chapter 2 only)");
-                    }
+                    System.out.println("[NPCManager] Pak Saman spawn skipped (handled by Cutscene/Story)");
                 } else if (name.contains("danu")) {
-                    if (gamePanel.chapter2Active) {
-                        System.out.println("[NPCManager] Spawning Danu Saputra at (" + worldX + "," + worldY + ")");
-                        createDanuSaputra(worldX, worldY);
-                    } else {
-                        System.out.println("[NPCManager] Danu Saputra spawn skipped (Chapter 2 only)");
-                    }
+                    System.out.println("[NPCManager] Danu Saputra spawn skipped (handled by Cutscene/Story)");
                 } else if (name.contains("suci") || name.contains("merchant")) {
-                    System.out.println("[NPCManager] Bu Suci spawn skipped (spawns after trash exchange)");
+                    System.out.println("[NPCManager] Bu Suci spawn skipped (handled by Cutscene/Story)");
                 } else if (name.contains("bank") || name.contains("waste") || name.contains("sampah")) {
                     System.out.println("[NPCManager] Bank Sampah spawn disabled (Chapter 2 now uses Danu)");
                 }

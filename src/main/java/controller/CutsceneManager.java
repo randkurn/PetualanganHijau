@@ -33,7 +33,7 @@ public class CutsceneManager {
         if (gp.stateM.getCurrentState() == StateManager.gameState.CUTSCENE ||
                 (gp.stateM.getCurrentState() == StateManager.gameState.DIALOGUE && phase > 0) ||
                 (gp.stateM.getCurrentState() == StateManager.gameState.PLAY
-                        && ((phase >= 20 && phase <= 26) || phase == 38))) {
+                        && ((phase >= 20 && phase <= 26) || phase == 34 || phase == 38))) {
             playScene();
         }
     }
@@ -476,6 +476,9 @@ public class CutsceneManager {
                     gp.player.goalCol = 52;
                     gp.player.goalRow = 33;
                     gp.player.speed = 3;
+
+                    // Transition to PLAY state so player.update() can handle onPath movement
+                    gp.stateM.setCurrentState(StateManager.gameState.PLAY);
 
                     phase = 34;
                     counter = 0;

@@ -125,13 +125,14 @@ public class DanuSaputra extends Entity {
         if (gp.uiM == null || gp.uiM.getPlayScreen() == null)
             return;
 
-        // Dialogue saran Danu sebelum pilihan
+        // Kalimat 1: Salam pembuka
         gp.uiM.getPlayScreen().showDialog(
-                "Halo! Keren udah rajin mungut sampah. Tapi ingat, jangan cuma mungut sampah aja, kita juga harus mulai menanam pohon biar lingkungan makin hijau.\n\nCoba cari Bu Suci di daerah selatan (area bawah map), dia jual bibit pohon. Samperin aja ke sana ya!",
+                "Halo! Keren udah rajin mungut sampah.",
                 "Danu Saputra", () -> {
-                    // Tampilkan pilihan setelah dialog saran selesai
+                    // Step 2: Langsung tawarin setor sampah (sesuai request: nyaranin tukar sampah
+                    // dulu)
                     gp.uiM.getPlayScreen().showDialogWithChoices(
-                            "Mau setor sampah sekarang?",
+                            "Mau setor sampah sekarang? Pilah sampahnya dulu ya di sini biar gue kasih harga pas.",
                             "Danu Saputra",
                             new String[] {
                                     "Setor Sampah",
@@ -139,7 +140,7 @@ public class DanuSaputra extends Entity {
                             },
                             (idx, txt) -> {
                                 if (idx == 0) {
-                                    // Setor sampah - langsung buka sorting mode
+                                    // Branch: Setor Sampah
                                     if (gp.player.getCollectedTrash().isEmpty()) {
                                         gp.uiM.getPlayScreen().showDialog(
                                                 "Eh, kamu belum punya sampah yang bisa disetor. Kumpulin dulu ya!",
@@ -148,9 +149,8 @@ public class DanuSaputra extends Entity {
                                                         .setCurrentState(controller.StateManager.gameState.PLAY));
                                     } else {
                                         gp.uiM.getPlayScreen().showDialog(
-                                                "Oke sip! Pilah sampahnya dulu ya di sini, biar gue bisa kasih harga yang pas.",
+                                                "Oke sip! Pilah sampahnya dulu ya biar gue bisa hitung totalnya.",
                                                 "Danu Saputra", () -> {
-                                                    // Trigger sorting mode
                                                     gp.uiM.getInventoryScreen().resetSorting();
                                                     gp.uiM.getInventoryScreen().toggleSortingMode();
                                                     gp.stateM.setCurrentState(
@@ -158,7 +158,16 @@ public class DanuSaputra extends Entity {
                                                 });
                                     }
                                 } else {
-                                    gp.stateM.setCurrentState(controller.StateManager.gameState.PLAY);
+                                    // Branch: Nanti Saja -> Kasih saran pohon & Bu Suci
+                                    gp.uiM.getPlayScreen().showDialog(
+                                            "Oke. Tapi ingat, jangan cuma mungut sampah aja, kita juga harus mulai menanam pohon biar lingkungan makin hijau.",
+                                            "Danu Saputra", () -> {
+                                                gp.uiM.getPlayScreen().showDialog(
+                                                        "Coba cari Bu Suci di daerah selatan (area bawah map), dia jual bibit pohon. Samperin aja ke sana ya!",
+                                                        "Danu Saputra",
+                                                        () -> gp.stateM.setCurrentState(
+                                                                controller.StateManager.gameState.PLAY));
+                                            });
                                 }
                             });
                 });
