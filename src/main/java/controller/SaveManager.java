@@ -242,14 +242,8 @@ public class SaveManager {
             System.out.println("[SaveManager] Reloaded map objects to hide collected trash");
         }
 
-        // Setelah load game, pastikan NPC Chapter 1 & 2 juga aktif di map sekarang
         if (gp.npcM != null) {
             gp.npcM.setupChapter1NPCs();
-            if (gp.chapter2Active || gp.chapter2Finished) {
-                gp.npcM.spawnChapter2NPCs();
-                // Selalu spawn Teh Dila jika di Chapter 2 untuk keamanan (dia di selatan)
-                gp.npcM.spawnTehDila(26 * gp.tileSize, 58 * gp.tileSize);
-            }
         }
     }
 

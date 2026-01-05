@@ -182,6 +182,13 @@ public class NPCManager {
             }
         }
 
+        // Re-spawn Mother if in House map
+        if (gamePanel.mapM.currMap == 0) {
+            if (mothers.isEmpty()) {
+                createMother(5 * gamePanel.tileSize, 9 * gamePanel.tileSize);
+            }
+        }
+
         System.out.println("[NPCManager] Chapter 1 NPC setup complete. NPCs spawned: " + getNPCCount());
     }
 
