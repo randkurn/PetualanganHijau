@@ -175,17 +175,11 @@ public class NPCManager {
         loadNPCsFromTMX();
 
         // Re-spawn Chapter 2/3 NPCs if active on correct maps
+        // Re-spawn Chapter 2/3 NPCs if active on House map (exterior)
         if (gamePanel.chapter2Active || gamePanel.chapter2Finished || gamePanel.chapter3Active) {
-            if (gamePanel.mapM.currMap == 3) { // CITY map
-                spawnChapter2NPCs(); // Panjul at (52, 33)
+            if (gamePanel.mapM.currMap == 0) {
+                spawnChapter2NPCs(); // Panjul
                 spawnTehDila(26 * gamePanel.tileSize, 58 * gamePanel.tileSize); // Teh Dila
-            }
-        }
-
-        // Re-spawn Mother if in House map
-        if (gamePanel.mapM.currMap == 0) {
-            if (mothers.isEmpty()) {
-                createMother(5 * gamePanel.tileSize, 9 * gamePanel.tileSize);
             }
         }
 
