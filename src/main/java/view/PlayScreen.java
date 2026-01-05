@@ -104,6 +104,7 @@ public class PlayScreen extends UI {
 
 				if (typingIndex >= totalChars) {
 					typingComplete = true;
+					talkSoundCounter = 0;
 				}
 			}
 		}

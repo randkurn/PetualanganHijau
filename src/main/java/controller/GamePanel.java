@@ -11,7 +11,10 @@ import javax.swing.JPanel;
 
 import model.Player;
 import model.Settings;
+import model.PlayerData.PlantedTreeData;
 import view.UIManager;
+import java.util.ArrayList;
+import java.util.List;
 import view.DebugOverlay;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -40,6 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
     public SceneManager sceneM = new SceneManager(this);
 
     public MapManager mapM = new MapManager(this);
+    public PortalSystem portalSystem = new PortalSystem(this);
 
     public CollisionChecker checker = new CollisionChecker(this);
     public Player player = new Player(this, inputM.getPlayInput());
@@ -55,6 +59,10 @@ public class GamePanel extends JPanel implements Runnable {
     public boolean chapter2Active = false;
     public int chapter2TrashCount = 0;
     public boolean chapter2Finished = false;
+    public boolean chapter3Active = false;
+    public int chapter3TrashCount = 0;
+    public boolean tehDilaGiftGiven = false;
+    public List<PlantedTreeData> plantedTrees = new ArrayList<>();
 
     private final String[] treeFunFacts = {
             "Tercatat 257.384 ha deforestasi pada 2023, meningkat dari 2022, dengan sebagian besar terjadi di Kalimantan dan Sulawesi.",
@@ -171,6 +179,7 @@ public class GamePanel extends JPanel implements Runnable {
                 updateSleepTransition();
                 updateExhaustion();
                 updatePlantingTransition();
+                portalSystem.update();
                 stateM.update();
                 repaint();
                 delta--;
@@ -193,6 +202,9 @@ public class GamePanel extends JPanel implements Runnable {
         drawSleepTransition(graphic2);
         drawExhaustionTransition(graphic2);
         drawPlantingTransition(graphic2);
+
+        // Draw portal loading screen on top of other transitions
+        portalSystem.draw(graphic2);
 
         // Draw debug overlay on top of everything
         debugOverlay.draw(graphic2);
@@ -228,7 +240,19 @@ public class GamePanel extends JPanel implements Runnable {
             case 1:
                 timeM.advanceDay();
                 player.restoreEnergy(player.maxEnergy);
-                uiM.showMessage("Hari baru dimulai!");
+
+                // If Chapter 2 is finished, start Chapter 3 next to the bed
+                if (chapter2Finished && !chapter3Active) {
+                    chapter3Active = true;
+                    mapM.changeToAreaWithoutRespawn(5); // Player Room
+                    player.worldX = 7 * tileSize;
+                    player.worldY = 4 * tileSize;
+                    player.direction = "down";
+                    uiM.showMessage("Chapter 3 Dimulai: Hari Baru, Semangat Baru!");
+                } else {
+                    uiM.showMessage("Hari baru dimulai!");
+                }
+
                 sleepPhase = 2;
                 break;
             case 2:
@@ -452,5 +476,32 @@ public class GamePanel extends JPanel implements Runnable {
 
     public boolean isPlanting() {
         return isPlanting;
+    }
+
+    /**
+     * Force unlock player movement and reset states.
+     * Use this as a panic button if the player gets stuck in cutscenes or
+     * dialogues.
+     */
+    public void forceUnlock() {
+        System.out.println("[GamePanel] Force Unlock triggered!");
+
+        // Reset game states
+        stateM.setCurrentState(StateManager.gameState.PLAY);
+
+        // Reset player movement
+        player.onPath = false;
+        player.speed = 4;
+        player.direction = "down";
+
+        // Reset cutscene manager
+        csM.reset();
+
+        // Clear any active UI/Dialogs
+        uiM.getPlayScreen().clearDialog();
+        uiM.getPlayScreen().hideDialog();
+        uiM.getPlayScreen().resetMessage();
+
+        uiM.showMessage("SAFETY: Player movement force-unlocked.");
     }
 }

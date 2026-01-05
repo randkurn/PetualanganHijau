@@ -9,6 +9,7 @@ import controller.GamePanel;
 import view.AudioManager;
 import controller.InputHandler;
 import controller.AchievementManager;
+import controller.StateManager;
 
 public class Player extends Entity {
     Settings settings;
@@ -157,6 +158,17 @@ public class Player extends Entity {
             return;
         }
 
+        // Don't allow movement during portal transitions
+        if (gamePanel.portalSystem != null && gamePanel.portalSystem.isLoading()) {
+            return;
+        }
+
+        if (gamePanel.stateM.getCurrentState() == StateManager.gameState.CUTSCENE ||
+                gamePanel.stateM.getCurrentState() == StateManager.gameState.DIALOGUE ||
+                gamePanel.stateM.getCurrentState() == StateManager.gameState.SCENE) {
+            return;
+        }
+
         if (input.up || input.left || input.down || input.right) {
             updatePlayerDirection();
             collisionOn = false;
@@ -189,7 +201,7 @@ public class Player extends Entity {
             updatePlayerSprite();
         }
 
-        int hintIndex = gamePanel.checker.checkObjectCollision(this, true);
+        int hintIndex = gamePanel.checker.checkObjectInteraction(this);
         if (hintIndex != 999) {
             GameObject obj = gamePanel.mapM.getMap().objects[hintIndex];
             if (obj != null && (obj.type == GameObject.Type.PORTAL || obj.type == GameObject.Type.GATE
@@ -205,11 +217,16 @@ public class Player extends Entity {
             this.nearObjectWorldX = -1;
         }
 
+        // Auto-detect portal tiles for seamless map transitions
+        if (gamePanel.portalSystem != null && !gamePanel.portalSystem.isLoading()) {
+            gamePanel.portalSystem.checkPortalTile(worldX, worldY);
+        }
+
         // Interaction is now handled by the current GameState (e.g., PlayState)
         // to prevent double-calling and flickering.
 
         if (gamePanel.mapM.currMap == 5 && !gamePanel.uiM.getPlayScreen().isActive()) {
-            int autoIndex = gamePanel.checker.checkObjectCollision(this, true);
+            int autoIndex = gamePanel.checker.checkObjectInteraction(this);
             if (autoIndex != 999) {
                 GameObject obj = gamePanel.mapM.getMap().objects[autoIndex];
                 if (obj != null && (obj.type == GameObject.Type.PORTAL || obj.type == GameObject.Type.BED)) {
@@ -337,17 +354,22 @@ public class Player extends Entity {
 
         for (int i = 0; i < objects.length; i++) {
             if (objects[i] == null) {
-                OBJ_Tree tree = new OBJ_Tree();
+                int currentDay = gamePanel.timeM.getCurrentDay();
+                OBJ_Tree tree = new OBJ_Tree(currentDay);
                 tree.worldX = plantX;
                 tree.worldY = plantY;
                 tree.index = i;
                 objects[i] = tree;
 
+                // Record tree in global list for saving
+                gamePanel.plantedTrees.add(new model.PlayerData.PlantedTreeData(
+                        plantX, plantY, gamePanel.mapM.currMap, currentDay));
+
                 inventory.removeItem(bibitName, 1);
 
                 gamePanel.triggerPlanting();
 
-                if (gamePanel.chapter2Active && gamePanel.mapM.currMap == 0) {
+                if (gamePanel.chapter2Active && gamePanel.mapM.currMap == 0 && gamePanel.csM.getPhase() == 49) {
                     gamePanel.csM.nextPhase();
                 }
 

@@ -352,7 +352,12 @@ public class Map {
                         }
 
                         if (hasCollision) {
-                            collisionMap[r][c] = true;
+                            // Force portal tiles to be non-solid so player can walk on them
+                            if (gid == 28 || gid == 308 || gid == 469 || gid == 309) {
+                                collisionMap[r][c] = false;
+                            } else {
+                                collisionMap[r][c] = true;
+                            }
                         }
                     }
                 }
@@ -846,6 +851,10 @@ public class Map {
                             autoDoor.worldY = r * gp.tileSize;
                             autoDoor.displayName = "Pintu Masuk";
                             autoDoor.index = i;
+                            if (levelName != null && levelName.equalsIgnoreCase("HOUSE")) {
+                                autoDoor.targetArea = 5;
+                                System.out.println("[Map] Auto-assigned targetArea 5 to Pintu Masuk in HOUSE map.");
+                            }
                             objects[i] = autoDoor;
                             i++;
                         }
@@ -929,6 +938,39 @@ public class Map {
                     if (objects[j] == null) {
                         objects[j] = door;
                         break;
+                    }
+                }
+            }
+        }
+        spawnPlantedTrees();
+    }
+
+    public void spawnPlantedTrees() {
+        if (gp == null || gp.plantedTrees == null)
+            return;
+
+        int currentArea = gp.mapM.getCurrentAreaIndex();
+        for (PlayerData.PlantedTreeData treeData : gp.plantedTrees) {
+            if (treeData.mapIndex == currentArea) {
+                // Check if already exists to avoid duplicates
+                boolean exists = false;
+                for (GameObject o : objects) {
+                    if (o instanceof OBJ_Tree && o.worldX == treeData.x && o.worldY == treeData.y) {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (!exists) {
+                    for (int j = 0; j < objects.length; j++) {
+                        if (objects[j] == null) {
+                            OBJ_Tree tree = new OBJ_Tree(treeData.plantingDay);
+                            tree.worldX = treeData.x;
+                            tree.worldY = treeData.y;
+                            tree.index = j;
+                            objects[j] = tree;
+                            break;
+                        }
                     }
                 }
             }

@@ -4,14 +4,16 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 import model.Mother;
-import model.PakSaman;
+import model.PakBahlil;
+import model.TehDila;
+import model.Panjul;
 
 public class NPCManager {
     private GamePanel gamePanel;
     private List<Mother> mothers;
-    private List<PakSaman> pakSamans;
-    private List<model.DanuSaputra> danus;
-    private List<model.BuSuci> buSucis;
+    private List<PakBahlil> pakBahlils;
+    private List<Panjul> panjuls;
+    private List<TehDila> tehDilas;
     private int currentMapIndex = -1;
 
     private java.util.Random random = new java.util.Random();
@@ -19,9 +21,9 @@ public class NPCManager {
     public NPCManager(GamePanel gp) {
         this.gamePanel = gp;
         this.mothers = new ArrayList<>();
-        this.pakSamans = new ArrayList<>();
-        this.danus = new ArrayList<>();
-        this.buSucis = new ArrayList<>();
+        this.pakBahlils = new ArrayList<>();
+        this.panjuls = new ArrayList<>();
+        this.tehDilas = new ArrayList<>();
     }
 
     public Mother createMother(int worldX, int worldY) {
@@ -31,32 +33,37 @@ public class NPCManager {
         return mother;
     }
 
-    public PakSaman createPakSaman(int worldX, int worldY) {
-        PakSaman saman = new PakSaman(gamePanel);
-        saman.setPosition(worldX, worldY);
-        pakSamans.add(saman);
-        return saman;
+    public PakBahlil createPakBahlil(int worldX, int worldY) {
+        PakBahlil bahlil = new PakBahlil(gamePanel);
+        bahlil.setPosition(worldX, worldY);
+        pakBahlils.add(bahlil);
+        return bahlil;
     }
 
-    public model.DanuSaputra createDanuSaputra(int worldX, int worldY) {
-        model.DanuSaputra danu = new model.DanuSaputra(gamePanel);
-        danu.setPosition(worldX, worldY);
-        danus.add(danu);
-        return danu;
+    public Panjul createPanjul(int worldX, int worldY) {
+        Panjul panjul = new Panjul(gamePanel);
+        panjul.setPosition(worldX, worldY);
+        panjuls.add(panjul);
+        return panjul;
     }
 
-    public model.BuSuci createBuSuci(int worldX, int worldY) {
-        model.BuSuci suci = new model.BuSuci(gamePanel);
-        suci.setPosition(worldX, worldY);
-        buSucis.add(suci);
-        return suci;
+    public TehDila createTehDila(int worldX, int worldY) {
+        TehDila dila = new TehDila(gamePanel);
+        dila.setPosition(worldX, worldY);
+        tehDilas.add(dila);
+        return dila;
     }
 
     public void clearAll() {
         mothers.clear();
-        pakSamans.clear();
-        danus.clear();
-        buSucis.clear();
+        pakBahlils.clear();
+        panjuls.clear();
+        tehDilas.clear();
+    }
+
+    public void resetAllNPCs() {
+        clearAll();
+        currentMapIndex = -1; // Reset map tracking
     }
 
     public void update() {
@@ -64,14 +71,14 @@ public class NPCManager {
             mother.update();
             randomWander(mother);
         }
-        for (PakSaman saman : pakSamans) {
-            saman.update();
+        for (PakBahlil bahlil : pakBahlils) {
+            bahlil.update();
         }
-        for (model.DanuSaputra danu : danus) {
-            danu.update();
+        for (Panjul panjul : panjuls) {
+            panjul.update();
         }
-        for (model.BuSuci suci : buSucis) {
-            suci.update();
+        for (TehDila dila : tehDilas) {
+            dila.update();
         }
     }
 
@@ -114,14 +121,14 @@ public class NPCManager {
         for (Mother mother : mothers) {
             mother.draw(g2);
         }
-        for (PakSaman saman : pakSamans) {
-            saman.draw(g2);
+        for (PakBahlil bahlil : pakBahlils) {
+            bahlil.draw(g2);
         }
-        for (model.DanuSaputra danu : danus) {
-            danu.draw(g2);
+        for (Panjul panjul : panjuls) {
+            panjul.draw(g2);
         }
-        for (model.BuSuci suci : buSucis) {
-            suci.draw(g2);
+        for (TehDila dila : tehDilas) {
+            dila.draw(g2);
         }
     }
 
@@ -132,21 +139,21 @@ public class NPCManager {
                 return true;
             }
         }
-        for (PakSaman saman : pakSamans) {
-            if (saman.canInteract(interactDistance)) {
-                saman.interact();
+        for (PakBahlil bahlil : pakBahlils) {
+            if (bahlil.canInteract(interactDistance)) {
+                bahlil.interact();
                 return true;
             }
         }
-        for (model.DanuSaputra danu : danus) {
-            if (danu.canInteract(interactDistance)) {
-                danu.interact();
+        for (Panjul panjul : panjuls) {
+            if (panjul.canInteract(interactDistance)) {
+                panjul.interact();
                 return true;
             }
         }
-        for (model.BuSuci suci : buSucis) {
-            if (suci.canInteract(interactDistance)) {
-                suci.interact();
+        for (TehDila dila : tehDilas) {
+            if (dila.canInteract(interactDistance)) {
+                dila.interact();
                 return true;
             }
         }
@@ -167,13 +174,11 @@ public class NPCManager {
 
         loadNPCsFromTMX();
 
-        // Re-spawn Chapter 2 NPCs if active on correct maps
-        if (gamePanel.chapter2Active || gamePanel.chapter2Finished) {
-            if (gamePanel.mapM.currMap == 5) {
-                spawnChapter2NPCs(); // Danu only in Bank Sampah map
-            }
-            if (gamePanel.mapM.currMap == 1) {
-                spawnBuSuci(26 * gamePanel.tileSize, 58 * gamePanel.tileSize); // Suci only in City map
+        // Re-spawn Chapter 2/3 NPCs if active on correct maps
+        if (gamePanel.chapter2Active || gamePanel.chapter2Finished || gamePanel.chapter3Active) {
+            if (gamePanel.mapM.currMap == 3) { // CITY map
+                spawnChapter2NPCs(); // Panjul at (52, 33)
+                spawnTehDila(26 * gamePanel.tileSize, 58 * gamePanel.tileSize); // Teh Dila
             }
         }
 
@@ -202,15 +207,33 @@ public class NPCManager {
 
             if (isNPC) {
                 if (name.contains("ibu") || name.contains("mother")) {
-                    System.out.println("[NPCManager] Mother spawn skipped (handled by CutsceneManager)");
-                } else if (name.contains("pak") || name.contains("saman")) {
-                    System.out.println("[NPCManager] Pak Saman spawn skipped (handled by Cutscene/Story)");
-                } else if (name.contains("danu")) {
-                    System.out.println("[NPCManager] Danu Saputra spawn skipped (handled by Cutscene/Story)");
-                } else if (name.contains("suci") || name.contains("merchant")) {
-                    System.out.println("[NPCManager] Bu Suci spawn skipped (handled by Cutscene/Story)");
+                    if (!gamePanel.chapter1Active && !gamePanel.chapter2Active && !gamePanel.chapter2Finished) {
+                        System.out.println("[NPCManager] Mother spawn skipped (handled by CutsceneManager)");
+                    }
+                } else if (name.contains("pak") || name.contains("saman") || name.contains("bahlil")) {
+                    // Pak Bahlil should only be skipped IF Chapter 1 is still early or specialized
+                    // cutscene is running, OR if it's Chapter 3 (user: pak bahlil gausah muncul
+                    // gapapa)
+                    if ((gamePanel.csM.getPhase() < 13 && gamePanel.chapter1Active) || gamePanel.chapter3Active) {
+                        System.out.println("[NPCManager] Pak Bahlil spawn skipped (Cutscene or Ch3)");
+                    } else if (gamePanel.mapM.currMap == 0) {
+                        // Spawn him manually at his house spot if map 0 and not already there
+                        if (gamePanel.npcM.getPakBahlil() == null) {
+                            gamePanel.npcM.createPakBahlil(obj.x, obj.y);
+                        }
+                    }
+                } else if (name.contains("danu") || name.contains("panjul")) {
+                    // Panjul shows up in City or specific spots after Chapter 1
+                    if (gamePanel.csM.getPhase() < 33 && !gamePanel.chapter2Active && !gamePanel.chapter2Finished) {
+                        System.out.println("[NPCManager] Panjul spawn skipped (handled by Cutscene/Story)");
+                    }
+                } else if (name.contains("suci") || name.contains("dila") || name.contains("merchant")) {
+                    // Teh Dila shows up in City or specific spots
+                    if (gamePanel.csM.getPhase() < 37 && !gamePanel.chapter2Active && !gamePanel.chapter2Finished) {
+                        System.out.println("[NPCManager] Teh Dila spawn skipped (handled by Cutscene/Story)");
+                    }
                 } else if (name.contains("bank") || name.contains("waste") || name.contains("sampah")) {
-                    System.out.println("[NPCManager] Bank Sampah spawn disabled (Chapter 2 now uses Danu)");
+                    System.out.println("[NPCManager] Bank Sampah spawn disabled (Chapter 2 now uses Panjul)");
                 }
             }
         }
@@ -220,40 +243,40 @@ public class NPCManager {
         return mothers;
     }
 
-    public PakSaman getPakSaman() {
-        return pakSamans.isEmpty() ? null : pakSamans.get(0);
+    public PakBahlil getPakBahlil() {
+        return pakBahlils.isEmpty() ? null : pakBahlils.get(0);
     }
 
     public Mother getMother() {
         return mothers.isEmpty() ? null : mothers.get(0);
     }
 
-    public model.DanuSaputra getDanuSaputra() {
-        return danus.isEmpty() ? null : danus.get(0);
+    public Panjul getPanjul() {
+        return panjuls.isEmpty() ? null : panjuls.get(0);
     }
 
-    public model.BuSuci getBuSuci() {
-        return buSucis.isEmpty() ? null : buSucis.get(0);
+    public TehDila getTehDila() {
+        return tehDilas.isEmpty() ? null : tehDilas.get(0);
     }
 
     public int getNPCCount() {
-        return mothers.size() + pakSamans.size() + danus.size() + buSucis.size();
+        return mothers.size() + pakBahlils.size() + panjuls.size() + tehDilas.size();
     }
 
     public void spawnChapter2NPCs() {
-        if (danus.isEmpty()) {
-            int danuX = 52 * gamePanel.tileSize;
-            int danuY = 32 * gamePanel.tileSize;
-            System.out.println("[NPCManager] Spawning Danu Saputra at tile (52, 32) = (" + danuX + "," + danuY + ")");
-            model.DanuSaputra danu = createDanuSaputra(danuX, danuY);
-            danu.direction = "down";
+        if (panjuls.isEmpty()) {
+            int panjulX = 52 * gamePanel.tileSize;
+            int panjulY = 33 * gamePanel.tileSize;
+            System.out.println("[NPCManager] Spawning Panjul at tile (52, 33) in City");
+            Panjul panjul = createPanjul(panjulX, panjulY);
+            panjul.direction = "down";
         }
     }
 
-    public void spawnBuSuci(int worldX, int worldY) {
-        if (buSucis.isEmpty()) {
-            System.out.println("[NPCManager] Spawning Bu Suci at (" + worldX + "," + worldY + ")");
-            createBuSuci(worldX, worldY);
+    public void spawnTehDila(int worldX, int worldY) {
+        if (tehDilas.isEmpty()) {
+            System.out.println("[NPCManager] Spawning Teh Dila at (" + worldX + "," + worldY + ")");
+            createTehDila(worldX, worldY);
         }
     }
 }

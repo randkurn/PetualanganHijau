@@ -221,6 +221,7 @@ public class InputManager {
         public void keyPressed(KeyEvent e) {
             int keyCode = e.getKeyCode();
             int position = gp.uiM.getSelectorPosition();
+
             switch (keyCode) {
                 case KeyEvent.VK_ESCAPE:
                     audio.playSound(5);
@@ -245,43 +246,47 @@ public class InputManager {
                 case KeyEvent.VK_A:
                 case KeyEvent.VK_LEFT:
                     if (position == 0) {
-                        audio.lowerVolume();
+                        audio.lowerMusicVolume();
                         audio.checkVolume();
-                        settings.setMusicVolume(audio.getVolumeScale());
                         audio.playSound(4);
                     } else if (position == 1) {
-                        audio.lowerVolume();
+                        audio.lowerSoundVolume();
                         audio.checkVolume();
-                        settings.setSoundVolume(audio.getVolumeScale());
                         audio.playSound(4);
-                    } else if (position == 2) {
                     } else if (position == 3) {
                         audio.playSound(4);
-                        String current = settings.getGameLanguage();
-                        String next = current.equals("id") ? "en" : "id";
+                        String next = settings.getGameLanguage().equals("id") ? "en" : "id";
                         settings.setGameLanguage(next);
                         settings.setStoryLanguage(next);
+                    } else if (position == 4) {
+                        audio.playSound(4);
+                        settings.setShowMinimap(!settings.getShowMinimap());
+                    } else if (position == 5) {
+                        audio.playSound(4);
+                        settings.setShowUI(!settings.getShowUI());
                     }
                     break;
                 case KeyEvent.VK_D:
                 case KeyEvent.VK_RIGHT:
                     if (position == 0) {
-                        audio.increaseVolume();
+                        audio.increaseMusicVolume();
                         audio.checkVolume();
-                        settings.setMusicVolume(audio.getVolumeScale());
                         audio.playSound(4);
                     } else if (position == 1) {
-                        audio.increaseVolume();
+                        audio.increaseSoundVolume();
                         audio.checkVolume();
-                        settings.setSoundVolume(audio.getVolumeScale());
                         audio.playSound(4);
-                    } else if (position == 2) {
                     } else if (position == 3) {
                         audio.playSound(4);
-                        String current = settings.getGameLanguage();
-                        String next = current.equals("id") ? "en" : "id";
+                        String next = settings.getGameLanguage().equals("id") ? "en" : "id";
                         settings.setGameLanguage(next);
                         settings.setStoryLanguage(next);
+                    } else if (position == 4) {
+                        audio.playSound(4);
+                        settings.setShowMinimap(!settings.getShowMinimap());
+                    } else if (position == 5) {
+                        audio.playSound(4);
+                        settings.setShowUI(!settings.getShowUI());
                     }
                     break;
                 case KeyEvent.VK_ENTER:
@@ -297,11 +302,16 @@ public class InputManager {
                             }
                         } else if (position == 3) {
                             audio.playSound(5);
-                            String current = settings.getGameLanguage();
-                            String next = current.equals("id") ? "en" : "id";
+                            String next = settings.getGameLanguage().equals("id") ? "en" : "id";
                             settings.setGameLanguage(next);
                             settings.setStoryLanguage(next);
                         } else if (position == 4) {
+                            audio.playSound(5);
+                            settings.setShowMinimap(!settings.getShowMinimap());
+                        } else if (position == 5) {
+                            audio.playSound(5);
+                            settings.setShowUI(!settings.getShowUI());
+                        } else if (position == 6) {
                             audio.playSound(5);
                             gp.stateM.revertPreviousState();
                         }
@@ -440,6 +450,9 @@ public class InputManager {
                     }
                     paused = true;
                 }
+                case KeyEvent.VK_F2 -> {
+                    gp.forceUnlock();
+                }
             }
         }
 
@@ -515,9 +528,20 @@ public class InputManager {
                             }
                         } else {
                             if (saveM.hasSaveFile(slot)) {
+                                System.out.println("[InputManager] Loading slot: " + slot);
                                 saveM.loadGame(gp, slot);
-                                controller.StoryManager.getInstance().setPlayerName(gp.player.getPlayerName());
+
+                                // Pastikan nama di story manager terupdate
+                                String loadedName = gp.player.getPlayerName();
+                                controller.StoryManager.getInstance().setPlayerName(loadedName);
+
+                                System.out.println(
+                                        "[InputManager] Load complete for " + loadedName + ". Changing state to PLAY.");
                                 gp.stateM.setCurrentState(gameState.PLAY);
+                                gp.uiM.showMessage("Game Loaded: " + loadedName);
+                            } else {
+                                System.err.println("[InputManager] No save file found in slot " + slot);
+                                audio.playSound(11); // Error sound
                             }
                         }
                     }
@@ -579,9 +603,15 @@ public class InputManager {
                         if (gp.uiM.getCharacterNameScreen().isNameValid()) {
                             audio.playSound(5);
                             String name = gp.uiM.getCharacterNameScreen().getName();
+
+                            // Full reset untuk New Game
+                            NewGameResetter.resetToNewGame(gp);
+
+                            // Set player name setelah reset
                             gp.player.setPlayerName(name);
                             controller.StoryManager.getInstance().setPlayerName(name);
-                            AchievementManager.getInstance(gp).reset();
+
+                            // Start story
                             gp.uiM.loadStory("prolog");
                             gp.stateM.setCurrentState(gameState.STORY);
                         } else {
@@ -935,6 +965,11 @@ public class InputManager {
         public void keyPressed(KeyEvent e) {
             int keyCode = e.getKeyCode();
             if (gp.uiM != null && gp.uiM.getDialogBox() != null && gp.uiM.getDialogBox().isActive()) {
+                if (keyCode == KeyEvent.VK_F2) {
+                    gp.forceUnlock();
+                    e.consume();
+                    return;
+                }
                 if (gp.uiM.getDialogBox().hasChoices()) {
                     switch (keyCode) {
                         case KeyEvent.VK_W, KeyEvent.VK_UP -> {
@@ -1004,6 +1039,10 @@ public class InputManager {
                         break;
                 }
             } else {
+                if (keyCode == KeyEvent.VK_F2) {
+                    gp.forceUnlock();
+                    return;
+                }
                 if (keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_SPACE || keyCode == KeyEvent.VK_E) {
                     audio.playSound(5);
                     gp.sceneM.nextDialogue();

@@ -107,12 +107,17 @@ public class SaveManager {
         playerData.chapter1Active = gp.chapter1Active;
         playerData.chapter2Active = gp.chapter2Active;
         playerData.chapter2Finished = gp.chapter2Finished;
+        playerData.chapter3Active = gp.chapter3Active;
+        playerData.tehDilaGiftGiven = gp.tehDilaGiftGiven;
         playerData.chapter1TrashCount = gp.chapter1TrashCount;
         playerData.chapter2TrashCount = gp.chapter2TrashCount;
-        playerData.totalTrashInWorld = gp.player.getTotalTrashInWorld();
+        playerData.chapter3TrashCount = gp.chapter3TrashCount;
+        playerData.totalTrashInWorld = gp.player.getCollectedTrash().size();
+        playerData.cutscenePhase = gp.csM.getPhase();
 
         playerData.collectedTrash = gp.player.getCollectedTrash();
         playerData.unlockedAchievements = AchievementManager.getInstance(gp).getUnlockedAchievements();
+        playerData.plantedTrees = gp.plantedTrees;
 
         TimeManager timeM = TimeManager.getInstance();
         TimeData timeData = new TimeData();
@@ -133,13 +138,24 @@ public class SaveManager {
     }
 
     public void loadGame(GamePanel gp, int slot) {
+        System.out.println("[SaveManager] Starting load process for slot " + slot);
         SaveData data = loadGame(slot);
         if (data == null) {
+            System.err.println("[SaveManager] Failed to read save file for slot " + slot);
             return;
+        }
+
+        // Detailed logging for debugging
+        if (data.player != null) {
+            System.out.println("[SaveManager] Data found - Player: " + data.player.playerName +
+                    ", Ch1: " + data.player.chapter1Active +
+                    ", Ch2: " + data.player.chapter2Active +
+                    ", Ch3: " + data.player.chapter3Active);
         }
 
         // Pindah ke area yang tersimpan tanpa memaksa spawn ke titik awal
         if (data.currentAreaIndex >= 0) {
+            System.out.println("[SaveManager] Changing area to index: " + data.currentAreaIndex);
             gp.mapM.changeToAreaWithoutRespawn(data.currentAreaIndex);
         }
 
@@ -159,13 +175,17 @@ public class SaveManager {
                     java.awt.image.BufferedImage icon = model.TrashRegistry.getIcon(item);
                     model.TrashType type = model.TrashRegistry.getType(item);
 
-                    if (icon != null && type != null) {
+                    if (icon != null) {
                         gp.player.inventory.addItem(item, quantity, icon, type);
-                        System.out.println("[SaveManager] Loaded trash: " + item + " (" + type + ")");
+                        if (type != null) {
+                            System.out.println("[SaveManager] Loaded trash: " + item + " (" + type + ")");
+                        } else {
+                            System.out.println("[SaveManager] Loaded specialty item with icon: " + item);
+                        }
                     } else {
-                        // Non-trash item (like tree seeds)
+                        // Item not in registry, load without icon
                         gp.player.inventory.addItem(item, quantity);
-                        System.out.println("[SaveManager] Loaded item: " + item);
+                        System.out.println("[SaveManager] Loaded generic item: " + item);
                     }
                 });
             }
@@ -173,9 +193,24 @@ public class SaveManager {
             gp.chapter1Active = data.player.chapter1Active;
             gp.chapter2Active = data.player.chapter2Active;
             gp.chapter2Finished = data.player.chapter2Finished;
+            gp.chapter3Active = data.player.chapter3Active;
+
+            // Fix: If loading a save where Chapter 2 just finished but Chapter 3 hasn't
+            // started (e.g. saved during sleep transition)
+            // Immediately activate Chapter 3 and place player in their room.
+            if (gp.chapter2Finished && !gp.chapter3Active) {
+                gp.chapter3Active = true;
+                gp.mapM.changeToAreaWithoutRespawn(5); // Player Room
+                gp.player.worldX = 7 * gp.tileSize;
+                gp.player.worldY = 4 * gp.tileSize;
+                gp.player.direction = "down";
+            }
+            gp.tehDilaGiftGiven = data.player.tehDilaGiftGiven;
             gp.chapter1TrashCount = data.player.chapter1TrashCount;
             gp.chapter2TrashCount = data.player.chapter2TrashCount;
+            gp.chapter3TrashCount = data.player.chapter3TrashCount;
             gp.player.setTotalTrashInWorld(data.player.totalTrashInWorld);
+            gp.csM.setPhase(data.player.cutscenePhase);
 
             if (data.player.collectedTrash != null) {
                 gp.player.setCollectedTrash(data.player.collectedTrash);
@@ -185,6 +220,10 @@ public class SaveManager {
                 AchievementManager.getInstance(gp).setUnlockedAchievements(data.player.unlockedAchievements);
             } else {
                 AchievementManager.getInstance(gp).setUnlockedAchievements(new java.util.HashSet<>());
+            }
+
+            if (data.player.plantedTrees != null) {
+                gp.plantedTrees = data.player.plantedTrees;
             }
 
             System.out.println("[SaveManager] Loaded - Chapter1: " + gp.chapter1Active + ", Chapter2: "
@@ -208,8 +247,8 @@ public class SaveManager {
             gp.npcM.setupChapter1NPCs();
             if (gp.chapter2Active || gp.chapter2Finished) {
                 gp.npcM.spawnChapter2NPCs();
-                // Selalu spawn Bu Suci jika di Chapter 2 untuk keamanan (dia di selatan)
-                gp.npcM.spawnBuSuci(26 * gp.tileSize, 58 * gp.tileSize);
+                // Selalu spawn Teh Dila jika di Chapter 2 untuk keamanan (dia di selatan)
+                gp.npcM.spawnTehDila(26 * gp.tileSize, 58 * gp.tileSize);
             }
         }
     }

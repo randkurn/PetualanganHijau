@@ -117,6 +117,47 @@ public class CollisionChecker {
 		return index;
 	}
 
+	/**
+	 * More generous check for object interaction (pressing E).
+	 * Doesn't affect collision/movement blocking.
+	 */
+	public int checkObjectInteraction(Entity entity) {
+		int index = 999;
+		GameObject[] obs = gp.mapM.getMap().objects;
+		int interactionRange = gp.tileSize / 2; // Check up to half a tile ahead
+
+		for (int i = 0; i < obs.length; i++) {
+			if (obs[i] != null) {
+				entity.hitbox.x += entity.worldX;
+				entity.hitbox.y += entity.worldY;
+				obs[i].hitbox.x += obs[i].worldX;
+				obs[i].hitbox.y += obs[i].worldY;
+
+				// Expand interaction hitbox in the direction the player is facing
+				switch (entity.direction) {
+					case "up" -> entity.hitbox.y -= interactionRange;
+					case "down" -> entity.hitbox.y += interactionRange;
+					case "left" -> entity.hitbox.x -= interactionRange;
+					case "right" -> entity.hitbox.x += interactionRange;
+				}
+
+				if (entity.hitbox.intersects(obs[i].hitbox)) {
+					index = i;
+				}
+
+				entity.hitbox.x = entity.hitboxDefaultX;
+				entity.hitbox.y = entity.hitboxDefaultY;
+				obs[i].hitbox.x = obs[i].hitboxDefaultX;
+				obs[i].hitbox.y = obs[i].hitboxDefaultY;
+
+				// If we found one, break (priority to the first one found)
+				if (index != 999)
+					break;
+			}
+		}
+		return index;
+	}
+
 	public void checkPlayerCollision(Entity entity) {
 		entity.hitbox.x += entity.worldX;
 		entity.hitbox.y += entity.worldY;

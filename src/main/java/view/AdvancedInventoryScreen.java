@@ -809,14 +809,14 @@ public class AdvancedInventoryScreen extends UI {
 
             view.AudioManager.getInstance().playSound(3);
 
-            // Dialog Danu setelah transaksi
+            // Dialog Panjul setelah transaksi
             gp.stateM.setCurrentState(controller.StateManager.gameState.DIALOGUE);
             String msg = controller.StoryManager.getInstance().getDialog("danu_exchange_done")
                     .replace("%VALUE%", String.valueOf(finalGold));
-            gp.uiM.getPlayScreen().showDialog(msg, "Danu (Bank Sampah)");
+            gp.uiM.getPlayScreen().showDialog(msg, "Panjul (Bank Sampah)");
 
             if (gp.chapter2Active) {
-                gp.npcM.spawnBuSuci(26 * gp.tileSize, 58 * gp.tileSize);
+                gp.npcM.spawnTehDila(26 * gp.tileSize, 58 * gp.tileSize);
             }
         }
     }

@@ -23,12 +23,16 @@ public class OBJ_Tree extends GameObject {
     private BufferedImage matureImage;
 
     public OBJ_Tree() {
+        this(-1);
+    }
+
+    public OBJ_Tree(int plantingDay) {
         super(Type.DECORATION);
         this.displayName = "Pohon";
         this.collision = true;
         this.pickable = false;
         this.stage = TreeStage.SEED;
-        this.plantingDay = -1;
+        this.plantingDay = plantingDay;
 
         loadImages();
         updateImage();

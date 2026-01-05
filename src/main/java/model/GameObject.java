@@ -126,11 +126,26 @@ public class GameObject {
                 // No message for generic decorations to avoid movement bugs
                 break;
             case BED:
+                // Disable sleep during Chapter 1 and 2 (until Chapter 2 finished)
+                if (gp.chapter1Active) {
+                    gp.uiM.showMessage("Tidur belum tersedia. Selesaikan Chapter 1 terlebih dahulu!");
+                    pushPlayerBack(gp);
+                    return;
+                }
+
+                if (gp.chapter2Active && !gp.chapter2Finished) {
+                    gp.uiM.showMessage("Tidur belum tersedia. Selesaikan Chapter 2 terlebih dahulu!");
+                    pushPlayerBack(gp);
+                    return;
+                }
+
+                // Check time - only allow sleep during evening (18:00 - 05:00)
                 int currentHour = controller.TimeManager.getInstance().getHour();
                 boolean isEvening = currentHour >= 18 || currentHour < 5;
 
-                if ((gp.chapter1Active || gp.chapter2Active) && !isEvening) {
+                if (!isEvening) {
                     gp.uiM.showMessage("Sekarang belum waktunya tidur. (Bisa tidur mulai jam 18:00)");
+                    pushPlayerBack(gp);
                     return;
                 }
 
@@ -223,13 +238,23 @@ public class GameObject {
 
     private void executeTeleport(GamePanel gp) {
         if (targetArea != -1) {
-            gp.mapM.changeToArea(targetArea);
-            if (targetX != -1 && targetY != -1) {
-                gp.player.worldX = targetX * gp.tileSize;
-                gp.player.worldY = targetY * gp.tileSize;
+            String spawnName = null;
+            if (targetArea == 0) { // Going to House
+                if (gp.mapM.currMap == 4)
+                    spawnName = "DariFishing";
+                if (gp.mapM.currMap == 2)
+                    spawnName = "DariPark";
+            } else if (targetArea == 4 && gp.mapM.currMap == 0) { // House -> Fishing
+                spawnName = "Spawn Atas";
+            } else if (targetArea == 2 && gp.mapM.currMap == 0) { // House -> Park
+                spawnName = "PlayerStart Bawah";
             }
-            if (targetDirection != null) {
-                gp.player.direction = targetDirection;
+
+            if (gp.portalSystem != null) {
+                gp.portalSystem.initiateLoading(targetArea, spawnName);
+            } else {
+                gp.mapM.setPendingSpawnName(spawnName);
+                gp.mapM.changeToArea(targetArea);
             }
         } else if (displayName != null && displayName.contains("Keluar")) {
             gp.mapM.previousArea();

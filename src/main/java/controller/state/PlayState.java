@@ -92,8 +92,8 @@ public class PlayState extends AbstractGameState {
                 return true;
 
             case KeyEvent.VK_E:
-                // Check interactive objects first
-                int objIndex = gp.checker.checkObjectCollision(gp.player, true);
+                // Check interactive objects first (Generous interaction range)
+                int objIndex = gp.checker.checkObjectInteraction(gp.player);
                 if (objIndex != 999) {
                     model.GameObject obj = gp.mapM.getMap().objects[objIndex];
                     if (obj != null && (obj.type == model.GameObject.Type.PORTAL ||

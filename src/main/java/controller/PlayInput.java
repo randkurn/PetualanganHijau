@@ -48,18 +48,28 @@ public class PlayInput extends InputHandler {
             case KeyEvent.VK_P -> {
                 gp.player.plantTree();
             }
+            case KeyEvent.VK_F2 -> {
+                // Panic button to unlock movement
+                gp.forceUnlock();
+            }
             case KeyEvent.VK_F3 -> {
                 // Toggle debug overlay
                 gp.debugOverlay.toggle();
             }
             case KeyEvent.VK_G -> {
                 // Give tree seeds (cheat/debug)
+                java.awt.image.BufferedImage treeIcon = null;
+                try {
+                    treeIcon = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/objects/tree1.png"));
+                } catch (Exception ex) {
+                }
+
                 if (!gp.player.inventory.hasItem("Bibit Pohon")) {
-                    gp.player.inventory.addItem("Bibit Pohon", 10);
+                    gp.player.inventory.addItem("Bibit Pohon", 10, treeIcon);
                     gp.uiM.showMessage("Diberikan 10 bibit pohon!");
                 } else {
                     int current = gp.player.inventory.getItemCount("Bibit Pohon");
-                    gp.player.inventory.addItem("Bibit Pohon", 5);
+                    gp.player.inventory.addItem("Bibit Pohon", 5, treeIcon);
                     gp.uiM.showMessage("Ditambahkan 5 bibit pohon! Total: " + (current + 5));
                 }
             }

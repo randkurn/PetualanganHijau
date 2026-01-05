@@ -113,15 +113,17 @@ public class AudioManager {
             if (soundURLs[12] == null)
                 return;
 
-            if (talkingClip != null && talkingClip.isRunning()) {
-                talkingClip.stop();
+            if (talkingClip == null) {
+                AudioInputStream ais = AudioSystem.getAudioInputStream(soundURLs[12]);
+                talkingClip = AudioSystem.getClip();
+                talkingClip.open(ais);
             }
 
-            AudioInputStream ais = AudioSystem.getAudioInputStream(soundURLs[12]);
-            talkingClip = AudioSystem.getClip();
-            talkingClip.open(ais);
-            setVolume(talkingClip, Math.max(1, soundVolumeScale - 1));
-            talkingClip.start();
+            if (!talkingClip.isRunning()) {
+                talkingClip.setFramePosition(0);
+                setVolume(talkingClip, Math.max(1, soundVolumeScale - 1));
+                talkingClip.start();
+            }
         } catch (Exception e) {
         }
     }
@@ -193,25 +195,23 @@ public class AudioManager {
         return soundVolumeScale;
     }
 
-    public void play(int i) {
-        playSound(i);
-    }
-
-    public void lowerVolume() {
-        lowerMusicVolume();
-    }
-
-    public void increaseVolume() {
-        increaseMusicVolume();
-    }
-
     public void checkVolume() {
+        // This method can be called to sync internal scales with settings
         settings.setMusicVolume(musicVolumeScale);
         settings.setSoundVolume(soundVolumeScale);
         settings.saveConfigFile();
+
+        // Immediately apply to current music
+        applyMusicVolume();
     }
 
-    public int getVolumeScale() {
-        return musicVolumeScale;
+    public void applyMusicVolume() {
+        if (musicClip != null && musicClip.isOpen()) {
+            try {
+                setVolume(musicClip, musicVolumeScale);
+            } catch (Exception e) {
+                System.err.println("[AudioManager] Could not apply volume: " + e.getMessage());
+            }
+        }
     }
 }

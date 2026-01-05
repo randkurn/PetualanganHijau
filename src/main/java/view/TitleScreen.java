@@ -29,26 +29,98 @@ public class TitleScreen extends UI {
 			char1_2 = ImageIO.read(getClass().getResourceAsStream("/boy/right2.png"));
 
 			String[] npcFolders = {
-					"/NPC/adit",
-					"/NPC/paksaman",
-					"/NPC/busuci"
+					"/NPC/panjul",
+					"/NPC/paksaman", // Pak Bahlil sprites
+					"/NPC/tehdila" // Teh Dila sprites
 			};
 			String npcPath = npcFolders[random.nextInt(npcFolders.length)];
 
 			char2_1 = ImageIO.read(getClass().getResourceAsStream(npcPath + "/right1.png"));
 			char2_2 = ImageIO.read(getClass().getResourceAsStream(npcPath + "/right2.png"));
-
-			background = ImageIO.read(getClass().getResourceAsStream("/titlebg/background.png"));
 		} catch (Exception e) {
-			System.err.println("[TitleScreen] Critical error loading sprites: " + e.getMessage());
+			System.err.println("[TitleScreen] Critical error loading character sprites: " + e.getMessage());
 			e.printStackTrace();
 			char1_1 = char1_2 = char2_1 = char2_2 = null;
+		}
+
+		// Load background separately with better error handling
+		System.out.println("[TitleScreen] Loading background image from /titlebg/background.png...");
+		java.io.InputStream bgStream = null;
+
+		try {
+			// Try primary path
+			bgStream = getClass().getResourceAsStream("/titlebg/background.png");
+			if (bgStream == null) {
+				System.err.println("[TitleScreen] WARNING: /titlebg/background.png not found, trying root...");
+				bgStream = getClass().getResourceAsStream("/background.png");
+			}
+
+			if (bgStream != null) {
+				background = ImageIO.read(bgStream);
+				if (background != null) {
+					System.out.println("[TitleScreen] Success! Background image loaded. " +
+							background.getWidth() + "x" + background.getHeight());
+				} else {
+					System.err.println("[TitleScreen] ImageIO.read failed (null result)");
+					createProgrammaticBackground();
+				}
+			} else {
+				System.err.println("[TitleScreen] CRITICAL: background.png not found in any path!");
+				createProgrammaticBackground();
+			}
+		} catch (Exception e) {
+			System.err.println("[TitleScreen] Exception during background load: " + e.getMessage());
+			createProgrammaticBackground();
+		} finally {
+			if (bgStream != null) {
+				try {
+					bgStream.close();
+				} catch (Exception e) {
+				}
+			}
 		}
 
 		char1Image = char1_1;
 		char2Image = char2_1;
 
+		// If background failed to load, create a programmatic one
+		if (background == null) {
+			System.out.println("[TitleScreen] Creating programmatic background as fallback");
+			createProgrammaticBackground();
+		}
+
 		this.hasSaveFile = SaveManager.getInstance().hasSaveFile();
+	}
+
+	private void createProgrammaticBackground() {
+		try {
+			// Create a new image with gradient background
+			background = new BufferedImage(1920, 1080, BufferedImage.TYPE_INT_RGB);
+			Graphics2D g = background.createGraphics();
+
+			// Create gradient from sky blue to green (nature theme)
+			java.awt.GradientPaint gradient = new java.awt.GradientPaint(
+					0, 0, new Color(135, 206, 235), // Sky blue
+					0, 1080, new Color(34, 139, 34) // Forest green
+			);
+			g.setPaint(gradient);
+			g.fillRect(0, 0, 1920, 1080);
+
+			// Add some decorative elements (trees silhouette)
+			g.setColor(new Color(0, 100, 0, 100)); // Semi-transparent dark green
+			for (int i = 0; i < 20; i++) {
+				int x = i * 100;
+				int[] xPoints = { x, x + 50, x + 100 };
+				int[] yPoints = { 1080, 880, 1080 };
+				g.fillPolygon(xPoints, yPoints, 3);
+			}
+
+			g.dispose();
+			System.out.println("[TitleScreen] Programmatic background created successfully!");
+		} catch (Exception e) {
+			System.err.println("[TitleScreen] Failed to create programmatic background: " + e.getMessage());
+			background = null;
+		}
 	}
 
 	public void draw(Graphics2D g2) {

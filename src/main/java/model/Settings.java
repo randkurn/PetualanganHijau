@@ -3,6 +3,7 @@ package model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -16,6 +17,7 @@ public class Settings {
     ConfigFile file;
     String directory;
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ConfigFile {
         int musicVolume, soundVolume;
         Boolean fullScreen;

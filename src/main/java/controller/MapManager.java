@@ -13,6 +13,7 @@ public class MapManager {
     public Map mapList[];
     private String[] mapPaths;
     public int currMap;
+    private String pendingSpawnName = null;
 
     public MapManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -54,8 +55,10 @@ public class MapManager {
 
     public void draw(Graphics2D g2) {
         ensureMapLoaded(currMap);
-        mapList[currMap].drawTiles(g2);
-        mapList[currMap].drawObjects(g2);
+        if (mapList[currMap] != null) {
+            mapList[currMap].drawTiles(g2);
+            mapList[currMap].drawObjects(g2);
+        }
     }
 
     public void nextArea() {
@@ -91,8 +94,10 @@ public class MapManager {
 
         setupMap();
         gamePanel.npcM.setupChapter1NPCs();
-        if (respawnPlayer)
+        if (respawnPlayer) {
             gamePanel.player.spawnPlayer();
+            handlePendingSpawn();
+        }
 
         boolean isNowInterior = (currMap == 5);
 
@@ -107,6 +112,27 @@ public class MapManager {
         }
 
         gamePanel.uiM.showMessage("Area: " + mapList[currMap].levelName);
+    }
+
+    private void handlePendingSpawn() {
+        if (pendingSpawnName != null) {
+            Map currentMap = getMap();
+            if (currentMap != null && currentMap.tmxObjects != null) {
+                for (Map.TmxObjectInfo obj : currentMap.tmxObjects) {
+                    if (pendingSpawnName.equalsIgnoreCase(obj.name)) {
+                        gamePanel.player.worldX = obj.x;
+                        gamePanel.player.worldY = obj.y;
+                        System.out.println("[MapManager] Spawned player at pending spawn: " + pendingSpawnName);
+                        break;
+                    }
+                }
+            }
+            pendingSpawnName = null;
+        }
+    }
+
+    public void setPendingSpawnName(String name) {
+        this.pendingSpawnName = name;
     }
 
     public Map getMap() {

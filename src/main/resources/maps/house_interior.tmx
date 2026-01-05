@@ -153,7 +153,10 @@
 </data>
  </layer>
  <objectgroup id="5" name="Spawn">
-  <object id="4" name="PlayerStart" x="248.333" y="295">
+  <object id="4" name="PlayerStart, Chapter1, Baru Bangun" x="101.5" y="109.333">
+   <point/>
+  </object>
+  <object id="5" name="Spawn Utama" x="247.667" y="341.667">
    <point/>
   </object>
  </objectgroup>

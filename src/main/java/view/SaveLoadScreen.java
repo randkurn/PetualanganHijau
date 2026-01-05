@@ -73,6 +73,19 @@ public class SaveLoadScreen extends UI {
                         // Tambah nama karakter & gold supaya pemain yakin slot mana yang dipilih
                         String name = data.player.playerName != null ? data.player.playerName : "Tanpa Nama";
                         slotText += " | " + name + " | Gold: " + data.player.gold;
+
+                        // Tambahkan chapter info
+                        String chapter = "Chapter 1";
+                        if (data.player.chapter3Active) {
+                            chapter = "Chapter 3";
+                        } else if (data.player.chapter2Active || data.player.chapter2Finished) {
+                            chapter = "Chapter 2";
+                        } else if (data.player.chapter1Active) {
+                            chapter = "Chapter 1";
+                        } else {
+                            chapter = "Ch 0";
+                        }
+                        slotText += " | " + chapter;
                     }
                 } else {
                     slotText += "Corrupted";

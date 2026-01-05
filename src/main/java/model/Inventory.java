@@ -102,6 +102,7 @@ public class Inventory {
 
     public void clear() {
         items.clear();
+        icons.clear();
         itemTypes.clear();
     }
 

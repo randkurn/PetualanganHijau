@@ -1,41 +1,64 @@
 mother_greeting:Halo, Nak! Selamat pagi.
-mother_tutorial:Ibu ajarkan kuncinya: Pilah sampahmu!\n\n[HIJAU] - Organik (Sisa makanan)\n[KUNING] - Anorganik (Plastik/Botol)\n[MERAH] - B3 (Baterai/Kimia)\n\nCoba ambil sampah di depanmu dengan tombol [E]!
+mother_tutorial:Ibu ajarkan kuncinya: Pilah sampahmu!\\n\\n[HIJAU] - Organik (Sisa makanan)\\n[KUNING] - Anorganik (Plastik/Botol)\\n[MERAH] - B3 (Baterai/Kimia)\\n\\nCoba ambil sampah di depanmu dengan tombol [E]!
 mother_ask:Sudah paham jenis-jenis sampahnya?
 mother_encouragement:Bagus! Ayo coba pungut sampah organik hijau itu dulu. Ibu tunggu hasilnya!
 mother_repeat:Perhatikan warnanya ya: Hijau, Kuning, atau Merah.
 mother_choice_1:Paham!
 mother_choice_2:Belum paham, ulangi lagi
 mother_response_repeat:Baiklah, Ibu ulangi lagi ya...
-waste_welcome:Selamat datang di Bank Sampah! Kami membeli sampah yang sudah dipilah.
-waste_exchange:Tukar sampahmu untuk mendapatkan Gold!
-waste_clean:Ayo jaga kebersihan Purwakarta! Kumpulkan sampah di halaman rumah.
-saman_greeting:Halo, %PLAYER%! Rajin sekali bersih-bersih pagi ini.
-saman_advice:Semangat ya bersihin lingkungannya!
-saman_greeting_ch2:Weh, tumben amat... Ada anak muda mau kotor-kotoran pagi gini. Rajin bener, De.
-saman_resp_a:Haha, iseng yang bagus tuh. Daripada nongkrong gak jelas, mending gini. Badan gerak, lingkungan bersih. Tapi sayang De, kalo cuma dipungut terus dibuang ke tong biasa. Ujung-ujungnya numpuk di TPA, jadi gunung sampah lagi.
-saman_resp_b:Nah, itu dia! Bapak demen nih kalo anak muda udah mikir ke situ. Emang bener, selokan mampet tuh gara-gara plastik ginian. Tapi De, kalo cuma dipindah dari selokan ke tong sampah depan, masalahnya gak kelar. Sampahnya cuma pindah tempat doang.
-saman_advice_ch2:Mending gini deh... Itu plastik yang kamu pegang sebenernya ada duitnya lho. Coba bawa ke Bank Sampah di ujung jalan sana. Di sana dikelola beneran, gak cuma ditumpuk. Lumayan buat jajan juga.
 mother_post_ch1:Halo nak, rajin sekali ya.
-danu_intro: Ayo, pilah sampahnya dulu di sini! Gue Danu, gue bakal bantu hitung totalnya biar jadi uang.
-danu_after_sort: Nah gitu, rapi kan! Inget ya, selain kebersihan, hijaunya lingkungan juga penting. Kita harus mulai nanem pohon.
-danu_find_suci: Coba cari Bu Suci di daerah selatan (area bawah map), dia jual bibit pohon. Samperin aja ke sana ya!
-danu_exchange_done: Mantap! Totalnya jadi Rp %VALUE% ya.\nUdah masuk saldo. Rajin-rajin ya setor sampah ke sini!
-suci_intro: Eh, ada pelanggan baru. Pasti disuruh si Danu ya? Haha, tuh anak emang bawel.\nNih, buat permulaan, Ibu kasih bibit Pohon Mahoni gratis satu.
-suci_welcome: Selamat datang! Mau beli bibit pohon? Harganya %VALUE% gold per bibit.
-ch2_end_narrative: Langkah awal telah tertanam.\nChapter 2 Selesai — "Harapan mulai tumbuh."\n\nAchievement Unlocked: Tunas Harapan
-obj_bank_sampah: LOKASI BARU TERBUKA: Bank Sampah
-obj_bu_suci: LOKASI BARU TERBUKA: Bu Suci\nOBJEKTIF: Temui Bu Suci di Selatan
+
+panjul_greeting:Halo! Keren udah rajin mungut sampah.
+panjul_intro_1: Ayo, pilah sampahnya dulu di sini!
+panjul_intro_2: Gue Panjul, gue bakal bantu hitung totalnya biar jadi uang.
+panjul_after_sort_1: Nah gitu, rapi kan! Inget ya, selain kebersihan, hijaunya lingkungan juga penting.
+panjul_after_sort_2: Kita harus mulai nanem pohon.
+panjul_advice_trees_1: Oke. Tapi ingat, jangan cuma mungut sampah aja...
+panjul_advice_trees_2: Kita juga harus mulai menanam pohon biar lingkungan makin hijau.
+panjul_find_dila: Coba cari Teh Dila di daerah selatan, dia jual bibit pohon. Samperin aja ke sana ya!
+danu_exchange_done: Mantap! Totalnya jadi Rp %VALUE% ya.\\nUdah masuk saldo. Rajin-rajin ya sektor sampah ke sini!
+panjul_choice_1:Setor Sampah
+panjul_choice_2:Nanti Saja
+danu_exchange:Oke bos, sampah udah bersih, duit udah nambah. Sering-sering ke sini ya!
+
+bahlil_greeting:Halo nak, semangat ya! Jagain kebersihan lingkungan kita.
+bahlil_advice_1: Eh De, udah dipilah belum sampahnya?
+bahlil_advice_2: Bawa ke Panjul di ujung jalan sana ya, dia yang ngurusin setorannya sekarang.
+bahlil_greeting_ch2_1: Weh, tumben amat... Ada anak muda mau kotor-kotoran pagi gini. 
+bahlil_greeting_ch2_2: Rajin bener, De.
+bahlil_resp_a_1: Haha, iseng yang bagus tuh. Daripada nongkrong gak jelas, mending gini. Badan gerak, lingkungan bersih.
+bahlil_resp_a_2a: Tapi sayang De, kalo cuma dipungut terus dibuang ke tong biasa.
+bahlil_resp_a_2b: Ujung-ujungnya numpuk di TPA, jadi gunung sampah lagi.
+bahlil_resp_b_1: Nah, itu dia! Bapak demen nih kalo anak muda udah mikir ke situ. 
+bahlil_resp_b_2a: Tapi De, kalo cuma dipindah dari selokan ke tong sampah depan, masalahnya gak kelar.
+bahlil_resp_b_2b: Sampahnya cuma pindah tempat doang.
+bahlil_choice_1: Iseng aja Pak, daripada gabut di rumah.
+bahlil_choice_2: Biar gak banjir lagi Pak, ngeri liat berita.
+
+tehdila_intro_1: Eh, ada pelanggan baru. Pasti disuruh si Panjul ya? Haha, tuh anak emang bawel.
+tehdila_intro_2: Nih, buat permulaan, Teteh kasih 3 bibit pohon gratis untukmu. 
+tehdila_intro_3: Mari hijaunkan kota kita!
+tehdila_welcome: Selamat datang! Mau beli bibit pohon? Harganya %VALUE% gold per bibit.
+tehdila_buy_confirm:Berhasil membeli 1 Bibit Pohon!
+tehdila_no_money:Uang tidak cukup! Butuh %VALUE% gold.
+tehdila_inv_full:Inventory penuh! Kosongkan dulu untuk menerima hadiah.
+tehdila_choice_1:Beli 1 Bibit Pohon (%VALUE% gold)
+tehdila_choice_2:Bagaimana cara menanamnya?
+tehdila_resp_1:Lho, jangan remehin satu pohon. Akarnya bisa nyerep ratusan liter air ujan.\\nKalo satu orang mulai, yang lain biasanya ikut.
+tehdila_resp_2:Gampang kok. Cari tanah kosong, gali dikit, masukin. Tapi inget ya...\\nJangan biarin ada sampah numpuk di deketnya. Nanti dia stres.
+ch2_end_narrative: Langkah awal telah tertanam.\\nChapter 2 Selesai — \"Harapan mulai tumbuh.\"\\n\\nAchievement Unlocked: Tunas Harapan
+obj_panjul: LOKASI BARU TERBUKA: Panjul
+obj_tehdila: LOKASI BARU TERBUKA: Teh Dila\\nOBJEKTIF: Temui Teh Dila di Selatan
 obj_plant: OBJEKTIF: Tanam bibit Mahoni di area hijau dekat rumah.
 achievement_unlocked: ACHIEVEMENT TERBUKA:
 ch1_narrative_1: Satu sampah diambil.
 ch1_narrative_2: Lalu yang lain.
 ch1_narrative_3: Pelan, tapi pasti.
-ch1_narrative_end: Halaman rumah kini tampak lebih bersih.\nChapter 1 Selesai — "Langkah kecil telah dimulai."
+ch1_narrative_end: Halaman rumah kini tampak lebih bersih.\\nChapter 1 Selesai — \"Langkah kecil telah dimulai.\"
 ch2_title: Chapter 2: Jaringan Kebaikan
-ch2_monolog: Kecil banget ya ternyata... Tapi kata orang-orang tadi, ini awal dari sesuatu yang gede.\nOke. Mulai besok, gue bakal pastiin tempat ini bersih biar dia bisa tumbuh.
+ch2_monolog_1: Kecil banget ya ternyata... Tapi kata orang-orang tadi, ini awal dari sesuatu yang gede.
+ch2_monolog_2: Oke. Mulai besok, gue bakal pastiin tempat ini bersih biar dia bisa tumbuh.
 monolog_label: Monolog
 system_label: Sistem
-tutorial_move: TUTORIAL: Gerak [WASD].\nInteraksi [E]
+tutorial_move: TUTORIAL: Gerak [WASD].\\nInteraksi [E]
 choice_label: Pilih Jawabanmu:
-saman_choice_1: Iseng aja Pak, daripada gabut di rumah.
-saman_choice_2: Biar gak banjir lagi Pak, ngeri liat berita.

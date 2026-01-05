@@ -19,6 +19,15 @@ public class CutsceneManager {
         this.gp = gp;
     }
 
+    public int getPhase() {
+        return phase;
+    }
+
+    public void setPhase(int phase) {
+        this.phase = phase;
+        this.counter = 0;
+    }
+
     public void update() {
         updateBlackBars();
 
@@ -354,51 +363,51 @@ public class CutsceneManager {
 
             case 30:
                 counter++;
-                model.PakSaman saman_ref = gp.npcM.getPakSaman();
+                model.PakBahlil bahlil_ref = gp.npcM.getPakBahlil();
 
                 if (counter == 1) {
                     fullBlack = false;
 
-                    if (saman_ref == null) {
-                        System.out.println("[Cutscene] Creating Pak Saman off-screen for walk-in");
-                        saman_ref = gp.npcM.createPakSaman(
+                    if (bahlil_ref == null) {
+                        System.out.println("[Cutscene] Creating Pak Bahlil off-screen for walk-in");
+                        bahlil_ref = gp.npcM.createPakBahlil(
                                 gp.player.worldX,
                                 gp.player.worldY + (6 * gp.tileSize));
                     } else {
-                        System.out.println("[Cutscene] Moving Pak Saman off-screen for walk-in");
-                        saman_ref.worldX = gp.player.worldX;
-                        saman_ref.worldY = gp.player.worldY + (6 * gp.tileSize);
+                        System.out.println("[Cutscene] Moving Pak Bahlil off-screen for walk-in");
+                        bahlil_ref.worldX = gp.player.worldX;
+                        bahlil_ref.worldY = gp.player.worldY + (6 * gp.tileSize);
                     }
 
-                    saman_ref.clearGoal();
-
-                    gp.player.direction = "down";
-                    gp.player.speed = 0;
+                    bahlil_ref.clearGoal();
+                    bahlil_ref.direction = "up";
+                    bahlil_ref.speed = 4;
 
                     int targetCol = (gp.player.worldX + gp.player.hitbox.x) / gp.tileSize;
                     int targetRow = (gp.player.worldY + gp.player.hitbox.y) / gp.tileSize + 1;
-                    saman_ref.setGoal(targetCol, targetRow);
-                    System.out.println("[Cutscene] Pak Saman approaching from (" + saman_ref.worldX / gp.tileSize + ","
-                            + saman_ref.worldY / gp.tileSize + ") to (" + targetCol + "," + targetRow + ")");
+                    bahlil_ref.setGoal(targetCol, targetRow);
+                    System.out
+                            .println("[Cutscene] Pak Bahlil approaching from (" + bahlil_ref.worldX / gp.tileSize + ","
+                                    + bahlil_ref.worldY / gp.tileSize + ") to (" + targetCol + "," + targetRow + ")");
                 }
 
-                if (saman_ref != null && saman_ref.isGoalReached()) {
-                    System.out.println("[Cutscene] Pak Saman reached player");
-                    saman_ref.direction = "up";
-                    saman_ref.speed = 0;
-                    saman_ref.spriteNum = 1;
-                    saman_ref.clearGoal();
+                if (bahlil_ref != null && bahlil_ref.isGoalReached()) {
+                    System.out.println("[Cutscene] Pak Bahlil reached player");
+                    bahlil_ref.direction = "up";
+                    bahlil_ref.speed = 0;
+                    bahlil_ref.spriteNum = 1;
+                    bahlil_ref.clearGoal();
                     phase = 305;
                     counter = 0;
                 } else if (counter > 150) {
-                    System.out.println("[Cutscene] Pak Saman took too long, force start dialog");
-                    if (saman_ref != null) {
-                        saman_ref.worldX = gp.player.worldX;
-                        saman_ref.worldY = gp.player.worldY + gp.tileSize;
-                        saman_ref.direction = "up";
-                        saman_ref.speed = 0;
-                        saman_ref.spriteNum = 1;
-                        saman_ref.clearGoal();
+                    System.out.println("[Cutscene] Pak Bahlil took too long, force start dialog");
+                    if (bahlil_ref != null) {
+                        bahlil_ref.worldX = gp.player.worldX;
+                        bahlil_ref.worldY = gp.player.worldY + gp.tileSize;
+                        bahlil_ref.direction = "up";
+                        bahlil_ref.speed = 0;
+                        bahlil_ref.spriteNum = 1;
+                        bahlil_ref.clearGoal();
                     }
                     phase = 305;
                     counter = 0;
@@ -410,8 +419,22 @@ public class CutsceneManager {
                 if (counter == 1) {
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getPlayScreen().showDialog(
-                            "Weh, tumben amat... Ada anak muda mau kotor-kotoran pagi gini. Rajin bener, De.",
-                            "Pak Saman");
+                            StoryManager.getInstance().getDialog("bahlil_greeting_ch2_1"),
+                            "Pak Bahlil");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 306;
+                    counter = 0;
+                }
+                break;
+
+            case 306:
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("bahlil_greeting_ch2_2"),
+                            "Pak Bahlil");
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
                     phase = 31;
@@ -427,8 +450,8 @@ public class CutsceneManager {
                             StoryManager.getInstance().getDialog("choice_label"),
                             "",
                             new String[] {
-                                    StoryManager.getInstance().getDialog("saman_choice_1"),
-                                    StoryManager.getInstance().getDialog("saman_choice_2")
+                                    StoryManager.getInstance().getDialog("bahlil_choice_1"),
+                                    StoryManager.getInstance().getDialog("bahlil_choice_2")
                             },
                             (idx, txt) -> currentBranch = (idx == 0) ? "A" : "B");
                 }
@@ -442,10 +465,40 @@ public class CutsceneManager {
                 counter++;
                 if (counter == 1) {
                     String resp = currentBranch.equals("A")
-                            ? "Haha, iseng yang bagus tuh. Daripada nongkrong gak jelas, mending gini.\nTapi sayang De, kalo cuma dipungut terus dibuang ke tong biasa, jadi gunung sampah lagi."
-                            : "Nah, itu dia! Bapak demen nih kalo anak muda udah mikir ke situ.\nTapi De, kalo cuma dipindah ke tong sampah depan, masalahnya gak kelar. Sampahnya cuma pindah tempat.";
+                            ? StoryManager.getInstance().getDialog("bahlil_resp_a_1")
+                            : StoryManager.getInstance().getDialog("bahlil_resp_b_1");
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
-                    gp.uiM.getPlayScreen().showDialog(resp, "Pak Saman");
+                    gp.uiM.getPlayScreen().showDialog(resp, "Pak Bahlil");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 325;
+                    counter = 0;
+                }
+                break;
+
+            case 325:
+                counter++;
+                if (counter == 1) {
+                    String resp = currentBranch.equals("A")
+                            ? StoryManager.getInstance().getDialog("bahlil_resp_a_2a")
+                            : StoryManager.getInstance().getDialog("bahlil_resp_b_2a");
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(resp, "Pak Bahlil");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 326;
+                    counter = 0;
+                }
+                break;
+
+            case 326:
+                counter++;
+                if (counter == 1) {
+                    String resp = currentBranch.equals("A")
+                            ? StoryManager.getInstance().getDialog("bahlil_resp_a_2b")
+                            : StoryManager.getInstance().getDialog("bahlil_resp_b_2b");
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(resp, "Pak Bahlil");
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
                     phase = 33;
@@ -458,19 +511,33 @@ public class CutsceneManager {
                 if (counter == 1) {
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getPlayScreen().showDialog(
-                            StoryManager.getInstance().getDialog("saman_advice_ch2"),
-                            "Pak Saman");
+                            StoryManager.getInstance().getDialog("bahlil_advice_1"),
+                            "Pak Bahlil");
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
-                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("obj_bank_sampah"));
+                    phase = 331;
+                    counter = 0;
+                }
+                break;
+
+            case 331:
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("bahlil_advice_2"),
+                            "Pak Bahlil");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("obj_panjul"));
 
                     gp.npcM.spawnChapter2NPCs();
 
-                    model.DanuSaputra danu = gp.npcM.getDanuSaputra();
-                    if (danu != null) {
-                        danu.worldX = 52 * gp.tileSize;
-                        danu.worldY = 32 * gp.tileSize;
-                        danu.direction = "down";
+                    model.Panjul panjul = gp.npcM.getPanjul();
+                    if (panjul != null) {
+                        panjul.worldX = 52 * gp.tileSize;
+                        panjul.worldY = 32 * gp.tileSize;
+                        panjul.direction = "down";
                     }
 
                     gp.player.onPath = true;
@@ -500,10 +567,23 @@ public class CutsceneManager {
                     gp.player.direction = "right";
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
 
-                    // Gunakan Callback agar menu terbuka tepat setelah dialog ditutup
                     gp.uiM.getPlayScreen().showDialog(
-                            StoryManager.getInstance().getDialog("danu_intro"),
-                            "Danu (Bank Sampah)", () -> {
+                            StoryManager.getInstance().getDialog("panjul_intro_1"),
+                            "Panjul (Bank Sampah)");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 351;
+                    counter = 0;
+                }
+                break;
+
+            case 351:
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("panjul_intro_2"),
+                            "Panjul (Bank Sampah)", () -> {
                                 gp.uiM.getInventoryScreen().resetSorting();
                                 gp.uiM.getInventoryScreen().toggleSortingMode();
                                 gp.stateM.setCurrentState(StateManager.gameState.INVENTORY);
@@ -514,19 +594,60 @@ public class CutsceneManager {
                 break;
 
             case 36:
-                // Menunggu pemain selesai sortir sampah (kembali ke state PLAY)
                 if (gp.stateM.getCurrentState() == StateManager.gameState.PLAY) {
                     counter++;
                     if (counter == 1) {
                         gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                         gp.uiM.getPlayScreen().showDialog(
-                                StoryManager.getInstance().getDialog("danu_after_sort"),
-                                "Danu (Bank Sampah)");
+                                StoryManager.getInstance().getDialog("panjul_after_sort_1"),
+                                "Panjul (Bank Sampah)");
                     }
                     if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
-                        phase = 365;
+                        phase = 361;
                         counter = 0;
                     }
+                }
+                break;
+
+            case 361:
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("panjul_after_sort_2"),
+                            "Panjul (Bank Sampah)");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 362;
+                    counter = 0;
+                }
+                break;
+
+            case 362:
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("panjul_advice_trees_1"),
+                            "Panjul (Bank Sampah)");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 363;
+                    counter = 0;
+                }
+                break;
+
+            case 363:
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("panjul_advice_trees_2"),
+                            "Panjul (Bank Sampah)");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 365;
+                    counter = 0;
                 }
                 break;
 
@@ -535,8 +656,8 @@ public class CutsceneManager {
                 if (counter == 1) {
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getPlayScreen().showDialog(
-                            StoryManager.getInstance().getDialog("danu_find_suci"),
-                            "Danu (Bank Sampah)");
+                            StoryManager.getInstance().getDialog("panjul_find_dila"),
+                            "Panjul (Bank Sampah)");
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
                     phase = 37;
@@ -550,15 +671,15 @@ public class CutsceneManager {
                 gp.player.onPath = false;
 
                 gp.stateM.setCurrentState(StateManager.gameState.PLAY);
-                gp.uiM.showMessage("LOKASI BARU TERBUKA: Bu Suci\nOBJEKTIF: Temui Bu Suci di Selatan");
+                gp.uiM.showMessage("LOKASI BARU TERBUKA: Teh Dila\nOBJEKTIF: Temui Teh Dila di Selatan");
 
-                // Spawn Bu Suci if not already there
-                if (gp.npcM.getBuSuci() == null) {
-                    gp.npcM.spawnBuSuci(26 * gp.tileSize, 58 * gp.tileSize);
+                // Spawn Teh Dila if not already there
+                if (gp.npcM.getTehDila() == null) {
+                    gp.npcM.spawnTehDila(26 * gp.tileSize, 58 * gp.tileSize);
                 }
 
                 // We set phase to a waiting state for when player reaches Bu Suci
-                // or just end it if Bu Suci interaction is handled separately.
+                // or just end it if Teh Dila interaction is handled separately.
                 // For now, let's transition to phase 38 to wait for player.
                 phase = 38;
                 counter = 0;
@@ -566,10 +687,10 @@ public class CutsceneManager {
 
             case 38:
                 // Allow phase 38 to update during PLAY state.
-                // Wait for player to reach Bu Suci area (approx 26, 58)
-                double distToSuci = Math.sqrt(Math.pow(gp.player.worldX - 26 * gp.tileSize, 2) +
+                // Wait for player to reach Teh Dila area (approx 26, 58)
+                double distToDila = Math.sqrt(Math.pow(gp.player.worldX - 26 * gp.tileSize, 2) +
                         Math.pow(gp.player.worldY - 58 * gp.tileSize, 2));
-                if (distToSuci < gp.tileSize * 3) {
+                if (distToDila < gp.tileSize * 3) {
                     phase = 45;
                     counter = 0;
                 }
@@ -591,8 +712,8 @@ public class CutsceneManager {
                     gp.player.speed = 0;
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getPlayScreen().showDialog(
-                            "Eh, ada anak muda. Mau mulai nanem pohon ya? Tadi si Danu Saputra udah ngabarin Ibu kalau ada yang mau belajar nanem pohon.",
-                            "Bu Suci");
+                            StoryManager.getInstance().getDialog("tehdila_intro"),
+                            "Teh Dila");
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
                     phase = 46;
@@ -605,11 +726,16 @@ public class CutsceneManager {
                 if (counter == 1) {
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getPlayScreen().showDialog(
-                            StoryManager.getInstance().getDialog("suci_intro"),
-                            "Bu Suci");
+                            StoryManager.getInstance().getDialog("tehdila_welcome").replace("%VALUE%", "10"),
+                            "Teh Dila");
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
-                    gp.player.inventory.addItem("Bibit Mahoni", 1);
+                    java.awt.image.BufferedImage treeIcon = null;
+                    try {
+                        treeIcon = javax.imageio.ImageIO.read(getClass().getResourceAsStream("/objects/tree1.png"));
+                    } catch (Exception ex) {
+                    }
+                    gp.player.inventory.addItem("Bibit Mahoni", 1, treeIcon);
                     phase = 47;
                     counter = 0;
                 }
@@ -623,8 +749,8 @@ public class CutsceneManager {
                             "Responmu:",
                             "Pemain",
                             new String[] {
-                                    "Emang ngaruh ya Bu satu pohon doang?",
-                                    "Oke Bu, makasih. Cara nanamnya gimana?"
+                                    StoryManager.getInstance().getDialog("tehdila_choice_1").replace("%VALUE%", "10"),
+                                    StoryManager.getInstance().getDialog("tehdila_choice_2")
                             },
                             (idx, txt) -> currentBranch = (idx == 0) ? "A" : "B");
                 }
@@ -638,10 +764,10 @@ public class CutsceneManager {
                 counter++;
                 if (counter == 1) {
                     String resp = currentBranch.equals("A")
-                            ? "Lho, jangan remehin satu pohon. Akarnya bisa nyerep ratusan liter air ujan.\nKalo satu orang mulai, yang lain biasanya ikut."
-                            : "Gampang kok. Cari tanah kosong, gali dikit, masukin. Tapi inget ya...\nJangan biarin ada sampah numpuk di deketnya. Nanti dia stres.";
+                            ? StoryManager.getInstance().getDialog("tehdila_resp_1")
+                            : StoryManager.getInstance().getDialog("tehdila_resp_2");
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
-                    gp.uiM.getPlayScreen().showDialog(resp, "Bu Suci");
+                    gp.uiM.getPlayScreen().showDialog(resp, "Teh Dila");
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
                     gp.player.speed = 4;
@@ -665,7 +791,21 @@ public class CutsceneManager {
                     gp.player.speed = 0;
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getPlayScreen().showDialog(
-                            StoryManager.getInstance().getDialog("ch2_monolog"),
+                            StoryManager.getInstance().getDialog("ch2_monolog_1"),
+                            gp.player.getPlayerName());
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 501;
+                    counter = 0;
+                }
+                break;
+
+            case 501:
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch2_monolog_2"),
                             gp.player.getPlayerName());
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
@@ -689,7 +829,11 @@ public class CutsceneManager {
                     gp.player.onPath = false;
                     gp.chapter2Active = false;
                     gp.chapter2Finished = true;
-                    gp.stateM.setCurrentState(StateManager.gameState.PLAY);
+
+                    // Trigger Save Screen and then Sleep for Chapter 3
+                    gp.uiM.getSaveLoadScreen().setSaveMode(true);
+                    gp.triggerSleepAfterSave = true;
+                    gp.stateM.setCurrentState(StateManager.gameState.SAVE_LOAD);
                 }
                 break;
 

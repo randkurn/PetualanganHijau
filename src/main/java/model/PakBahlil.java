@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-public class PakSaman extends Entity {
+public class PakBahlil extends Entity {
 
     GamePanel gamePanel;
     public int screenX, screenY;
@@ -17,7 +17,7 @@ public class PakSaman extends Entity {
     private boolean goalReached = false;
     private boolean followingGoal = false;
 
-    public PakSaman(GamePanel gp) {
+    public PakBahlil(GamePanel gp) {
         this.gamePanel = gp;
 
         speed = 1;
@@ -26,10 +26,10 @@ public class PakSaman extends Entity {
         hitbox = new Rectangle(hitboxDefaultX, hitboxDefaultY, 32, 32);
         direction = "down";
 
-        getSamanSprite();
+        getBahlilSprite();
     }
 
-    private void getSamanSprite() {
+    private void getBahlilSprite() {
         try {
             down1 = loadSprite("/NPC/paksaman/down1.png");
             down2 = loadSprite("/NPC/paksaman/down2.png");
@@ -41,7 +41,7 @@ public class PakSaman extends Entity {
             left2 = loadSprite("/NPC/paksaman/left2.png");
 
             if (down1 == null) {
-                System.out.println("Pak Saman sprites not found, fallback to placeholder.");
+                System.out.println("Pak Bahlil sprites not found, fallback to placeholder.");
                 loadFallback();
             }
         } catch (Exception e) {
@@ -155,13 +155,13 @@ public class PakSaman extends Entity {
             return;
         }
 
-        if (gamePanel.chapter2Active) {
-            gamePanel.uiM.getPlayScreen().showDialog(
-                    "Eh De, udah dipilah belum sampahnya? Bawa ke Danu di ujung jalan sana ya, dia yang ngurusin setorannya sekarang.",
-                    "Pak Saman");
+        controller.StoryManager sm = controller.StoryManager.getInstance();
+        if (gamePanel.chapter2Active || gamePanel.chapter2Finished) {
+            gamePanel.uiM.getPlayScreen().showDialog(sm.getDialog("bahlil_advice_1"), "Pak Bahlil", () -> {
+                gamePanel.uiM.getPlayScreen().showDialog(sm.getDialog("bahlil_advice_2"), "Pak Bahlil");
+            });
         } else {
-            gamePanel.uiM.getPlayScreen().showDialog("Halo nak, semangat ya! Jagain kebersihan lingkungan kita.",
-                    "Pak Saman");
+            gamePanel.uiM.getPlayScreen().showDialog(sm.getDialog("bahlil_greeting"), "Pak Bahlil");
         }
     }
 
