@@ -85,7 +85,7 @@ public class Randy extends Entity {
     }
 
     public boolean hasInteracted() {
-        return hasInteracted;
+        return gp.player.hasInteractedWithNPC("Randy");
     }
 
     public void interact() {
@@ -94,7 +94,7 @@ public class Randy extends Entity {
 
         controller.StoryManager sm = controller.StoryManager.getInstance();
 
-        if (!hasInteracted) {
+        if (!gp.player.hasInteractedWithNPC("Randy")) {
             // First meeting - river catch minigame
             gp.uiM.getPlayScreen().showDialog(
                     sm.getDialog("randy_greeting"),
@@ -112,7 +112,7 @@ public class Randy extends Entity {
                                                             if (gp.riverMinigame != null) {
                                                                 gp.riverMinigame.start(() -> {
                                                                     // Completion callback
-                                                                    hasInteracted = true;
+                                                                    gp.player.markNPCInteracted("Randy");
                                                                     gp.player.addGold(1500);
                                                                     gp.uiM.showMessage("Sungai bersih! +1500 Gold");
                                                                     gp.stateM.setCurrentState(
@@ -120,7 +120,7 @@ public class Randy extends Entity {
                                                                 });
                                                             } else {
                                                                 System.err.println("[Randy] Minigame not initialized!");
-                                                                hasInteracted = true;
+                                                                gp.player.markNPCInteracted("Randy");
                                                                 gp.stateM.setCurrentState(
                                                                         controller.StateManager.gameState.PLAY);
                                                             }

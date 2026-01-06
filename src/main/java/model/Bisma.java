@@ -85,7 +85,7 @@ public class Bisma extends Entity {
     }
 
     public boolean hasInteracted() {
-        return hasInteracted;
+        return gp.player.hasInteractedWithNPC("Bisma");
     }
 
     public void interact() {
@@ -94,7 +94,7 @@ public class Bisma extends Entity {
 
         controller.StoryManager sm = controller.StoryManager.getInstance();
 
-        if (!hasInteracted) {
+        if (!gp.player.hasInteractedWithNPC("Bisma")) {
             // First meeting - drainage minigame
             gp.uiM.getPlayScreen().showDialog(
                     sm.getDialog("bisma_greeting_1"),
@@ -109,7 +109,7 @@ public class Bisma extends Entity {
                                                 if (gp.drainageMinigame != null) {
                                                     gp.drainageMinigame.start(() -> {
                                                         // Completion callback
-                                                        hasInteracted = true;
+                                                        gp.player.markNPCInteracted("Bisma");
                                                         gp.player.addGold(1000);
                                                         gp.uiM.showMessage("Drainase bersih! +1000 Gold");
                                                         gp.stateM.setCurrentState(
@@ -117,7 +117,7 @@ public class Bisma extends Entity {
                                                     });
                                                 } else {
                                                     System.err.println("[Bisma] Minigame not initialized!");
-                                                    hasInteracted = true;
+                                                    gp.player.markNPCInteracted("Bisma");
                                                     gp.stateM.setCurrentState(
                                                             controller.StateManager.gameState.PLAY);
                                                 }

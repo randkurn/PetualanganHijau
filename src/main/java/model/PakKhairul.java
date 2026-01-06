@@ -134,7 +134,7 @@ public class PakKhairul extends Entity {
     }
 
     public boolean hasInteracted() {
-        return hasInteracted;
+        return gp.player.hasInteractedWithNPC("Pak Khairul");
     }
 
     public void interact() {
@@ -143,7 +143,7 @@ public class PakKhairul extends Entity {
 
         controller.StoryManager sm = controller.StoryManager.getInstance();
 
-        if (!hasInteracted) {
+        if (!gp.player.hasInteractedWithNPC("Pak Khairul")) {
             // First meeting - planting trees at farm
             gp.uiM.getPlayScreen().showDialog(
                     sm.getDialog("khairul_greeting"),
@@ -168,7 +168,7 @@ public class PakKhairul extends Entity {
                                                                 gp.uiM.getPlayScreen().showDialog(
                                                                         sm.getDialog("khairul_response"),
                                                                         "Pak Khairul", () -> {
-                                                                            hasInteracted = true;
+                                                                            gp.player.markNPCInteracted("Pak Khairul");
                                                                             gp.uiM.showMessage(sm.getDialog(
                                                                                     "objective_plant_trees"));
                                                                             gp.stateM.setCurrentState(
@@ -182,7 +182,8 @@ public class PakKhairul extends Entity {
                                                                             gp.uiM.getPlayScreen().showDialog(
                                                                                     sm.getDialog("khairul_response"),
                                                                                     "Pak Khairul", () -> {
-                                                                                        hasInteracted = true;
+                                                                                        gp.player.markNPCInteracted(
+                                                                                                "Pak Khairul");
                                                                                         gp.uiM.showMessage(sm.getDialog(
                                                                                                 "objective_plant_trees"));
                                                                                         gp.stateM.setCurrentState(

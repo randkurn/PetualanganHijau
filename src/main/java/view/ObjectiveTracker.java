@@ -67,20 +67,18 @@ public class ObjectiveTracker {
             int tasksCompleted = 0;
             int totalTasks = 4;
 
-            // Check NPC interactions
-            if (gp.npcM != null) {
-                if (gp.npcM.getBisma() != null && gp.npcM.getBisma().hasInteracted()) {
-                    tasksCompleted++;
-                }
-                if (gp.npcM.getRandy() != null && gp.npcM.getRandy().hasInteracted()) {
-                    tasksCompleted++;
-                }
-                if (gp.npcM.getPakKhairul() != null && gp.npcM.getPakKhairul().hasInteracted()) {
-                    tasksCompleted++;
-                }
-                if (gp.npcM.getNengJia() != null && gp.npcM.getNengJia().hasInteracted()) {
-                    tasksCompleted++;
-                }
+            // Check NPC interactions via Player persistent status
+            if (gp.player.hasInteractedWithNPC("Bisma")) {
+                tasksCompleted++;
+            }
+            if (gp.player.hasInteractedWithNPC("Randy")) {
+                tasksCompleted++;
+            }
+            if (gp.player.hasInteractedWithNPC("Pak Khairul")) {
+                tasksCompleted++;
+            }
+            if (gp.player.hasInteractedWithNPC("Neng Jia")) {
+                tasksCompleted++;
             }
 
             if (tasksCompleted < totalTasks) {

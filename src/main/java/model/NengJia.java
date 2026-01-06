@@ -85,7 +85,7 @@ public class NengJia extends Entity {
     }
 
     public boolean hasInteracted() {
-        return hasInteracted;
+        return gp.player.hasInteractedWithNPC("Neng Jia");
     }
 
     public void interact() {
@@ -94,7 +94,7 @@ public class NengJia extends Entity {
 
         controller.StoryManager sm = controller.StoryManager.getInstance();
 
-        if (!hasInteracted) {
+        if (!gp.player.hasInteractedWithNPC("Neng Jia")) {
             // First meeting - cleaning park trash
             gp.uiM.getPlayScreen().showDialog(
                     sm.getDialog("jia_greeting"),
@@ -105,7 +105,7 @@ public class NengJia extends Entity {
                                     gp.uiM.getPlayScreen().showDialog(
                                             sm.getDialog("jia_complaint_2"),
                                             "Neng Jia", () -> {
-                                                hasInteracted = true;
+                                                gp.player.markNPCInteracted("Neng Jia");
                                                 gp.uiM.showMessage(sm.getDialog("objective_clean_park"));
                                                 gp.stateM.setCurrentState(controller.StateManager.gameState.PLAY);
                                             });

@@ -36,6 +36,7 @@ public class PlayerData {
     public int cutscenePhase;
 
     public Set<String> collectedTrash;
+    public Set<String> interactedNPCs;
     public Set<String> unlockedAchievements;
     public List<PlantedTreeData> plantedTrees;
 
@@ -74,6 +75,7 @@ public class PlayerData {
         this.chapter2TrashCount = 0;
         this.chapter3TrashCount = 0;
         this.collectedTrash = new HashSet<>();
+        this.interactedNPCs = new HashSet<>();
         this.plantedTrees = new ArrayList<>();
     }
 }

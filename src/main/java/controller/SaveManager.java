@@ -116,10 +116,11 @@ public class SaveManager {
         playerData.chapter1TrashCount = gp.chapter1TrashCount;
         playerData.chapter2TrashCount = gp.chapter2TrashCount;
         playerData.chapter3TrashCount = gp.chapter3TrashCount;
-        playerData.totalTrashInWorld = gp.player.getCollectedTrash().size();
+        playerData.totalTrashInWorld = gp.player.getTotalTrashInWorld();
         playerData.cutscenePhase = gp.csM.getPhase();
 
         playerData.collectedTrash = gp.player.getCollectedTrash();
+        playerData.interactedNPCs = gp.player.getInteractedNPCs();
         playerData.unlockedAchievements = AchievementManager.getInstance(gp).getUnlockedAchievements();
         playerData.plantedTrees = gp.plantedTrees;
 
@@ -227,6 +228,10 @@ public class SaveManager {
                 gp.player.setCollectedTrash(data.player.collectedTrash);
             }
 
+            if (data.player.interactedNPCs != null) {
+                gp.player.setInteractedNPCs(data.player.interactedNPCs);
+            }
+
             if (data.player.unlockedAchievements != null) {
                 AchievementManager.getInstance(gp).setUnlockedAchievements(data.player.unlockedAchievements);
             } else {
@@ -256,6 +261,11 @@ public class SaveManager {
 
         if (gp.npcM != null) {
             gp.npcM.reloadNPCs();
+        }
+
+        // Fix Enviro-Meter on load
+        if (gp.player != null) {
+            gp.player.recalculateTotalTrash();
         }
     }
 

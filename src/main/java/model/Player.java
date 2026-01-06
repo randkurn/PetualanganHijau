@@ -26,6 +26,7 @@ public class Player extends Entity {
     public Inventory inventory;
     public String playerName = "Pemain";
     private java.util.Set<String> collectedTrash = new java.util.HashSet<>();
+    private java.util.Set<String> interactedNPCs = new java.util.HashSet<>();
 
     public boolean onPath = false;
     public int goalCol, goalRow;
@@ -442,6 +443,32 @@ public class Player extends Entity {
 
     public void setCollectedTrash(java.util.Set<String> collectedTrash) {
         this.collectedTrash = collectedTrash;
+    }
+
+    public java.util.Set<String> getInteractedNPCs() {
+        return interactedNPCs;
+    }
+
+    public void setInteractedNPCs(java.util.Set<String> set) {
+        if (set != null) {
+            this.interactedNPCs = set;
+        }
+    }
+
+    public void markNPCInteracted(String npcKey) {
+        interactedNPCs.add(npcKey);
+        System.out.println("[Player] NPC Interacted: " + npcKey + " (Total: " + interactedNPCs.size() + ")");
+    }
+
+    public boolean hasInteractedWithNPC(String npcKey) {
+        return interactedNPCs.contains(npcKey);
+    }
+
+    public void recalculateTotalTrash() {
+        if (gamePanel.mapM != null) {
+            this.totalTrashInWorld = gamePanel.mapM.countTotalTrashInAllMaps();
+            System.out.println("[Player] Recalculated total trash in world: " + totalTrashInWorld);
+        }
     }
 
     private model.Entity getNearbyNPC(int interactDistance) {
