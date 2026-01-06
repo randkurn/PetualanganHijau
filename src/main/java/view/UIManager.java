@@ -15,7 +15,7 @@ public class UIManager {
         this.gp = gp;
         settings = Settings.getInstance();
 
-        ui = new UI[18];
+        ui = new UI[19];
         ui[0] = new PlayScreen(gp);
         ui[1] = new PauseScreen(gp);
         ui[2] = new WinScreen(gp);
@@ -34,6 +34,7 @@ public class UIManager {
         ui[15] = ui[0];
         ui[16] = new HelpScreen(gp);
         ui[17] = ui[0];
+        ui[18] = new QuantityInputScreen(gp);
 
         fullScreen = settings.getFullScreen();
 
@@ -58,6 +59,7 @@ public class UIManager {
                 ui[0].draw(g2);
             }
             case STORY -> ui[7].draw(g2);
+            case QUANTITY_INPUT -> ui[18].draw(g2);
             case MAP -> {
                 ui[0].draw(g2);
                 ui[11].draw(g2);
@@ -192,5 +194,9 @@ public class UIManager {
 
     public ChoiceDialogBox getChoiceDialogBox() {
         return choiceDialogBox;
+    }
+
+    public QuantityInputScreen getQuantityInputScreen() {
+        return (QuantityInputScreen) ui[18];
     }
 }

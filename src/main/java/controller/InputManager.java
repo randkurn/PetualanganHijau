@@ -14,7 +14,7 @@ public class InputManager {
     public InputManager(GamePanel gp) {
         this.gp = gp;
 
-        inputs = new InputHandler[18];
+        inputs = new InputHandler[19];
         inputs[0] = new PlayInput(gp);
         inputs[1] = new PauseInput(gp);
         inputs[3] = inputs[2];
@@ -32,6 +32,7 @@ public class InputManager {
         inputs[15] = new DialogueInput(gp);
         inputs[16] = new HelpInput(gp);
         inputs[17] = new SceneInput(gp);
+        inputs[18] = new QuantityInputInput(gp);
 
         currInput = inputs[4];
     }
@@ -1052,6 +1053,60 @@ public class InputManager {
 
         @Override
         public void keyReleased(KeyEvent e) {
+        }
+    }
+
+    public static class QuantityInputInput extends InputHandler {
+        protected QuantityInputInput(GamePanel gp) {
+            super(gp);
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            int keyCode = e.getKeyCode();
+            switch (keyCode) {
+                case KeyEvent.VK_ENTER:
+                    if (!enter) {
+                        gp.uiM.getQuantityInputScreen().confirm();
+                        audio.playSound(5);
+                    }
+                    enter = true;
+                    break;
+                case KeyEvent.VK_BACK_SPACE:
+                    if (!enter) {
+                        gp.uiM.getQuantityInputScreen().removeCharacter();
+                        audio.playSound(4);
+                    }
+                    enter = true;
+                    break;
+                case KeyEvent.VK_ESCAPE:
+                    if (!paused) {
+                        gp.uiM.getQuantityInputScreen().cancel();
+                        audio.playSound(5);
+                    }
+                    paused = true;
+                    break;
+                default:
+                    char c = e.getKeyChar();
+                    if (Character.isDigit(c)) {
+                        gp.uiM.getQuantityInputScreen().addCharacter(c);
+                        audio.playSound(4);
+                    }
+                    break;
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_ENTER:
+                case KeyEvent.VK_BACK_SPACE:
+                    enter = false;
+                    break;
+                case KeyEvent.VK_ESCAPE:
+                    paused = false;
+                    break;
+            }
         }
     }
 }

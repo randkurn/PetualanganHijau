@@ -8,7 +8,7 @@ public class StateManager {
     public enum gameState {
         PLAY(0), PAUSE(1), WIN(2), TITLE(4), SETTINGS(5), CREDITS(6),
         STORY(8), SAVE_LOAD(9), CHARACTER_NAME(10), MAP(11),
-        INVENTORY(12), TELEPORT(13), CUTSCENE(14), DIALOGUE(15), HELP(16), SCENE(17);
+        INVENTORY(12), TELEPORT(13), CUTSCENE(14), DIALOGUE(15), HELP(16), SCENE(17), QUANTITY_INPUT(18);
 
         private int value;
 

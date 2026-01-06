@@ -141,6 +141,10 @@ public class TehDila extends Entity {
                     });
                 });
             });
+        } else if (gamePanel.chapter3Active) {
+            dialog.showDialog(sm.getDialog("tehdila_ch3_greeting"), "Teh Dila", () -> {
+                showShop(dialog);
+            });
         } else {
             showShop(dialog);
         }
@@ -148,28 +152,56 @@ public class TehDila extends Entity {
 
     private void showShop(view.PlayScreen dialog) {
         controller.StoryManager sm = controller.StoryManager.getInstance();
+        String welcomeMsg = gamePanel.chapter3Active ? sm.getDialog("tehdila_buy_prompt")
+                : sm.getDialog("tehdila_welcome").replace("%VALUE%", String.valueOf(SEED_PRICE));
+
         dialog.showDialogWithChoices(
-                sm.getDialog("tehdila_welcome").replace("%VALUE%", String.valueOf(SEED_PRICE)),
+                welcomeMsg,
                 "Teh Dila",
                 new String[] {
-                        sm.getDialog("tehdila_choice_1").replace("%VALUE%", String.valueOf(SEED_PRICE)),
+                        "Beli Bibit ( %VALUE% Gold )".replace("%VALUE%", String.valueOf(SEED_PRICE)),
                         sm.getDialog("tehdila_choice_2")
                 },
                 (idx, txt) -> {
                     if (idx == 0) {
-                        if (gamePanel.player.gold >= SEED_PRICE) {
-                            if (gamePanel.player.inventory.addItem("Bibit Pohon", 1, seedIcon)) {
-                                gamePanel.player.gold -= SEED_PRICE;
-                                gamePanel.uiM.showMessage(sm.getDialog("tehdila_buy_confirm"));
-                                // Show shop again for convenience
-                                showShop(dialog);
+                        gamePanel.uiM.getQuantityInputScreen().startInput((qty) -> {
+                            int totalPrice = qty * SEED_PRICE;
+                            if (gamePanel.player.gold >= totalPrice) {
+                                // Try to add all items. In this simplified system, we'll just check if there's
+                                // space.
+                                // The inventory addItem usually returns false if fail.
+                                // For bulk, we might need a better check, but let's just loop for now.
+                                int addedCount = 0;
+                                for (int i = 0; i < qty; i++) {
+                                    if (gamePanel.player.inventory.addItem("Bibit Pohon", 1, seedIcon)) {
+                                        addedCount++;
+                                    } else {
+                                        break;
+                                    }
+                                }
+
+                                if (addedCount > 0) {
+                                    gamePanel.player.gold -= (addedCount * SEED_PRICE);
+                                    String msg = sm.getDialog("tehdila_buy_confirm_bulk")
+                                            .replace("%QTY%", String.valueOf(addedCount))
+                                            .replace("%PRICE%", String.valueOf(addedCount * SEED_PRICE));
+                                    gamePanel.uiM.showMessage(msg);
+                                    if (addedCount < qty) {
+                                        gamePanel.uiM
+                                                .showMessage("Inventory penuh! Hanya " + addedCount + " bibit dibeli.");
+                                    }
+                                } else {
+                                    gamePanel.uiM.showMessage(sm.getDialog("tehdila_inv_full"));
+                                }
+                                gamePanel.stateM.setCurrentState(controller.StateManager.gameState.PLAY);
                             } else {
-                                gamePanel.uiM.showMessage(sm.getDialog("tehdila_inv_full"));
+                                gamePanel.uiM.showMessage(sm.getDialog("tehdila_no_money").replace("%VALUE%",
+                                        String.valueOf(totalPrice)));
+                                gamePanel.stateM.setCurrentState(controller.StateManager.gameState.PLAY);
                             }
-                        } else {
-                            gamePanel.uiM.showMessage(
-                                    sm.getDialog("tehdila_no_money").replace("%VALUE%", String.valueOf(SEED_PRICE)));
-                        }
+                        }, () -> {
+                            gamePanel.stateM.setCurrentState(controller.StateManager.gameState.PLAY);
+                        });
                     }
                 });
     }

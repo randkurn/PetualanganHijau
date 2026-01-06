@@ -46,6 +46,9 @@ tehdila_welcome: Selamat datang! Mau beli bibit pohon? Harganya %VALUE% gold per
 tehdila_buy_confirm:Berhasil membeli 1 Bibit Pohon!
 tehdila_no_money:Uang tidak cukup! Butuh %VALUE% gold.
 tehdila_inv_full:Inventory penuh! Kosongkan dulu untuk menerima hadiah.
+tehdila_ch3_greeting: Halo De! Semangat banget ya hari ini. Kota lagi butuh bantuan kita nih.
+tehdila_buy_prompt: Mau stok bibit lagi? Langit kayaknya lagi galau, mending sedia pohon sebelum badai.
+tehdila_buy_confirm_bulk: Berhasil membeli %QTY% Bibit Pohon! (Total: %PRICE% Gold)
 tehdila_choice_1:Emang ngaruh ya Pak satu pohon doang?
 tehdila_choice_2:Oke Pak, makasih. Cara nanamnya gimana?
 tehdila_resp_1:Lho, jangan remehin satu pohon, De.\nSatu pohon ini kalo udah gede, akarnya bisa nyerep ratusan liter air ujan.\nKalo seribu orang mikir 'cuma satu gak ngaruh', ya gersang semua.\nTapi kalo satu orang mulai, yang lain biasanya ikut.
