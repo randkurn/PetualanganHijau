@@ -37,7 +37,6 @@ public class PlayScreen extends UI {
 	private int typingSpeed = 2;
 	private int typingCounter = 0;
 	private boolean typingComplete = false;
-	private int talkSoundCounter = 0;
 
 	private Runnable dialogContinueCallback = null;
 
@@ -96,15 +95,8 @@ public class PlayScreen extends UI {
 				}
 				typingIndex++;
 
-				talkSoundCounter++;
-				if (talkSoundCounter >= 3) {
-					talkSoundCounter = 0;
-					AudioManager.getInstance().playTalkingSound();
-				}
-
 				if (typingIndex >= totalChars) {
 					typingComplete = true;
-					talkSoundCounter = 0;
 				}
 			}
 		}
@@ -328,7 +320,6 @@ public class PlayScreen extends UI {
 		this.typingIndex = 9999;
 		this.typingCounter = 0;
 		this.typingComplete = true;
-		this.talkSoundCounter = 0;
 
 		if (gp.inputM != null && gp.inputM.getPlayInput() != null) {
 			gp.inputM.getPlayInput().interact = false;
@@ -337,7 +328,6 @@ public class PlayScreen extends UI {
 
 		gp.stateM.setCurrentState(gameState.DIALOGUE);
 
-		AudioManager.getInstance().playTalkingSound();
 	}
 
 	public void showDialogAutoNext(String text, String speaker) {

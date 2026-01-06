@@ -11,7 +11,6 @@ public class Randy extends Entity {
     GamePanel gp;
     public String name;
     public int screenX, screenY;
-    private boolean hasInteracted = false;
 
     public Randy(GamePanel gp) {
         this.gp = gp;

@@ -11,7 +11,6 @@ public class NengJia extends Entity {
     GamePanel gp;
     public String name;
     public int screenX, screenY;
-    private boolean hasInteracted = false;
 
     public NengJia(GamePanel gp) {
         this.gp = gp;

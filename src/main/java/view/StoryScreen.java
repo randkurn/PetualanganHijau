@@ -250,7 +250,7 @@ public class StoryScreen extends UI {
             autoNextCounter = 0;
 
             if (typewriterIndex % 3 == 0) {
-                AudioManager.getInstance().playTalkingSound();
+                // Audio effect removed as requested
             }
         }
 

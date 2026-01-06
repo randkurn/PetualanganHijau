@@ -58,13 +58,11 @@ public class StateManager {
                     gp.uiM.showNewHighScore(false);
                 }
                 break;
-            case TITLE:
+            case TITLE, SETTINGS, CREDITS, HELP, SAVE_LOAD, CHARACTER_NAME:
                 audio.playMenuMusic();
                 break;
-            case PLAY, PAUSE, INVENTORY, MAP, TELEPORT:
-                if (prevState == gameState.TITLE || prevState == gameState.WIN || prevState == gameState.STORY) {
-                    audio.playMainBGM();
-                }
+            case PLAY, PAUSE, INVENTORY, MAP, TELEPORT, DIALOGUE, QUANTITY_INPUT:
+                audio.playMainBGM();
                 break;
             default:
                 break;

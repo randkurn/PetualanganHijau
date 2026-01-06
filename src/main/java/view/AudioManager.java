@@ -14,6 +14,7 @@ public class AudioManager {
     private Clip musicClip;
     private URL[] musicURLs;
     private int musicVolumeScale;
+    private int currentMusicIndex = -1;
 
     private URL[] soundURLs;
     private int soundVolumeScale;
@@ -63,21 +64,32 @@ public class AudioManager {
     }
 
     public void playMusic(int i) {
+        if (i == currentMusicIndex && musicClip != null && musicClip.isRunning()) {
+            return;
+        }
+
         try {
             if (i < 0 || i >= musicURLs.length || musicURLs[i] == null) {
                 System.err.println("Music index " + i + " not available, using fallback");
                 i = 2;
             }
-            if (musicClip != null)
+
+            if (musicClip != null) {
                 musicClip.stop();
+                musicClip.close();
+            }
+
             AudioInputStream ais = AudioSystem.getAudioInputStream(musicURLs[i]);
             musicClip = AudioSystem.getClip();
             musicClip.open(ais);
             setVolume(musicClip, musicVolumeScale);
             musicClip.loop(Clip.LOOP_CONTINUOUSLY);
             musicClip.start();
+            currentMusicIndex = i;
+
         } catch (Exception e) {
             System.err.println("Failed to play music " + i + ", trying fallback: " + e.getMessage());
+            currentMusicIndex = -1;
             if (i != 2) {
                 playMusic(2);
             }
