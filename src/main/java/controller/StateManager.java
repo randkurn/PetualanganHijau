@@ -59,7 +59,12 @@ public class StateManager {
                 }
                 break;
             case TITLE:
-                audio.playMusic(0);
+                audio.playMenuMusic();
+                break;
+            case PLAY, PAUSE, INVENTORY, MAP, TELEPORT:
+                if (prevState == gameState.TITLE || prevState == gameState.WIN || prevState == gameState.STORY) {
+                    audio.playMainBGM();
+                }
                 break;
             default:
                 break;
@@ -84,10 +89,8 @@ public class StateManager {
     }
 
     public void revertPreviousState() {
-        gameState temp = currState;
-        currState = prevState;
-        prevState = temp;
-        gp.inputM.changeInput(currState);
+        gameState oldPrev = prevState;
+        setCurrentState(oldPrev);
     }
 
     public void draw(Graphics2D g2) {

@@ -18,8 +18,6 @@ public class AudioManager {
     private URL[] soundURLs;
     private int soundVolumeScale;
 
-    private Clip talkingClip;
-
     public static AudioManager getInstance() {
         if (instance == null)
             instance = new AudioManager();
@@ -46,7 +44,7 @@ public class AudioManager {
     }
 
     private void loadSounds() {
-        soundURLs = new URL[14];
+        soundURLs = new URL[13];
         soundURLs[0] = getClass().getResource("/sounds/cluck1.wav");
         soundURLs[1] = getClass().getResource("/sounds/cluck2.wav");
         soundURLs[2] = getClass().getResource("/sounds/pickup.wav");
@@ -59,10 +57,9 @@ public class AudioManager {
         soundURLs[9] = getClass().getResource("/sounds/konamicode.wav");
         soundURLs[10] = getClass().getResource("/sounds/resetscore.wav");
         soundURLs[11] = getClass().getResource("/sounds/error.wav");
-        soundURLs[12] = getClass().getResource("/sounds/talking.wav");
         soundVolumeScale = settings.getSoundVolume();
 
-        System.out.println("[AudioManager] Sounds loaded including talking.wav and chaching.wav");
+        System.out.println("[AudioManager] Sounds loaded including chaching.wav");
     }
 
     public void playMusic(int i) {
@@ -92,7 +89,7 @@ public class AudioManager {
     }
 
     public void playMainBGM() {
-        playMusic(0);
+        playMusic(5); // house_interior.wav
     }
 
     public void playMenuMusic() {
@@ -106,26 +103,6 @@ public class AudioManager {
     public void stopMusic() {
         if (musicClip != null)
             musicClip.stop();
-    }
-
-    public void playTalkingSound() {
-        try {
-            if (soundURLs[12] == null)
-                return;
-
-            if (talkingClip == null) {
-                AudioInputStream ais = AudioSystem.getAudioInputStream(soundURLs[12]);
-                talkingClip = AudioSystem.getClip();
-                talkingClip.open(ais);
-            }
-
-            if (!talkingClip.isRunning()) {
-                talkingClip.setFramePosition(0);
-                setVolume(talkingClip, Math.max(1, soundVolumeScale - 1));
-                talkingClip.start();
-            }
-        } catch (Exception e) {
-        }
     }
 
     public void playSound(int i) {
