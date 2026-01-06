@@ -255,7 +255,7 @@ public class SaveManager {
         }
 
         if (gp.npcM != null) {
-            gp.npcM.setupChapter1NPCs();
+            gp.npcM.reloadNPCs();
         }
     }
 

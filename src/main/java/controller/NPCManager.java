@@ -266,6 +266,13 @@ public class NPCManager {
             return;
         }
 
+        reloadNPCs();
+    }
+
+    public void reloadNPCs() {
+        int currMap = gamePanel.mapM.currMap;
+        System.out.println("[NPCManager] Force reloading NPCs for map: " + currMap);
+
         clearAll();
         currentMapIndex = currMap;
 
@@ -274,7 +281,7 @@ public class NPCManager {
         // Re-spawn Chapter 2/3 NPCs if active on correct maps
         // Re-spawn Chapter 2/3 NPCs if active on House map (exterior)
         if (gamePanel.chapter2Active || gamePanel.chapter2Finished || gamePanel.chapter3Active) {
-            if (gamePanel.mapM.currMap == 0) {
+            if (currMap == 0) {
                 spawnChapter2NPCs(); // Panjul
                 spawnTehDila(26 * gamePanel.tileSize, 58 * gamePanel.tileSize); // Teh Dila
             }
@@ -285,7 +292,7 @@ public class NPCManager {
             spawnChapter3NPCs();
         }
 
-        System.out.println("[NPCManager] Chapter 1 NPC setup complete. NPCs spawned: " + getNPCCount());
+        System.out.println("[NPCManager] NPC setup complete. NPCCount: " + getNPCCount());
     }
 
     private void loadNPCsFromTMX() {
