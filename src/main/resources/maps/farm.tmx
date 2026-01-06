@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="91" height="83" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="2">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="91" height="83" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="8">
  <tileset firstgid="1" source="../tiles/tiles_from_game.tsx"/>
  <tileset firstgid="470" source="../tiles/tiles.tsx"/>
  <layer id="1" name="Tiles" width="91" height="83">
@@ -92,6 +92,20 @@
  <objectgroup id="3" name="Spawn">
   <object id="1" name="PlayerStart Atas" x="1185.25" y="142.5" width="16" height="16"/>
   <object id="1" name="PlayerStart Bawah" x="321.5" y="1164.5" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup id="3" name="NPC">
+  <object id="3" name="farmer1" x="1189.33" y="198.667">
+   <point/>
+  </object>
+  <object id="4" name="farmer2" x="1184" y="1106.67">
+   <point/>
+  </object>
+  <object id="5" name="farmer3" x="268" y="1107">
+   <point/>
+  </object>
+  <object id="7" name="farmer4" x="267" y="208">
+   <point/>
+  </object>
  </objectgroup>
  <objectgroup id="5" name="Trash">
   <object id="200" name="Trash1" type="Trash" x="1053.33" y="1177.33">

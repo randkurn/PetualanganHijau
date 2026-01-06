@@ -131,7 +131,7 @@ public class TehDila extends Entity {
             dialog.showDialog(sm.getDialog("tehdila_intro_1"), "Teh Dila", () -> {
                 dialog.showDialog(sm.getDialog("tehdila_intro_2"), "Teh Dila", () -> {
                     dialog.showDialog(sm.getDialog("tehdila_intro_3"), "Teh Dila", () -> {
-                        if (gamePanel.player.inventory.addItem("Bibit Pohon", 3, seedIcon)) {
+                        if (gamePanel.player.inventory.addItem("Bibit Pohon", 1, seedIcon)) {
                             gamePanel.tehDilaGiftGiven = true;
                             showShop(dialog);
                         } else {

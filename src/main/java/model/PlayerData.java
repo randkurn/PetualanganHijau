@@ -24,6 +24,10 @@ public class PlayerData {
     public boolean chapter2Active;
     public boolean chapter2Finished;
     public boolean chapter3Active;
+    public boolean chapter4Active;
+    public boolean chapter4Complete;
+    public boolean chapter5Active;
+    public boolean gameCompleted;
     public boolean tehDilaGiftGiven;
     public int chapter1TrashCount;
     public int chapter2TrashCount;

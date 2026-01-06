@@ -33,7 +33,11 @@ public class GamePanel extends JPanel implements Runnable {
     Settings settings = Settings.getInstance();
     public InputManager inputM = new InputManager(this);
     Thread gameThread;
-    public UIManager uiM = new UIManager(this);
+    public UIManager uiM;
+
+    // Minigames
+    public view.DrainageMinigame drainageMinigame;
+    public view.RiverCatchMinigame riverMinigame;
     public StateManager stateM = new StateManager(this);
     public TimeManager timeM = TimeManager.getInstance();
     public NPCManager npcM = new NPCManager(this);
@@ -58,8 +62,13 @@ public class GamePanel extends JPanel implements Runnable {
     public int chapter1TrashCount = 0;
     public boolean chapter2Active = false;
     public int chapter2TrashCount = 0;
+    // Chapter progression flags
     public boolean chapter2Finished = false;
     public boolean chapter3Active = false;
+    public boolean chapter4Active = false;
+    public boolean chapter4Complete = false;
+    public boolean chapter5Active = false;
+    public boolean gamecompleted = false;
     public int chapter3TrashCount = 0;
     public boolean tehDilaGiftGiven = false;
     public List<PlantedTreeData> plantedTrees = new ArrayList<>();
@@ -78,6 +87,11 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(inputM.getCurrentInput());
         this.setFocusable(true);
+
+        // Initialize UIManager and Minigames
+        uiM = new UIManager(this);
+        drainageMinigame = new view.DrainageMinigame(this);
+        riverMinigame = new view.RiverCatchMinigame(this);
     }
 
     protected void setupGame() {
@@ -176,11 +190,19 @@ public class GamePanel extends JPanel implements Runnable {
             lastTime = currentTime;
 
             if (delta >= 1) {
-                updateSleepTransition();
-                updateExhaustion();
-                updatePlantingTransition();
-                portalSystem.update();
-                stateM.update();
+                // Update minigames first - if active, skip other updates
+                if (drainageMinigame != null && drainageMinigame.isActive()) {
+                    drainageMinigame.update();
+                } else if (riverMinigame != null && riverMinigame.isActive()) {
+                    riverMinigame.update();
+                } else {
+                    // Normal game updates only if no minigame active
+                    updateSleepTransition();
+                    updateExhaustion();
+                    updatePlantingTransition();
+                    portalSystem.update();
+                    stateM.update();
+                }
                 repaint();
                 delta--;
             }
@@ -205,6 +227,13 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Draw portal loading screen on top of other transitions
         portalSystem.draw(graphic2);
+
+        // Draw minigames on top of everything (except debug)
+        if (drainageMinigame != null && drainageMinigame.isActive()) {
+            drainageMinigame.draw(graphic2);
+        } else if (riverMinigame != null && riverMinigame.isActive()) {
+            riverMinigame.draw(graphic2);
+        }
 
         // Draw debug overlay on top of everything
         debugOverlay.draw(graphic2);
@@ -242,13 +271,33 @@ public class GamePanel extends JPanel implements Runnable {
                 player.restoreEnergy(player.maxEnergy);
 
                 // If Chapter 2 is finished, start Chapter 3 next to the bed
-                if (chapter2Finished && !chapter3Active) {
+                if (chapter2Finished && !chapter3Active && !chapter4Active && !chapter5Active) {
                     chapter3Active = true;
                     mapM.changeToAreaWithoutRespawn(5); // Player Room
                     player.worldX = 7 * tileSize;
                     player.worldY = 4 * tileSize;
                     player.direction = "down";
-                    uiM.showMessage("Chapter 3 Dimulai: Hari Baru, Semangat Baru!");
+
+                    // Trigger Chapter 3 opening cutscene after wake up
+                    csM.setPhase(1000); // Chapter 3 opening phase
+                }
+                // If Chapter 3 objectives all complete, trigger ending then Ch4
+                else if (chapter3Active && allChapter3ObjectivesComplete()) {
+                    // Player stays in room, trigger Chapter 3 ending cutscene
+                    csM.setPhase(2000); // Chapter 3 ending phase
+                    // Ch3 ending will transition to Ch4
+                }
+                // If Chapter 4 complete, trigger Chapter 5
+                else if (chapter4Complete && !chapter5Active) {
+                    chapter4Active = false;
+                    chapter5Active = true;
+                    mapM.changeToAreaWithoutRespawn(5); // Player Room
+                    player.worldX = 7 * tileSize;
+                    player.worldY = 5 * tileSize; // Below bed, not above
+                    player.direction = "down";
+
+                    // Trigger Chapter 5 opening
+                    csM.setPhase(2200); // Chapter 5 opening phase
                 } else {
                     uiM.showMessage("Hari baru dimulai!");
                 }
@@ -494,7 +543,16 @@ public class GamePanel extends JPanel implements Runnable {
         player.speed = 4;
         player.direction = "down";
 
-        // Reset cutscene manager
+        // Initialize managers
+        // This section is assumed to be part of a constructor or init method,
+        // but the instruction's context implies it should be placed here.
+        // If this is not the intended location, please clarify.
+        // uiM = new UIManager(this); // This line is not present in forceUnlock in the
+        // original document
+
+        // Initialize minigames
+        drainageMinigame = new view.DrainageMinigame(this);
+        riverMinigame = new view.RiverCatchMinigame(this);
         csM.reset();
 
         // Clear any active UI/Dialogs
@@ -503,5 +561,47 @@ public class GamePanel extends JPanel implements Runnable {
         uiM.getPlayScreen().resetMessage();
 
         uiM.showMessage("SAFETY: Player movement force-unlocked.");
+    }
+
+    // ==========================================
+    // INPUT HELPER METHODS FOR MINIGAMES
+    // ==========================================
+    public boolean isKeyPressed(String key) {
+        return switch (key.toLowerCase()) {
+            case "left", "a" -> inputM.getPlayInput().left;
+            case "right", "d" -> inputM.getPlayInput().right;
+            case "up", "w" -> inputM.getPlayInput().up;
+            case "down", "s" -> inputM.getPlayInput().down;
+            case "space" -> inputM.getPlayInput().toolUse;
+            case "enter" -> inputM.getPlayInput().enter;
+            default -> false;
+        };
+    }
+
+    public void resetKey(String key) {
+        switch (key.toLowerCase()) {
+            case "left", "a" -> inputM.getPlayInput().left = false;
+            case "right", "d" -> inputM.getPlayInput().right = false;
+            case "up", "w" -> inputM.getPlayInput().up = false;
+            case "down", "s" -> inputM.getPlayInput().down = false;
+            case "space" -> inputM.getPlayInput().toolUse = false;
+            case "enter" -> inputM.getPlayInput().enter = false;
+        }
+    }
+
+    /**
+     * Check if all Chapter 3 objectives are complete
+     * Returns true if all 4 NPCs have been helped
+     */
+    public boolean allChapter3ObjectivesComplete() {
+        if (!chapter3Active)
+            return false;
+
+        boolean bismaHelped = (npcM.getBisma() != null && npcM.getBisma().hasInteracted());
+        boolean randyHelped = (npcM.getRandy() != null && npcM.getRandy().hasInteracted());
+        boolean khairulHelped = (npcM.getPakKhairul() != null && npcM.getPakKhairul().hasInteracted());
+        boolean jiaHelped = (npcM.getNengJia() != null && npcM.getNengJia().hasInteracted());
+
+        return bismaHelped && randyHelped && khairulHelped && jiaHelped;
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="2">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="3">
  <tileset firstgid="1" source="../tiles/tiles_from_game.tsx"/>
  <layer id="5" name="Tiles" width="50" height="50">
   <data encoding="csv">
@@ -55,6 +55,11 @@
 42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,42,41,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12
 </data>
  </layer>
+ <objectgroup id="6" name="NPC">
+  <object id="2" name="Randy" x="598.5" y="408.5">
+   <point/>
+  </object>
+ </objectgroup>
  <objectgroup id="3" name="Spawn">
   <object id="1" name="Spawn Atas" x="255" y="147.5" width="16" height="16"/>
   <object id="1" name="Spawn Bawah" x="720.25" y="735.25" width="16" height="16"/>
@@ -63,7 +68,7 @@
   <object id="222" name="Trash23" type="Trash" x="688" y="176">
    <point/>
   </object>
-  <object id="223" name="Trash24" type="Trash" x="299.5" y="164">
+  <object id="223" name="Trash24" type="Trash" x="543.5" y="436">
    <point/>
   </object>
   <object id="224" name="Trash25" type="Trash" x="192" y="192">
@@ -81,7 +86,7 @@
   <object id="228" name="Trash29" type="Trash" x="736" y="208">
    <point/>
   </object>
-  <object id="229" name="Trash30" type="Trash" x="292.5" y="191.5">
+  <object id="229" name="Trash30" type="Trash" x="573.5" y="448.5">
    <point/>
   </object>
   <object id="230" name="Trash31" type="Trash" x="689" y="358">

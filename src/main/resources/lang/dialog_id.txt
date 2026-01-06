@@ -16,6 +16,9 @@ panjul_after_sort_2: Kita harus mulai nanem pohon.
 panjul_advice_trees_1: Oke. Tapi ingat, jangan cuma mungut sampah aja...
 panjul_advice_trees_2: Kita juga harus mulai menanam pohon biar lingkungan makin hijau.
 panjul_find_dila: Coba cari Teh Dila di daerah selatan, dia jual bibit pohon. Samperin aja ke sana ya!
+panjul_ask_exchange: Mau setor sampah ke Bank Sampah?
+panjul_no_trash: Belum ada sampah yang bisa disetor. Coba kumpulin dulu ya!
+panjul_start_exchange: Oke, yuk kita pilah sampahnya sekarang!
 danu_exchange_done: Mantap! Totalnya jadi Rp %VALUE% ya.\\nUdah masuk saldo. Rajin-rajin ya sektor sampah ke sini!
 panjul_choice_1:Setor Sampah
 panjul_choice_2:Nanti Saja
@@ -35,30 +38,187 @@ bahlil_resp_b_2b: Sampahnya cuma pindah tempat doang.
 bahlil_choice_1: Iseng aja Pak, daripada gabut di rumah.
 bahlil_choice_2: Biar gak banjir lagi Pak, ngeri liat berita.
 
-tehdila_intro_1: Eh, ada pelanggan baru. Pasti disuruh si Panjul ya? Haha, tuh anak emang bawel.
-tehdila_intro_2: Nih, buat permulaan, Teteh kasih 3 bibit pohon gratis untukmu. 
-tehdila_intro_3: Mari hijaunkan kota kita!
+
+tehdila_intro_1: Eh, ada pelanggan baru. Cari apa, De?
+tehdila_intro_2: Oh, pasti disuruh si Panjul ya? Haha, tuh anak emang bawel kalo soal lingkungan.
+tehdila_intro_3: Nih, buat permulaan, Bapak kasih bibit Pohon Mahoni gratis satu.
 tehdila_welcome: Selamat datang! Mau beli bibit pohon? Harganya %VALUE% gold per bibit.
 tehdila_buy_confirm:Berhasil membeli 1 Bibit Pohon!
 tehdila_no_money:Uang tidak cukup! Butuh %VALUE% gold.
 tehdila_inv_full:Inventory penuh! Kosongkan dulu untuk menerima hadiah.
-tehdila_choice_1:Beli 1 Bibit Pohon (%VALUE% gold)
-tehdila_choice_2:Bagaimana cara menanamnya?
-tehdila_resp_1:Lho, jangan remehin satu pohon. Akarnya bisa nyerep ratusan liter air ujan.\\nKalo satu orang mulai, yang lain biasanya ikut.
-tehdila_resp_2:Gampang kok. Cari tanah kosong, gali dikit, masukin. Tapi inget ya...\\nJangan biarin ada sampah numpuk di deketnya. Nanti dia stres.
+tehdila_choice_1:Emang ngaruh ya Pak satu pohon doang?
+tehdila_choice_2:Oke Pak, makasih. Cara nanamnya gimana?
+tehdila_resp_1:Lho, jangan remehin satu pohon, De.\nSatu pohon ini kalo udah gede, akarnya bisa nyerep ratusan liter air ujan.\nKalo seribu orang mikir 'cuma satu gak ngaruh', ya gersang semua.\nTapi kalo satu orang mulai, yang lain biasanya ikut.
+tehdila_resp_2:Gampang kok. Cari tanah kosong, gali dikit, masukin.\nTapi inget satu hal penting ya...\nJangan biarin ada sampah numpuk di deket batangnya.\nKalo kotor, dia bakal 'stres', tumbuhnya lama atau malah mati.
 ch2_end_narrative: Langkah awal telah tertanam.\\nChapter 2 Selesai — \"Harapan mulai tumbuh.\"\\n\\nAchievement Unlocked: Tunas Harapan
 obj_panjul: LOKASI BARU TERBUKA: Panjul
 obj_tehdila: LOKASI BARU TERBUKA: Teh Dila\\nOBJEKTIF: Temui Teh Dila di Selatan
-obj_plant: OBJEKTIF: Tanam bibit Mahoni di area hijau dekat rumah.
+obj_plant: OBJEKTIF: Tanam bibit pohon pertamamu!
 achievement_unlocked: ACHIEVEMENT TERBUKA:
 ch1_narrative_1: Satu sampah diambil.
 ch1_narrative_2: Lalu yang lain.
 ch1_narrative_3: Pelan, tapi pasti.
 ch1_narrative_end: Halaman rumah kini tampak lebih bersih.\\nChapter 1 Selesai — \"Langkah kecil telah dimulai.\"
 ch2_title: Chapter 2: Jaringan Kebaikan
-ch2_monolog_1: Kecil banget ya ternyata... Tapi kata orang-orang tadi, ini awal dari sesuatu yang gede.
-ch2_monolog_2: Oke. Mulai besok, gue bakal pastiin tempat ini bersih biar dia bisa tumbuh.
-monolog_label: Monolog
+ch2_monolog_1: %PLAYER%: Kecil banget ya ternyata...
+ch2_monolog_2: %PLAYER%: Tapi kata orang-orang tadi, ini awal dari sesuatu yang gede.
+ch2_monolog_3: %PLAYER%: Oke. Mulai besok, gue bakal pastiin tempat ini bersih biar dia bisa tumbuh.
+ch2_narrative_1: Satu lubang digali.
+ch2_narrative_2: Satu bibit tertanam.
+ch2_narrative_3: Bumi mulai bernapas kembali.
+ch2_end_narrative: Chapter 2 Selesai — "Jaringan Kebaikan"
+monolog_label: %PLAYER%
 system_label: Sistem
 tutorial_move: TUTORIAL: Gerak [WASD].\\nInteraksi [E]
 choice_label: Pilih Jawabanmu:
+
+ch3_title: Chapter 3: Neraca Alam
+ch3_start_monolog_1: Gila, merah semua.
+ch3_start_monolog_2: Kalau cuma bersihin depan rumah, gak bakal kekejar.
+ch3_start_monolog_3: Gue harus muter satu kota hari ini. Mulai dari pusat kota dulu deh.
+
+bisma_greeting_1: Duh elah... baru juga beli sepatu limited edition, udah kecipratan air got.
+bisma_greeting_2: Eh, lu yang viral kemarin kan? Bantuin dong, Bro/Sis.
+bisma_problem: Drainase mampet parah nih. Orang-orang buang puntung rokok sama gelas kopi sembarangan banget.
+bisma_thanks_1: Nah, lancar jaya! Thanks ya. Nih buat beli minum.
+bisma_thanks_2: Kalo kota banjir, tongkrongan gue bubar semua soalnya. Balik dulu ah!
+
+randy_greeting: Woy elah! Tarikannya berat, kirain dapet Lele Dumbo...
+randy_surprise: ...malah dapet Lele Plastik.
+randy_complaint_1: Bro, lu liat gak tadi? Ada orang pake hoodie item lari lewat sini. Kayaknya dia yang buang ginian.
+randy_complaint_2: Gara-gara sampah, ikan pada kabur. Bantuin bersihin sungai dong, gue pinjemin jaring.
+randy_thanks: Mantap! Airnya mendingan sekarang. Thanks Bro, lumayan bisa mancing lagi.
+
+khairul_greeting: Assalamu'alaikum, Nak.
+khairul_problem_1: Liat tanah Bapak... kering pecah-pecah. Ujan jarang turun, sekalinya turun malah bawa sampah dari kota.
+khairul_problem_2: Padi Bapak jadi kerdil. Tanah ini butuh pengikat air.
+khairul_choice_1: Saya punya bibit pohon Pak, boleh saya tanam di sini?
+khairul_choice_2: Sabar ya Pak, nanti saya bersihin irigasinya.
+khairul_response: Alhamdulillah... Tanamlah di pematang sawah itu. Biar akarnya nahan air, jadi sawah Bapak gak gersang lagi.
+
+jia_greeting: Ih, sebel banget deh...
+jia_complaint_1: Masa mau duduk aja harus geser-geser sampah bekas orang pacaran.
+jia_complaint_2: Tuh liat, di bunga-bunga banyak plastik nyangkut. Kasian bunganya jadi layu.
+jia_thanks: Wah, makasih ya Kak! Sekarang Neng Jia bisa foto-foto lagi dengan estetik tanpa background sampah. Semangat ya!
+
+ch3_ariel_chase_1: Woy! Jangan buang di situ!
+ch3_ariel_chase_2: Sial... cepet banget ilangnya.
+ch3_ariel_chase_3: Jadi dia biang keroknya? Pantesan Randy tadi marah-marah.
+ch3_ariel_chase_4: Itu Ariel... temen sekelas gue dulu bukan sih? Kok gayanya mirip...
+
+ch3_end_monolog_1: Hari ini ketemu banyak orang. Masalahnya bukan cuma di sampah, tapi kebiasaan.
+ch3_end_monolog_2: Dan ada satu orang misterius yang sengaja ngerusak semuanya. Tunggu aja besok, bakal gue cari tau.
+ch3_end_narrative: Chapter 3 Selesai — \"Neraca Alam\"
+
+minigame_drain_title: Bersihkan Drainase
+minigame_drain_desc: Klik tumpukan sampah yang menyumbat saluran air!
+minigame_drain_target: Target: 0/5 Sampah terangkat
+minigame_drain_complete: Drainase Lancar!
+
+minigame_river_title: River Catch
+ch3_end_monolog_1: Hari ini ketemu banyak orang. Masalahnya bukan cuma di sampah, tapi kebiasaan.
+ch3_end_monolog_2: Dan ada satu orang misterius yang sengaja ngerusak semuanya. Tunggu aja besok, bakal gue cari tau.
+ch3_end_narrative_1: Satu kota telah disusuri.
+ch3_end_narrative_2: Satu demi satu sampah pergi.
+ch3_end_narrative_3: Harapan baru tumbuh di sela beton mati.
+
+minigame_river_desc: Tangkap sampah sebelum lewat. Jangan tangkap ikan!
+minigame_river_target: Target: Tangkap 10 Sampah
+minigame_river_complete: Sungai Bersih!
+minigame_drain_title: PEMBERSIHAN DRAINASE
+minigame_drain_desc: Angkat sampah yang menyumbat drainase!
+minigame_drain_complete: Drainase Lancar!
+
+reward_gold: Gold +%VALUE%
+reward_fish: Ikan Segar (+20 Energi)
+reward_flower: Bibit Bunga
+objective_plant_trees: OBJEKTIF: Tanam 3 Bibit Pohon di sawah
+objective_clean_park: OBJEKTIF: Pungut 8 Sampah Plastik di taman
+info_hidden_trash: Info: Titik Sampah Tersembunyi muncul di Mini-map
+
+# CHAPTER 4 - PERINGATAN BADAI
+ch4_panjul_call_1: Halo Bro! Gawat nih!
+ch4_panjul_call_2: BMKG barusan rilis info, sore ini bakal ada badai super.
+ch4_panjul_call_3: Sistem Enviro-Meter deteksi lonjakan sampah di Hulu Sungai!
+ch4_panjul_call_4: Ada yang buang sampah segunung di sana! Kalo hanyut ke kota, mampet total!
+ch4_quest_update: Pergi ke Fishing Area - Tangkap pelaku - Cegah sumbatan fatal
+
+ch4_randy_chase: Woy! Itu dia orangnya, Bro! Kejar! Dia mau buang karung ke bendungan!
+ch4_chase_prompt: Tekan SPACE untuk menangkap!
+
+ch4_ariel_caught_1: Lepasin! Gue cuma mau beresin gudang bokap gue!
+ch4_ariel_caught_2: Gak ada tempat buang sampah yang murah!
+ch4_panjul_confront_1: Riel, lu tau gak? Sampah lu bisa bikin kita tenggelam sore ini.
+ch4_panjul_confront_2: Liat indikator ini! Sampah kota udah kritis di angka 85%!
+ch4_ariel_realize: Gue... gue gak mikir sampe situ. Maafin gue, Bang.
+
+ch4_panjul_urgent_1: Udah gak ada waktu buat minta maaf! Air udah naik!
+ch4_panjul_urgent_2: Kalau kita gak turunin volume sampah sampe 50% sekarang juga, drainase bakal jebol!
+ch4_ariel_help: Oke, gue bantuin! Gue angkutin yang gede-gede!
+ch4_panjul_player: Lu sikat yang kecil-kecil di jalanan! Cepet!
+
+ch4_cleanup_start: Misi: Turunkan Enviro-Meter Sampah hingga 50% dalam waktu 3 menit!
+ch4_cleanup_success: Drainase Aman Sementara!
+
+ch4_panjul_relief_1: Huh... Oke. Kita berhasil nahan di angka 50%.
+ch4_panjul_relief_2: Airnya lancar, gak jadi meluap sekarang.
+ch4_ariel_question: Berarti udah aman kan?
+ch4_panjul_warning_1: Belum, Riel. Ini baru pemanasan.
+ch4_panjul_warning_2: Prediksi BMKG, Puncak Badai yang beneran bakal dateng besok.
+ch4_panjul_warning_3: Angka 50% gak bakal cukup buat nahan badai besok.
+ch4_panjul_ultimatum: Besok adalah kesempatan terakhir. Lu harus bikin kota ini bener-bener bersih (Zona Hijau).
+
+ch4_monolog_end_1: Untung tadi sempet keburu 50%. Kalau enggak, mungkin malam ini gue udah ngungsi.
+ch4_monolog_end_2: Tapi besok... tantangannya bakal jauh lebih gila.
+
+ch4_narrative_1: Langit marah, memberi tanda.
+ch4_narrative_2: Waktu menipis, tersisa doa.
+ch4_narrative_3: Esok hari, nasib kota dipertaruhkan.
+
+# CHAPTER 5 - TITIK NADIR
+ch5_ibu_worried_1: Hujannya ngeri banget, Nak...
+ch5_ibu_worried_2: Air selokan depan udah mulai meluap. Ibu takut banjirnya masuk rumah.
+ch5_monolog_start_1: Tenang, Bu. Aku gak bakal biarin air masuk.
+ch5_monolog_start_2: Hari ini penentuan. Aku harus ngejar target Panjul.
+
+ch5_panjul_briefing_1: Akhirnya bangun juga lu! Liat tuh air!
+ch5_ariel_ready_1: Bro, gue udah siap nebus dosa. Gue bawa gerobak bokap.
+ch5_ariel_ready_2: Lu fokus mungut sama nanam pohon, biar gue yang angkut ke Bank Sampah.
+ch5_panjul_briefing_2: Dengerin gue. Target kita hari ini berat.
+ch5_panjul_target: Turunin sampah sampe di bawah 30% dan nambah pohon minimal jadi 15 batang!
+ch5_panjul_warning: Kalau gagal... Malem ini kita ngungsi.
+
+ch5_objective_main: Capai Zona Hijau (Sampah < 30%, Pohon > 15)
+ch5_ariel_assist: Ariel's Assist: Kapasitas Inventori Sampah = UNLIMITED
+ch5_adrenaline: Adrenaline Rush: Movement Speed +20%
+
+ch5_bisma_help: Woy! Jangan kasih kendor! Gue bantu bersihin sumbatan sini!
+ch5_jia_help: Kakak semangat! Jia bantu pungutin plastik di taman!
+ch5_panjul_radio: Waktu tinggal dikit lagi! Statistik di 35%... Ayo tekan terus!
+
+ch5_panjul_final_1: Waktu habis...
+ch5_panjul_final_2: Badai puncak dateng.
+
+# BAD ENDING
+ch5_bad_panjul_1: Gagal... Kita telat, Bro.
+ch5_bad_panjul_2: Airnya gak ketahan.
+ch5_bad_narrative_1: Alam sudah memberi peringatan berkali-kali.
+ch5_bad_narrative_2: Namun kita terlambat untuk peduli.
+ch5_bad_gameover: GAME OVER
+
+# GOOD ENDING
+ch5_good_ariel: Liat! Airnya... airnya gak naik lagi!
+ch5_good_panjul_1: GRAFIKNYA HIJAU!
+ch5_good_panjul_2: Sistem drainase berfungsi 100%! Tanah resapan bekerja!
+ch5_good_panjul_3: Kita selamat, Woy! Kota kita selamat!
+ch5_good_ariel_thanks: Makasih ya, Bro. Lu udah ngajarin gue arti tanggung jawab.
+
+ch5_narrative_1: Hujan boleh turun deras.
+ch5_narrative_2: Tapi tekad untuk berubah, jauh lebih kuat.
+ch5_narrative_3: Terima kasih, Pahlawan Lingkungan.
+
+credits_developer: Developer: Tim Petualangan Hijau
+credits_story: Story by: Environmental Heroes
+credits_thanks: Special Thanks: Panjul, Ariel, Ibu, & Alam Semesta
+credits_end: THE END
+

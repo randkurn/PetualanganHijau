@@ -108,6 +108,10 @@ public class SaveManager {
         playerData.chapter2Active = gp.chapter2Active;
         playerData.chapter2Finished = gp.chapter2Finished;
         playerData.chapter3Active = gp.chapter3Active;
+        playerData.chapter4Active = gp.chapter4Active;
+        playerData.chapter4Complete = gp.chapter4Complete;
+        playerData.chapter5Active = gp.chapter5Active;
+        playerData.gameCompleted = gp.gamecompleted;
         playerData.tehDilaGiftGiven = gp.tehDilaGiftGiven;
         playerData.chapter1TrashCount = gp.chapter1TrashCount;
         playerData.chapter2TrashCount = gp.chapter2TrashCount;
@@ -129,8 +133,9 @@ public class SaveManager {
         data.currentAreaIndex = gp.mapM.getCurrentAreaIndex();
 
         saveGame(data, slot);
-        System.out.println("[SaveManager] Saved - Chapter1: " + gp.chapter1Active + ", Chapter2: " + gp.chapter2Active
-                + ", Trash collected: " + playerData.collectedTrash.size());
+        System.out.println("[SaveManager] Saved - Ch1: " + gp.chapter1Active + ", Ch2: " + gp.chapter2Active
+                + ", Ch3: " + gp.chapter3Active + ", Ch4: " + gp.chapter4Active + ", Ch5: " + gp.chapter5Active
+                + ", Trash: " + playerData.collectedTrash.size());
     }
 
     public void loadGame(GamePanel gp) {
@@ -194,11 +199,17 @@ public class SaveManager {
             gp.chapter2Active = data.player.chapter2Active;
             gp.chapter2Finished = data.player.chapter2Finished;
             gp.chapter3Active = data.player.chapter3Active;
+            gp.chapter4Active = data.player.chapter4Active;
+            gp.chapter4Complete = data.player.chapter4Complete;
+            gp.chapter5Active = data.player.chapter5Active;
+            gp.gamecompleted = data.player.gameCompleted;
 
             // Fix: If loading a save where Chapter 2 just finished but Chapter 3 hasn't
             // started (e.g. saved during sleep transition)
             // Immediately activate Chapter 3 and place player in their room.
-            if (gp.chapter2Finished && !gp.chapter3Active) {
+            if (gp.chapter2Finished && !gp.chapter3Active && !gp.chapter4Active && !gp.chapter5Active) {
+                gp.chapter1Active = false;
+                gp.chapter2Active = false;
                 gp.chapter3Active = true;
                 gp.mapM.changeToAreaWithoutRespawn(5); // Player Room
                 gp.player.worldX = 7 * gp.tileSize;
@@ -226,8 +237,9 @@ public class SaveManager {
                 gp.plantedTrees = data.player.plantedTrees;
             }
 
-            System.out.println("[SaveManager] Loaded - Chapter1: " + gp.chapter1Active + ", Chapter2: "
-                    + gp.chapter2Active + ", Trash collected: " + gp.player.getCollectedTrash().size());
+            System.out.println("[SaveManager] Loaded - Ch1: " + gp.chapter1Active + ", Ch2: " + gp.chapter2Active
+                    + ", Ch3: " + gp.chapter3Active + ", Ch4: " + gp.chapter4Active + ", Ch5: " + gp.chapter5Active
+                    + ", Trash: " + gp.player.getCollectedTrash().size());
         }
 
         if (data.time != null) {

@@ -671,16 +671,14 @@ public class CutsceneManager {
                 gp.player.onPath = false;
 
                 gp.stateM.setCurrentState(StateManager.gameState.PLAY);
-                gp.uiM.showMessage("LOKASI BARU TERBUKA: Teh Dila\nOBJEKTIF: Temui Teh Dila di Selatan");
+                gp.uiM.showMessage("OBJEKTIF: Temui Penjual Bibit di Selatan");
 
                 // Spawn Teh Dila if not already there
                 if (gp.npcM.getTehDila() == null) {
                     gp.npcM.spawnTehDila(26 * gp.tileSize, 58 * gp.tileSize);
                 }
 
-                // We set phase to a waiting state for when player reaches Bu Suci
-                // or just end it if Teh Dila interaction is handled separately.
-                // For now, let's transition to phase 38 to wait for player.
+                // Wait for player to reach seed seller
                 phase = 38;
                 counter = 0;
                 break;
@@ -712,8 +710,8 @@ public class CutsceneManager {
                     gp.player.speed = 0;
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getPlayScreen().showDialog(
-                            StoryManager.getInstance().getDialog("tehdila_intro"),
-                            "Teh Dila");
+                            StoryManager.getInstance().getDialog("tehdila_intro_1"),
+                            "Penjual Bibit");
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
                     phase = 46;
@@ -726,8 +724,22 @@ public class CutsceneManager {
                 if (counter == 1) {
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getPlayScreen().showDialog(
-                            StoryManager.getInstance().getDialog("tehdila_welcome").replace("%VALUE%", "10"),
-                            "Teh Dila");
+                            StoryManager.getInstance().getDialog("tehdila_intro_2"),
+                            "Penjual Bibit");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 461;
+                    counter = 0;
+                }
+                break;
+
+            case 461: // Third intro
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("tehdila_intro_3"),
+                            "Penjual Bibit");
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
                     java.awt.image.BufferedImage treeIcon = null;
@@ -746,10 +758,10 @@ public class CutsceneManager {
                 if (counter == 1) {
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getDialogBox().showDialogWithChoices(
-                            "Responmu:",
-                            "Pemain",
+                            StoryManager.getInstance().getDialog("choice_label"),
+                            "",
                             new String[] {
-                                    StoryManager.getInstance().getDialog("tehdila_choice_1").replace("%VALUE%", "10"),
+                                    StoryManager.getInstance().getDialog("tehdila_choice_1"),
                                     StoryManager.getInstance().getDialog("tehdila_choice_2")
                             },
                             (idx, txt) -> currentBranch = (idx == 0) ? "A" : "B");
@@ -767,7 +779,7 @@ public class CutsceneManager {
                             ? StoryManager.getInstance().getDialog("tehdila_resp_1")
                             : StoryManager.getInstance().getDialog("tehdila_resp_2");
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
-                    gp.uiM.getPlayScreen().showDialog(resp, "Teh Dila");
+                    gp.uiM.getPlayScreen().showDialog(resp, "Penjual Bibit");
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
                     gp.player.speed = 4;
@@ -785,14 +797,14 @@ public class CutsceneManager {
                 }
                 break;
 
-            case 50:
+            case 50: // First monolog - after planting
                 counter++;
                 if (counter == 1) {
                     gp.player.speed = 0;
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getPlayScreen().showDialog(
                             StoryManager.getInstance().getDialog("ch2_monolog_1"),
-                            gp.player.getPlayerName());
+                            StoryManager.getInstance().getDialog("monolog_label"));
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
                     phase = 501;
@@ -800,13 +812,27 @@ public class CutsceneManager {
                 }
                 break;
 
-            case 501:
+            case 501: // Second monolog
                 counter++;
                 if (counter == 1) {
                     gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
                     gp.uiM.getPlayScreen().showDialog(
                             StoryManager.getInstance().getDialog("ch2_monolog_2"),
-                            gp.player.getPlayerName());
+                            StoryManager.getInstance().getDialog("monolog_label"));
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 502;
+                    counter = 0;
+                }
+                break;
+
+            case 502: // Third monolog
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch2_monolog_3"),
+                            StoryManager.getInstance().getDialog("monolog_label"));
                 }
                 if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
                     phase = 51;
@@ -814,13 +840,47 @@ public class CutsceneManager {
                 }
                 break;
 
-            case 51:
+            case 51: // Narrative 1 - Fade to black
                 counter++;
                 if (counter == 1) {
                     fullBlack = true;
+                    narrativeText = StoryManager.getInstance().getDialog("ch2_narrative_1");
+                }
+                if (counter > 100) {
+                    phase = 52;
+                    counter = 0;
+                }
+                break;
+
+            case 52: // Narrative 2
+                counter++;
+                if (counter == 1) {
+                    narrativeText = StoryManager.getInstance().getDialog("ch2_narrative_2");
+                }
+                if (counter > 100) {
+                    phase = 53;
+                    counter = 0;
+                }
+                break;
+
+            case 53: // Narrative 3
+                counter++;
+                if (counter == 1) {
+                    narrativeText = StoryManager.getInstance().getDialog("ch2_narrative_3");
+                }
+                if (counter > 120) {
+                    phase = 54;
+                    counter = 0;
+                }
+                break;
+
+            case 54: // End narrative
+                counter++;
+                if (counter == 1) {
                     narrativeText = StoryManager.getInstance().getDialog("ch2_end_narrative");
                 }
-                if (counter > 240) { // Sekitar 4 detik
+                if (counter > 180) {
+                    AchievementManager.getInstance(gp).unlockAchievement("Tunas Harapan", "Menanam pohon pertama.");
                     phase = 0;
                     counter = 0;
                     narrativeText = "";
@@ -849,6 +909,165 @@ public class CutsceneManager {
                     phase = 0;
                     counter = 0;
                     reset();
+                }
+                break;
+
+            // ========== CHAPTER 3 CUTSCENES ==========
+            case 1000: // Chapter 3 Opening - Title
+                counter++;
+                if (counter == 1) {
+                    fullBlack = true;
+                    gp.player.speed = 0;
+                    gp.stateM.setCurrentState(StateManager.gameState.CUTSCENE);
+                    narrativeText = StoryManager.getInstance().getDialog("ch3_title");
+                }
+                if (counter > 150) {
+                    narrativeText = "";
+                    phase = 1001;
+                    counter = 0;
+                }
+                break;
+
+            case 1001: // Wake up, check HP/Enviro-Meter
+                counter++;
+                if (counter == 1) {
+                    fullBlack = false;
+                    gp.player.speed = 0;
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch3_start_monolog_1"),
+                            StoryManager.getInstance().getDialog("monolog_label"));
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 1002;
+                    counter = 0;
+                }
+                break;
+
+            case 1002: // Second monolog
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch3_start_monolog_2"),
+                            StoryManager.getInstance().getDialog("monolog_label"));
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 1003;
+                    counter = 0;
+                }
+                break;
+
+            case 1003: // Third monolog
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch3_start_monolog_3"),
+                            StoryManager.getInstance().getDialog("monolog_label"));
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 0;
+                    counter = 0;
+                    // Show objective to go to city
+                    gp.uiM.showMessage("OBJEKTIF: Pergi ke area Kota\nIkuti jalan besar di sebelah kanan!");
+                    gp.npcM.spawnChapter3NPCs();
+                    gp.stateM.setCurrentState(StateManager.gameState.PLAY);
+                    reset();
+                }
+                break;
+
+            // ======================
+            // CHAPTER 3 ENDING
+            // ======================
+            case 2000: // Ending Monolog 1
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch3_end_monolog_1"),
+                            StoryManager.getInstance().getDialog("monolog_label"));
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2001;
+                    counter = 0;
+                }
+                break;
+
+            case 2001: // Ending Monolog 2
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch3_end_monolog_2"),
+                            StoryManager.getInstance().getDialog("monolog_label"));
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2002;
+                    counter = 0;
+                }
+                break;
+
+            case 2002: // Ending Narrative 1
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch3_end_narrative_1"));
+                }
+                if (counter > 180) { // 3 seconds
+                    phase = 2003;
+                    counter = 0;
+                }
+                break;
+
+            case 2003: // Ending Narrative 2
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch3_end_narrative_2"));
+                }
+                if (counter > 180) {
+                    phase = 2004;
+                    counter = 0;
+                }
+                break;
+
+            case 2004: // Ending Narrative 3
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch3_end_narrative_3"));
+                }
+                if (counter > 180) {
+                    phase = 2005;
+                    counter = 0;
+                }
+                break;
+
+            case 2005: // Chapter 3 Complete - Transition to Ch4
+                counter++;
+                if (counter == 1) {
+                    // Chapter 3 complete!
+                    gp.chapter3Active = false;
+                    gp.chapter4Active = true;
+
+                    // Set player position to safe spot beside bed (tile 7, 6)
+                    gp.player.worldX = 7 * gp.tileSize;
+                    gp.player.worldY = 6 * gp.tileSize;
+                    gp.player.direction = "down";
+
+                    gp.uiM.showMessage("Chapter 3 Selesai — \"Neraca Alam\"");
+                    gp.uiM.showMessage("Chapter 4 Dimulai: Peringatan Badai...");
+                }
+                if (counter > 180) {
+                    // For now, just enable play mode
+                    // Full Ch4 cutscene phases can be added later
+                    phase = 0;
+                    counter = 0;
+                    gp.stateM.setCurrentState(StateManager.gameState.PLAY);
+                    reset();
+
+                    // Show temporary message
+                    gp.uiM.showMessage("Chapter 4-5: Story continues... (Cutscenes in progress)");
+                    gp.uiM.showMessage("Play normally, plant trees, clean trash!");
+                    gp.uiM.showMessage("Sleep when ready to see ending!");
                 }
                 break;
         }

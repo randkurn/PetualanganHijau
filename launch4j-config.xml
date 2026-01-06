@@ -2,7 +2,7 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>C:\Users\Rand\Documents\NetBeansProjects\Untitled-Farm-Game-master\dist\PetualanganHijau_Aselole.jar</jar>
+  <jar>C:\Users\Rand\Documents\NetBeansProjects\Untitled-Farm-Game-master\target\petualangHijau-1.0.jar</jar>
   <outfile>C:\Users\Rand\Documents\NetBeansProjects\Untitled-Farm-Game-master\build\PetualanganHijau.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
@@ -18,23 +18,7 @@
     <path>%JAVA_HOME%;%PATH%</path>
     <requiresJdk>false</requiresJdk>
     <requires64Bit>false</requires64Bit>
-    <minVersion>21</minVersion>
+    <minVersion></minVersion>
     <maxVersion></maxVersion>
-    <initialHeapSize>512</initialHeapSize>
-    <maxHeapSize>2048</maxHeapSize>
   </jre>
-  <versionInfo>
-    <fileVersion>1.0.0.0</fileVersion>
-    <txtFileVersion>1.0.0.0</txtFileVersion>
-    <fileDescription>Petualangan Hijau - Environmental Adventure Game</fileDescription>
-    <copyright>2026 Kelompok 3 Aselole</copyright>
-    <productVersion>1.0.0.0</productVersion>
-    <txtProductVersion>1.0.0.0</txtProductVersion>
-    <productName>Petualangan Hijau</productName>
-    <companyName>Kelompok 3 Aselole</companyName>
-    <internalName>aselole</internalName>
-    <originalFilename>PetualanganHijau.exe</originalFilename>
-    <trademarks></trademarks>
-    <language>ENGLISH_US</language>
-  </versionInfo>
 </launch4jConfig>

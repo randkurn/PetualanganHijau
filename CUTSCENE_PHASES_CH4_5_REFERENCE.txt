@@ -1,0 +1,783 @@
+// CHAPTER 4, 5, AND ENDINGS CUTSCENE PHASES
+// Add this at the end of the switch statement in CutsceneManager.java update() method
+// Insert before the closing braces of the switch
+
+            // ======================
+            // CHAPTER 3 ENDING → CHAPTER 4 TRANSITION
+            // ======================
+            case 2005: // Chapter 3 Complete - Transition to Ch4
+                counter++;
+                if (counter == 1) {
+                    // Chapter 3 complete!
+                    gp.chapter3Active = false;
+                    gp.chapter4Active = true;
+                    gp.uiM.showMessage("Chapter 3 Selesai — \"Neraca Alam\"");
+                }
+                if (counter > 120) { // 2 seconds
+                    phase = 2100; // Start Chapter 4
+                    counter = 0;
+                }
+                break;
+
+            // ======================
+            // CHAPTER 4 - PERINGATAN BADAI
+            // ======================
+            case 2100: // Ch4 Start - Phone Call from Panjul
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_panjul_call_1"),
+                            "Panjul (HP)");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2101;
+                    counter = 0;
+                }
+                break;
+
+            case 2101: // Panjul explains the danger
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_panjul_call_2"),
+                            "Panjul (HP)");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2102;
+                    counter = 0;
+                }
+                break;
+
+            case 2102: // Panjul urgent message
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_panjul_call_3") + " " +
+                            StoryManager.getInstance().getDialog("ch4_panjul_call_4"),
+                            "Panjul (HP)");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2103;
+                    counter = 0;
+                }
+                break;
+
+            case 2103: // Quest update  
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch4_quest_update"));
+                }
+                if (counter > 120) {
+                    phase = 2104;
+                    counter = 0;
+                }
+                break;
+
+            case 2104: // Auto-travel to Fishing Area
+                counter++;
+                if (counter == 1) {
+                    gp.mapM.changeToAreaWithoutRespawn(4); // Fishing area
+                    gp.player.worldX = 10 * gp.tileSize;
+                    gp.player.worldY = 10 * gp.tileSize;
+                }
+                if (counter > 60) {
+                    phase = 2105;
+                    counter = 0;
+                }
+                break;
+
+            case 2105: // Randy warns about Ariel
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_randy_chase"),
+                            "Randy");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2106;
+                    counter = 0;
+                }
+                break;
+
+            case 2106: // Chase scene (simplified - just message)
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch4_chase_prompt"));
+                }
+                if (counter > 180) { // 3 seconds
+                    phase = 2107;
+                    counter = 0;
+                }
+                break;
+
+            case 2107: // Travel to City (caught Ariel)
+                counter++;
+                if (counter == 1) {
+                    gp.mapM.changeToAreaWithoutRespawn(3); // City
+                    gp.player.worldX = 15 * gp.tileSize;
+                    gp.player.worldY = 15 * gp.tileSize;
+                }
+                if (counter > 60) {
+                    phase = 2108;
+                    counter = 0;
+                }
+                break;
+
+            case 2108: // Ariel caught
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_ariel_caught_1") + " " +
+                            StoryManager.getInstance().getDialog("ch4_ariel_caught_2"),
+                            "Ariel");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2109;
+                    counter = 0;
+                }
+                break;
+
+            case 2109: // Panjul confronts Ariel
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_panjul_confront_1"),
+                            "Panjul");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2110;
+                    counter = 0;
+                }
+                break;
+
+            case 2110: // Panjul shows meter
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_panjul_confront_2"),
+                            "Panjul");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2111;
+                    counter = 0;
+                }
+                break;
+
+            case 2111: // Ariel realizes
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_ariel_realize"),
+                            "Ariel");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2112;
+                    counter = 0;
+                }
+                break;
+
+            case 2112: // Panjul urgent
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_panjul_urgent_1") + " " +
+                            StoryManager.getInstance().getDialog("ch4_panjul_urgent_2"),
+                            "Panjul");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2113;
+                    counter = 0;
+                }
+                break;
+
+            case 2113: // Ariel offers help
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_ariel_help"),
+                            "Ariel");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2114;
+                    counter = 0;
+                }
+                break;
+
+            case 2114: // Cleanup event start
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch4_cleanup_start"));
+                    // Simulate cleanup by just showing countdown
+                }
+                if (counter > 180) { // 3 seconds (simulating 3 minute cleanup)
+                    phase = 2115;
+                    counter = 0;
+                }
+                break;
+
+            case 2115: // Cleanup success
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch4_cleanup_success"));
+                }
+                if (counter > 120) {
+                    phase = 2116;
+                    counter = 0;
+                }
+                break;
+
+            case 2116: // Panjul relief
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_panjul_relief_1") + " " +
+                            StoryManager.getInstance().getDialog("ch4_panjul_relief_2"),
+                            "Panjul");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2117;
+                    counter = 0;
+                }
+                break;
+
+            case 2117: // Ariel questions
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_ariel_question"),
+                            "Ariel");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2118;
+                    counter = 0;
+                }
+                break;
+
+            case 2118: // Panjul warning
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_panjul_warning_1") + " " +
+                            StoryManager.getInstance().getDialog("ch4_panjul_warning_2") + " " +
+                            StoryManager.getInstance().getDialog("ch4_panjul_warning_3"),
+                            "Panjul");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2119;
+                    counter = 0;
+                }
+                break;
+
+            case 2119: // Panjul ultimatum
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_panjul_ultimatum"),
+                            "Panjul");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2120;
+                    counter = 0;
+                }
+                break;
+
+            case 2120: // Return home
+                counter++;
+                if (counter == 1) {
+                    gp.mapM.changeToAreaWithoutRespawn(5); // Player room
+                    gp.player.worldX = 7 * gp.tileSize;
+                    gp.player.worldY = 4 * gp.tileSize;
+                }
+                if (counter > 60) {
+                    phase = 2121;
+                    counter = 0;
+                }
+                break;
+
+            case 2121: // Ending monolog 1
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_monolog_end_1"),
+                            StoryManager.getInstance().getDialog("monolog_label"));
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2122;
+                    counter = 0;
+                }
+                break;
+
+            case 2122: // Ending monolog 2
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch4_monolog_end_2"),
+                            StoryManager.getInstance().getDialog("monolog_label"));
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2123;
+                    counter = 0;
+                }
+                break;
+
+            case 2123: // Narrative 1
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch4_narrative_1"));
+                }
+                if (counter > 180) {
+                    phase = 2124;
+                    counter = 0;
+                }
+                break;
+
+            case 2124: // Narrative 2
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch4_narrative_2"));
+                }
+                if (counter > 180) {
+                    phase = 2125;
+                    counter = 0;
+                }
+                break;
+
+            case 2125: // Narrative 3
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch4_narrative_3"));
+                }
+                if (counter > 180) {
+                    phase = 2126;
+                    counter = 0;
+                }
+                break;
+
+            case 2126: // Complete Ch4, prepare for Ch5
+                counter++;
+                if (counter == 1) {
+                    gp.chapter4Complete = true;
+                    gp.uiM.showMessage("Chapter 4 Selesai — \"Peringatan Badai\"");
+                    gp.uiM.showMessage("Tidur untuk melanjutkan ke Chapter 5!");
+                }
+                if (counter > 120) {
+                    phase = 0;
+                    counter = 0;
+                    gp.stateM.setCurrentState(StateManager.gameState.PLAY);
+                    reset();
+                }
+                break;
+
+            // ======================
+            // CHAPTER 5 - TITIK NADIR
+            // ======================
+            case 2200: // Ch5 Start - Morning with Ibu
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch5_ibu_worried_1") + " " +
+                            StoryManager.getInstance().getDialog("ch5_ibu_worried_2"),
+                            "Ibu");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter >  1) {
+                    phase = 2201;
+                    counter = 0;
+                }
+                break;
+
+            case 2201: // Player monolog
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch5_monolog_start_1") + " " +
+                            StoryManager.getInstance().getDialog("ch5_monolog_start_2"),
+                            StoryManager.getInstance().getDialog("monolog_label"));
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2202;
+                    counter = 0;
+                }
+                break;
+
+            case 2202: // Outside - Panjul briefing
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch5_panjul_briefing_1"),
+                            "Panjul");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2203;
+                    counter = 0;
+                }
+                break;
+
+            case 2203: // Ariel ready to help
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch5_ariel_ready_1") + " " +
+                            StoryManager.getInstance().getDialog("ch5_ariel_ready_2"),
+                            "Ariel");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2204;
+                    counter = 0;
+                }
+                break;
+
+            case 2204: // Panjul target
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch5_panjul_briefing_2") + " " +
+                            StoryManager.getInstance().getDialog("ch5_panjul_target"),
+                            "Panjul");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2205;
+                    counter = 0;
+                }
+                break;
+
+            case 2205: // Final warning
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch5_panjul_warning"),
+                            "Panjul");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2206;
+                    counter = 0;
+                }
+                break;
+
+            case 2206: // Mission start
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch5_objective_main"));
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch5_ariel_assist"));
+                }
+                if (counter > 180) {
+                    phase = 2207;
+                    counter = 0;
+                }
+                break;
+
+            case 2207: // Enter gameplay mode
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage("GO! Bersihkan kota dan tanam pohon!");
+                    // Player now free to play normally
+                }
+                if (counter > 120) {
+                    phase = 0; // Return to normal gameplay
+                    counter = 0;
+                    gp.stateM.setCurrentState(StateManager.gameState.PLAY);
+                    reset();
+                    
+                    // After some time or when player sleeps again, trigger final check
+                    // This will be handled by sleep transition or a manual trigger
+                }
+                break;
+
+            // ======================
+            // CHAPTER 5 - FINAL JUDGMENT
+            // (Triggered when player sleeps in Ch5)
+            // ======================
+            case 2250: // Pre-judgment 
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch5_panjul_final_1") + " " +
+                            StoryManager.getInstance().getDialog("ch5_panjul_final_2"),
+                            "Panjul");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2251;
+                    counter = 0;
+                }
+                break;
+
+            case 2251: // Calculate final stats and route to ending
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage("CALCULATING FINAL STATS...");
+                    
+                    // Calculate final stats (simplified - use planted trees count)
+                    int finalTreeCount = gp.plantedTrees.size();
+                    // For trash, we'll assume if player did well in earlier chapters
+                    int estimatedTrashPercent = 100 - (gp.chapter1TrashCount * 5 + gp.chapter2TrashCount * 5);
+                    
+                    // Decision: Need <30% trash AND >15 trees
+                    boolean trashOK = estimatedTrashPercent < 30;
+                    boolean treesOK = finalTreeCount >= 15;
+                    
+                    if (trashOK && treesOK) {
+                        // GOOD ENDING
+                        System.out.println("[ENDING] Good: Trash=" + estimatedTrashPercent + "% Trees=" + finalTreeCount);
+                    } else {
+                        // BAD ENDING
+                        System.out.println("[ENDING] Bad: Trash=" + estimatedTrashPercent + "% Trees=" + finalTreeCount);
+                    }
+                }
+                if (counter > 180) { // 3 seconds
+                    // Route to appropriate ending
+                    int finalTreeCount = gp.plantedTrees.size();
+                    int estimatedTrashPercent = 100 - (gp.chapter1TrashCount * 5 + gp.chapter2TrashCount * 5);
+                    
+                    if (estimatedTrashPercent < 30 && finalTreeCount >= 15) {
+                        phase = 2400; // Good ending
+                    } else {
+                        phase = 2300; // Bad ending
+                    }
+                    counter = 0;
+                }
+                break;
+
+            // ======================
+            // BAD ENDING SEQUENCE
+            // ======================
+            case 2300: // Flood begins
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage("Air sungai meluap...");
+                }
+                if (counter > 120) {
+                    phase = 2301;
+                    counter = 0;
+                }
+                break;
+
+            case 2301: // Panjul defeat
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch5_bad_panjul_1") + " " +
+                            StoryManager.getInstance().getDialog("ch5_bad_panjul_2"),
+                            "Panjul");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2302;
+                    counter = 0;
+                }
+                break;
+
+            case 2302: // Bad narrative 1
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch5_bad_narrative_1"));
+                }
+                if (counter > 180) {
+                    phase = 2303;
+                    counter = 0;
+                }
+                break;
+
+            case 2303: // Bad narrative 2
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch5_bad_narrative_2"));
+                }
+                if (counter > 180) {
+                    phase = 2304;
+                    counter = 0;
+                }
+                break;
+
+            case 2304: // Game Over
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch5_bad_gameover"));
+                }
+                if (counter > 180) {
+                    phase = 2305;
+                    counter = 0;
+                }
+                break;
+
+            case 2305: // Return to title
+                counter++;
+                if (counter == 1) {
+                    gp.gamecompleted = true;
+                    gp.stateM.setCurrentState(StateManager.gameState.TITLE);
+                }
+                if (counter > 60) {
+                    phase = 0;
+                    counter = 0;
+                    reset();
+                }
+                break;
+
+            // ======================
+            // GOOD ENDING SEQUENCE
+            // ======================
+            case 2400: // Water stops!
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage("Air berhenti naik!");
+                }
+                if (counter > 120) {
+                    phase = 2401;
+                    counter = 0;
+                }
+                break;
+
+            case 2401: // Ariel celebration
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch5_good_ariel"),
+                            "Ariel");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2402;
+                    counter = 0;
+                }
+                break;
+
+            case 2402: // Panjul celebrates
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch5_good_panjul_1") + " " +
+                            StoryManager.getInstance().getDialog("ch5_good_panjul_2") + " " +
+                            StoryManager.getInstance().getDialog("ch5_good_panjul_3"),
+                            "Panjul");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2403;
+                    counter = 0;
+                }
+                break;
+
+            case 2403: // Ariel thanks
+                counter++;
+                if (counter == 1) {
+                    gp.stateM.setCurrentState(StateManager.gameState.DIALOGUE);
+                    gp.uiM.getPlayScreen().showDialog(
+                            StoryManager.getInstance().getDialog("ch5_good_ariel_thanks"),
+                            "Ariel");
+                }
+                if (gp.stateM.getCurrentState() != StateManager.gameState.DIALOGUE && counter > 1) {
+                    phase = 2404;
+                    counter = 0;
+                }
+                break;
+
+            case 2404: // Good narrative 1
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch5_narrative_1"));
+                }
+                if (counter > 180) {
+                    phase = 2405;
+                    counter = 0;
+                }
+                break;
+
+            case 2405: // Good narrative 2
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch5_narrative_2"));
+                }
+                if (counter > 180) {
+                    phase = 2406;
+                    counter = 0;
+                }
+                break;
+
+            case 2406: // Good narrative 3
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("ch5_narrative_3"));
+                }
+                if (counter > 180) {
+                    phase = 2407;
+                    counter = 0;
+                }
+                break;
+
+            case 2407: // Credits - Developer
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("credits_developer"));
+                }
+                if (counter > 180) {
+                    phase = 2408;
+                    counter = 0;
+                }
+                break;
+
+            case 2408: // Credits - Story
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("credits_story"));
+                }
+                if (counter > 180) {
+                    phase = 2409;
+                    counter = 0;
+                }
+                break;
+
+            case 2409: // Credits - Thanks
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("credits_thanks"));
+                }
+                if (counter > 180) {
+                    phase = 2410;
+                    counter = 0;
+                }
+                break;
+
+            case 2410: // THE END
+                counter++;
+                if (counter == 1) {
+                    gp.uiM.showMessage(StoryManager.getInstance().getDialog("credits_end"));
+                }
+                if (counter > 240) {
+                    phase = 2411;
+                    counter = 0;
+                }
+                break;
+
+            case 2411: // Return to title
+                counter++;
+                if (counter == 1) {
+                    gp.gamecompleted = true;
+                    gp.stateM.setCurrentState(StateManager.gameState.TITLE);
+                }
+                if (counter > 60) {
+                    phase = 0;
+                    counter = 0;
+                    reset();
+                }
+                break;

@@ -32,6 +32,7 @@ public class Player extends Entity {
     public int nearObjectWorldX = -1;
     public int nearObjectWorldY = -1;
     public GameObject.Type nearObjectType;
+    public model.Entity nearNPC;
 
     public void spawnPlayer() {
         worldX = gamePanel.mapM.getMap().playerStartX;
@@ -210,11 +211,39 @@ public class Player extends Entity {
                 this.nearObjectWorldX = obj.worldX;
                 this.nearObjectWorldY = obj.worldY;
                 this.nearObjectType = obj.type;
+                this.nearNPC = null;
             } else {
                 this.nearObjectWorldX = -1;
             }
         } else {
-            this.nearObjectWorldX = -1;
+            // Check for nearby NPCs for hint
+            model.Entity nearby = getNearbyNPC(gamePanel.tileSize);
+            if (nearby != null) {
+                this.nearObjectWorldX = nearby.worldX;
+                this.nearObjectWorldY = nearby.worldY;
+                this.nearObjectType = null; // Mark as NPC
+                this.nearNPC = nearby;
+            } else {
+                this.nearObjectWorldX = -1;
+                this.nearNPC = null;
+            }
+        }
+
+        // Handle 'E' key interaction
+        if (input.interact) {
+            input.interact = false; // Reset to prevent double trigger
+
+            // 1. Try interacting with objects first (portal, bed, etc.)
+            if (hintIndex != 999) {
+                GameObject obj = gamePanel.mapM.getMap().objects[hintIndex];
+                if (obj != null) {
+                    obj.interact(gamePanel);
+                }
+            }
+            // 2. Try interacting with NPCs
+            else {
+                gamePanel.npcM.tryInteractWithNearbyNPC((int) (gamePanel.tileSize * 1.5));
+            }
         }
 
         // Auto-detect portal tiles for seamless map transitions
@@ -277,14 +306,18 @@ public class Player extends Entity {
 
         if (nearObjectWorldX != -1) {
             String hintText = "[E] Interaksi";
-            if (nearObjectType == GameObject.Type.BED) {
-                hintText = "[E] Tidur";
-            } else if (nearObjectType == GameObject.Type.PORTAL || nearObjectType == GameObject.Type.GATE) {
-                if (gamePanel.mapM.currMap == 5) {
-                    hintText = "[E] Keluar";
-                } else {
-                    hintText = "[E] Masuk";
+            if (nearObjectType != null) {
+                if (nearObjectType == GameObject.Type.BED) {
+                    hintText = "[E] Tidur";
+                } else if (nearObjectType == GameObject.Type.PORTAL || nearObjectType == GameObject.Type.GATE) {
+                    if (gamePanel.mapM.currMap == 5) {
+                        hintText = "[E] Keluar";
+                    } else {
+                        hintText = "[E] Masuk";
+                    }
                 }
+            } else if (nearNPC != null) {
+                hintText = "[E] Interaksi";
             }
             gamePanel.uiM.getPlayScreen().drawInteractionHint(g2, nearObjectWorldX, nearObjectWorldY, hintText);
         }
@@ -409,5 +442,54 @@ public class Player extends Entity {
 
     public void setCollectedTrash(java.util.Set<String> collectedTrash) {
         this.collectedTrash = collectedTrash;
+    }
+
+    private model.Entity getNearbyNPC(int interactDistance) {
+        if (gamePanel.npcM == null)
+            return null;
+
+        // Check Panjuls
+        for (model.Panjul p : gamePanel.npcM.getPanjuls()) {
+            if (p.canInteract(interactDistance))
+                return p;
+        }
+        // Check Teh Dilas
+        for (model.TehDila d : gamePanel.npcM.getTehDilas()) {
+            if (d.canInteract(interactDistance))
+                return d;
+        }
+        // Check Bismas
+        for (model.Bisma b : gamePanel.npcM.getBismas()) {
+            if (b.canInteract(interactDistance))
+                return b;
+        }
+        // Check Neng Jias
+        for (model.NengJia j : gamePanel.npcM.getNengJias()) {
+            if (j.canInteract(interactDistance))
+                return j;
+        }
+        // Check Randys
+        for (model.Randy r : gamePanel.npcM.getRandys()) {
+            if (r.canInteract(interactDistance))
+                return r;
+        }
+        // Check Pak Khairuls
+        for (model.PakKhairul k : gamePanel.npcM.getPakKhairuls()) {
+            if (k.canInteract(interactDistance))
+                return k;
+        }
+        // Check Mothers
+        for (model.Mother m : gamePanel.npcM.getMothers()) {
+            if (m.canInteract(interactDistance))
+                return m;
+        }
+        // Check Pak Bahlils
+        for (model.PakBahlil bahlil : gamePanel.npcM.getPakBahlils()) {
+            if (bahlil != null && bahlil.canInteract(interactDistance)) {
+                return bahlil;
+            }
+        }
+
+        return null;
     }
 }

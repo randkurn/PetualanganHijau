@@ -38,9 +38,13 @@ public class UIManager {
         fullScreen = settings.getFullScreen();
 
         choiceDialogBox = new ChoiceDialogBox(gp);
+        enviroMeter = new EnviroMeter(gp);
+        objectiveTracker = new ObjectiveTracker(gp);
     }
 
     private ChoiceDialogBox choiceDialogBox;
+    private EnviroMeter enviroMeter;
+    private ObjectiveTracker objectiveTracker;
 
     public void draw(Graphics2D g2) {
         gameState state = gp.stateM.getCurrentState();
@@ -72,6 +76,16 @@ public class UIManager {
                     MinimapScreen minimap = (MinimapScreen) ui[11];
                     if (!minimap.isFullscreen())
                         minimap.draw(g2);
+
+                    // Draw EnviroMeter during Chapter 3
+                    if (gp.chapter3Active) {
+                        enviroMeter.draw(g2);
+                    }
+
+                    // Draw ObjectiveTracker (shows for all chapters)
+                    if (objectiveTracker != null) {
+                        objectiveTracker.draw(g2);
+                    }
                 }
             }
             default -> {

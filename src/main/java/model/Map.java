@@ -454,28 +454,55 @@ public class Map {
             NodeList objNodes = groupElem.getElementsByTagName("object");
             for (int j = 0; j < objNodes.getLength(); j++) {
                 Element objElem = (Element) objNodes.item(j);
-                String objName = objElem.getAttribute("name");
+                // Player spawn - for certain maps, always use upper spawn
+                String objName = objElem.getAttribute("name") != null ? objElem.getAttribute("name").toLowerCase() : "";
+                String type = objElem.getAttribute("type") != null ? objElem.getAttribute("type").toLowerCase() : "";
 
-                if ("PlayerStart".equalsIgnoreCase(objName)) {
+                if (objName.contains("playerstart") || objName.contains("player spawn")
+                        || objName.contains("playerspawn") ||
+                        type.contains("playerstart") || type.contains("spawn")) {
+
                     double x = Double.parseDouble(objElem.getAttribute("x"));
                     double y = Double.parseDouble(objElem.getAttribute("y"));
-
                     double scaleFactor = (double) gp.tileSize / GAME_ORIGINAL_TILE_SIZE;
-                    playerStartX = (int) (x * scaleFactor);
-                    playerStartY = (int) (y * scaleFactor);
 
-                    spawnFound = true;
-                    System.out.println("[Map] Found PlayerStart at (" + playerStartX + ", " + playerStartY
-                            + ") in group: " + groupElem.getAttribute("name"));
-                    break;
+                    // Determine current map index
+                    int currentMapIndex = -1;
+                    if (levelName != null) {
+                        if (levelName.contains("Farm"))
+                            currentMapIndex = 1;
+                        else if (levelName.contains("Park"))
+                            currentMapIndex = 2;
+                        else if (levelName.contains("Fishing"))
+                            currentMapIndex = 4;
+                    }
+
+                    // For fishing, park, farm - only use upper spawn (smallest Y)
+                    if (currentMapIndex == 1 || currentMapIndex == 2 || currentMapIndex == 4) {
+                        // Check if this is upper spawn (smaller Y than current)
+                        if (playerStartY == 0 || y < playerStartY) {
+                            playerStartX = (int) (x * scaleFactor);
+                            playerStartY = (int) (y * scaleFactor);
+                            System.out.println("[Map] Set UPPER PlayerStart for " + levelName + " at (" + playerStartX
+                                    + ", " + playerStartY + ")");
+                        }
+                    } else {
+                        // Normal maps - use first found
+                        if (playerStartX == 0 && playerStartY == 0) {
+                            playerStartX = (int) (x * scaleFactor);
+                            playerStartY = (int) (y * scaleFactor);
+                            System.out
+                                    .println("[Map] Found PlayerStart at (" + playerStartX + ", " + playerStartY + ")");
+                        }
+                    }
                 }
             }
         }
 
-        // Kalau tidak ada spawn di TMX, default ke (0,0)
-        if (!spawnFound) {
+        if (playerStartX == 0 && playerStartY == 0) {
             playerStartX = 0;
             playerStartY = 0;
+            System.out.println("[Map] WARNING: No PlayerStart found, using (0,0)");
         }
     }
 

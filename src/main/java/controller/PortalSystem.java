@@ -49,42 +49,20 @@ public class PortalSystem {
     private void initEducationalContent() {
         educationalContent = new ArrayList<>();
 
-        // Konten edukasi tentang sampah
         educationalContent.add(new EducationalContent(
-                "Tahukah Kamu?",
-                "Indonesia menghasilkan 64 juta ton sampah per tahun, dan hanya 10% yang didaur ulang!",
-                Color.GREEN));
+                "Tahukah kamu? Indonesia menghasilkan 64 juta ton sampah per tahun. Mari kurangi plastik!"));
 
         educationalContent.add(new EducationalContent(
-                "Fakta Sampah Plastik",
-                "Plastik membutuhkan 450 tahun untuk terurai. Yuk, kurangi penggunaan plastik sekali pakai!",
-                Color.BLUE));
+                "Banjir sering terjadi karena drainase tersumbat sampah plastik yang tidak bisa terurai."));
 
         educationalContent.add(new EducationalContent(
-                "Bahaya Sampah Organik",
-                "Sampah organik yang tidak dikelola menghasilkan gas metana yang berbahaya bagi lingkungan.",
-                Color.ORANGE));
-
-        // Konten edukasi tentang banjir
-        educationalContent.add(new EducationalContent(
-                "Banjir di Indonesia",
-                "Sampah yang menumpuk di sungai menyumbat aliran air dan menyebabkan banjir!",
-                Color.RED));
+                "Satu pohon dewasa bisa menyerap hingga 150 liter air hujan per hari. Yuk tanam pohon!"));
 
         educationalContent.add(new EducationalContent(
-                "Cegah Banjir!",
-                "Membuang sampah pada tempatnya dapat mengurangi risiko banjir hingga 40%.",
-                Color.CYAN));
+                "Sampah organik bisa diolah jadi pupuk kompos, sedangkan anorganik bisa didaur ulang."));
 
         educationalContent.add(new EducationalContent(
-                "Dampak Banjir",
-                "Banjir di Jakarta tahun 2020 menyebabkan kerugian lebih dari 5 triliun rupiah.",
-                Color.MAGENTA));
-
-        educationalContent.add(new EducationalContent(
-                "Solusi Bersama",
-                "Dengan memilah sampah, kita bisa menyelamatkan lingkungan dan mencegah banjir!",
-                Color.GREEN));
+                "Jangan buang sampah di sungai! Itu sumber air minum dan rumah bagi ikan."));
     }
 
     public void checkPortalTile(int playerWorldX, int playerWorldY) {
@@ -306,32 +284,32 @@ public class PortalSystem {
         int screenWidth = gamePanel.screenWidth;
         int screenHeight = gamePanel.screenHeight;
 
-        // Draw dark overlay (Full black as requested)
+        // Draw dark overlay
         g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, screenWidth, screenHeight);
 
-        // Draw loading percentage
+        // Simple "Pindah Area" text (like planting tree style)
         g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Arial", Font.BOLD, 48));
-        String percentText = (int) (loadingProgress * 100) + "%";
-        int percentWidth = g2.getFontMetrics().stringWidth(percentText);
-        int centerY = screenHeight / 2;
-        g2.drawString(percentText, screenWidth / 2 - percentWidth / 2, centerY);
-
-        // Draw loading text
-        g2.setFont(new Font("Arial", Font.BOLD, 20));
-        String loadingText = "Memindahkan Area";
+        g2.setFont(new Font("Arial", Font.BOLD, 24));
+        String loadingText = "Pindah Area";
         int textWidth = g2.getFontMetrics().stringWidth(loadingText);
-        g2.drawString(loadingText, screenWidth / 2 - textWidth / 2, centerY - 80);
+        int centerY = screenHeight / 2;
 
         // Draw dots
         String dots = "";
         for (int i = 0; i < (animationFrame % 4); i++) {
             dots += ".";
         }
-        g2.drawString(dots, screenWidth / 2 + textWidth / 2 + 5, centerY - 80);
+        g2.drawString(loadingText + dots, screenWidth / 2 - textWidth / 2, centerY - 100);
 
-        // Draw educational content
+        // Draw hint (below main text)
+        g2.setFont(new Font("Arial", Font.PLAIN, 14));
+        g2.setColor(new Color(180, 180, 180));
+        String hint = "Jaga lingkungan dari sampah";
+        int hintWidth = g2.getFontMetrics().stringWidth(hint);
+        g2.drawString(hint, screenWidth / 2 - hintWidth / 2, centerY - 70);
+
+        // Draw educational fact at bottom
         if (currentContent != null) {
             drawEducationalContent(g2);
         }
@@ -341,53 +319,42 @@ public class PortalSystem {
         int screenWidth = gamePanel.screenWidth;
         int screenHeight = gamePanel.screenHeight;
 
-        // Draw content box
-        int boxWidth = screenWidth - 100;
-        int boxHeight = 150;
-        int boxX = 50;
-        int boxY = screenHeight - boxHeight - 50;
-
-        // Draw box background
-        g2.setColor(new Color(currentContent.color.getRed(),
-                currentContent.color.getGreen(),
-                currentContent.color.getBlue(), 180));
-        g2.fillRoundRect(boxX, boxY, boxWidth, boxHeight, 15, 15);
-
-        // Draw border
-        g2.setColor(currentContent.color);
-        g2.setStroke(new java.awt.BasicStroke(3));
-        g2.drawRoundRect(boxX, boxY, boxWidth, boxHeight, 15, 15);
-
-        // Draw title
+        // Simple centered text, no box or rectangles
         g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Arial", Font.BOLD, 22));
-        g2.drawString(currentContent.title, boxX + 20, boxY + 35);
-
-        // Draw description
         g2.setFont(new Font("Arial", Font.PLAIN, 16));
-        drawWrappedText(g2, currentContent.description, boxX + 20, boxY + 65, boxWidth - 40);
+
+        // Draw fact at bottom center
+        int maxWidth = screenWidth - 100;
+        int startY = screenHeight - 80;
+        drawWrappedTextCentered(g2, currentContent.fact, screenWidth / 2, startY, maxWidth);
     }
 
-    private void drawWrappedText(Graphics2D g2, String text, int x, int y, int maxWidth) {
+    private void drawWrappedTextCentered(Graphics2D g2, String text, int centerX, int startY, int maxWidth) {
         String[] words = text.split(" ");
         String line = "";
-        int lineY = y;
+        int lineY = startY;
+        java.util.List<String> lines = new java.util.ArrayList<>();
 
         for (String word : words) {
             String testLine = line + word + " ";
             int testWidth = g2.getFontMetrics().stringWidth(testLine);
 
             if (testWidth > maxWidth && !line.isEmpty()) {
-                g2.drawString(line, x, lineY);
+                lines.add(line.trim());
                 line = word + " ";
-                lineY += 25;
             } else {
                 line = testLine;
             }
         }
-
         if (!line.isEmpty()) {
-            g2.drawString(line, x, lineY);
+            lines.add(line.trim());
+        }
+
+        // Draw all lines centered
+        for (String l : lines) {
+            int lineWidth = g2.getFontMetrics().stringWidth(l);
+            g2.drawString(l, centerX - lineWidth / 2, lineY);
+            lineY += 25;
         }
     }
 
@@ -396,14 +363,10 @@ public class PortalSystem {
     }
 
     private static class EducationalContent {
-        String title;
-        String description;
-        Color color;
+        String fact;
 
-        EducationalContent(String title, String description, Color color) {
-            this.title = title;
-            this.description = description;
-            this.color = color;
+        EducationalContent(String fact) {
+            this.fact = fact;
         }
     }
 }

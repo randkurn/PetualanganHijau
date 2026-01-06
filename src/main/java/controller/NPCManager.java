@@ -7,6 +7,10 @@ import model.Mother;
 import model.PakBahlil;
 import model.TehDila;
 import model.Panjul;
+import model.Bisma;
+import model.Randy;
+import model.PakKhairul;
+import model.NengJia;
 
 public class NPCManager {
     private GamePanel gamePanel;
@@ -14,6 +18,13 @@ public class NPCManager {
     private List<PakBahlil> pakBahlils;
     private List<Panjul> panjuls;
     private List<TehDila> tehDilas;
+
+    // Chapter 3 NPCs
+    private List<Bisma> bismas;
+    private List<Randy> randys;
+    private List<PakKhairul> pakKhairuls;
+    private List<NengJia> nengJias;
+
     private int currentMapIndex = -1;
 
     private java.util.Random random = new java.util.Random();
@@ -24,6 +35,10 @@ public class NPCManager {
         this.pakBahlils = new ArrayList<>();
         this.panjuls = new ArrayList<>();
         this.tehDilas = new ArrayList<>();
+        this.bismas = new ArrayList<>();
+        this.randys = new ArrayList<>();
+        this.pakKhairuls = new ArrayList<>();
+        this.nengJias = new ArrayList<>();
     }
 
     public Mother createMother(int worldX, int worldY) {
@@ -54,11 +69,45 @@ public class NPCManager {
         return dila;
     }
 
+    // Chapter 3 NPC creation methods
+    public Bisma createBisma(int worldX, int worldY) {
+        Bisma bisma = new Bisma(gamePanel);
+        bisma.setPosition(worldX, worldY);
+        bismas.add(bisma);
+        return bisma;
+    }
+
+    public Randy createRandy(int worldX, int worldY) {
+        Randy randy = new Randy(gamePanel);
+        randy.setPosition(worldX, worldY);
+        randys.add(randy);
+        return randy;
+    }
+
+    private model.PakKhairul createPakKhairul(int worldX, int worldY) {
+        model.PakKhairul khairul = new model.PakKhairul(gamePanel);
+        khairul.setPosition(worldX, worldY);
+        pakKhairuls.add(khairul);
+        System.out.println("[NPCManager] Created Pak Khairul at (" + worldX + "," + worldY + ")");
+        return khairul;
+    }
+
+    public NengJia createNengJia(int worldX, int worldY) {
+        NengJia jia = new NengJia(gamePanel);
+        jia.setPosition(worldX, worldY);
+        nengJias.add(jia);
+        return jia;
+    }
+
     public void clearAll() {
         mothers.clear();
         pakBahlils.clear();
         panjuls.clear();
         tehDilas.clear();
+        bismas.clear();
+        randys.clear();
+        pakKhairuls.clear();
+        nengJias.clear();
     }
 
     public void resetAllNPCs() {
@@ -79,6 +128,18 @@ public class NPCManager {
         }
         for (TehDila dila : tehDilas) {
             dila.update();
+        }
+        for (Bisma bisma : bismas) {
+            bisma.update();
+        }
+        for (Randy randy : randys) {
+            randy.update();
+        }
+        for (PakKhairul khairul : pakKhairuls) {
+            khairul.update();
+        }
+        for (NengJia jia : nengJias) {
+            jia.update();
         }
     }
 
@@ -130,6 +191,18 @@ public class NPCManager {
         for (TehDila dila : tehDilas) {
             dila.draw(g2);
         }
+        for (Bisma bisma : bismas) {
+            bisma.draw(g2);
+        }
+        for (Randy randy : randys) {
+            randy.draw(g2);
+        }
+        for (PakKhairul khairul : pakKhairuls) {
+            khairul.draw(g2);
+        }
+        for (NengJia jia : nengJias) {
+            jia.draw(g2);
+        }
     }
 
     public boolean tryInteractWithNearbyNPC(int interactDistance) {
@@ -157,6 +230,30 @@ public class NPCManager {
                 return true;
             }
         }
+        for (Bisma bisma : bismas) {
+            if (bisma.canInteract(interactDistance)) {
+                bisma.interact();
+                return true;
+            }
+        }
+        for (Randy randy : randys) {
+            if (randy.canInteract(interactDistance)) {
+                randy.interact();
+                return true;
+            }
+        }
+        for (PakKhairul khairul : pakKhairuls) {
+            if (khairul.canInteract(interactDistance)) {
+                khairul.interact();
+                return true;
+            }
+        }
+        for (NengJia jia : nengJias) {
+            if (jia.canInteract(interactDistance)) {
+                jia.interact();
+                return true;
+            }
+        }
         return false;
     }
 
@@ -165,7 +262,7 @@ public class NPCManager {
 
         System.out.println("[NPCManager] setupChapter1NPCs called - currMap: " + currMap);
 
-        if (currMap == currentMapIndex && !mothers.isEmpty()) {
+        if (currMap == currentMapIndex) {
             return;
         }
 
@@ -181,6 +278,11 @@ public class NPCManager {
                 spawnChapter2NPCs(); // Panjul
                 spawnTehDila(26 * gamePanel.tileSize, 58 * gamePanel.tileSize); // Teh Dila
             }
+        }
+
+        // Spawn Chapter 3 NPCs if active
+        if (gamePanel.chapter3Active) {
+            spawnChapter3NPCs();
         }
 
         System.out.println("[NPCManager] Chapter 1 NPC setup complete. NPCs spawned: " + getNPCCount());
@@ -204,12 +306,14 @@ public class NPCManager {
 
             String name = obj.name != null ? obj.name.toLowerCase() : "";
             boolean isNPC = "NPC".equalsIgnoreCase(obj.type) || "Decoration".equalsIgnoreCase(obj.type)
-                    || obj.type == null;
+                    || obj.type == null || "".equals(obj.type);
 
             if (isNPC) {
                 if (name.contains("ibu") || name.contains("mother")) {
                     if (!gamePanel.chapter1Active && !gamePanel.chapter2Active && !gamePanel.chapter2Finished) {
                         System.out.println("[NPCManager] Mother spawn skipped (handled by CutsceneManager)");
+                    } else if (mothers.isEmpty() && gamePanel.mapM.currMap == 0) {
+                        createMother(obj.x, obj.y);
                     }
                 } else if (name.contains("pak") || name.contains("saman") || name.contains("bahlil")) {
                     // Pak Bahlil should only be skipped IF Chapter 1 is still early or specialized
@@ -219,29 +323,48 @@ public class NPCManager {
                         System.out.println("[NPCManager] Pak Bahlil spawn skipped (Cutscene or Ch3)");
                     } else if (gamePanel.mapM.currMap == 0) {
                         // Spawn him manually at his house spot if map 0 and not already there
-                        if (gamePanel.npcM.getPakBahlil() == null) {
-                            gamePanel.npcM.createPakBahlil(obj.x, obj.y);
+                        if (pakBahlils.isEmpty()) {
+                            createPakBahlil(obj.x, obj.y);
                         }
                     }
                 } else if (name.contains("danu") || name.contains("panjul")) {
                     // Panjul shows up in City or specific spots after Chapter 1
                     if (gamePanel.csM.getPhase() < 33 && !gamePanel.chapter2Active && !gamePanel.chapter2Finished) {
                         System.out.println("[NPCManager] Panjul spawn skipped (handled by Cutscene/Story)");
+                    } else if (panjuls.isEmpty()) {
+                        createPanjul(obj.x, obj.y);
                     }
-                } else if (name.contains("suci") || name.contains("dila") || name.contains("merchant")) {
+                } else if (name.contains("bisma")) {
+                    if (gamePanel.chapter3Active && bismas.isEmpty()) {
+                        createBisma(obj.x, obj.y);
+                    }
+                } else if (name.contains("jia") || name.contains("nengjia")) {
+                    if (gamePanel.chapter3Active && nengJias.isEmpty()) {
+                        createNengJia(obj.x, obj.y);
+                    }
+                } else if (name.contains("randy")) {
+                    if (gamePanel.chapter3Active && randys.isEmpty()) {
+                        createRandy(obj.x, obj.y);
+                    }
+                } else if (name.contains("khairul") || name.contains("pak khairul")) {
+                    if (gamePanel.chapter3Active && pakKhairuls.isEmpty()) {
+                        createPakKhairul(obj.x, obj.y);
+                    }
+                } else if (name.contains("suci") || name.contains("dila") || name.contains("tehdila")
+                        || name.contains("merchant")) {
                     // Teh Dila shows up in City or specific spots
-                    if (gamePanel.csM.getPhase() < 37 && !gamePanel.chapter2Active && !gamePanel.chapter2Finished) {
+                    if (gamePanel.csM.getPhase() < 37 && !gamePanel.chapter2Active && !gamePanel.chapter2Finished
+                            && !gamePanel.chapter3Active) {
                         System.out.println("[NPCManager] Teh Dila spawn skipped (handled by Cutscene/Story)");
+                    } else if (tehDilas.isEmpty()) {
+                        createTehDila(obj.x, obj.y);
                     }
                 } else if (name.contains("bank") || name.contains("waste") || name.contains("sampah")) {
                     System.out.println("[NPCManager] Bank Sampah spawn disabled (Chapter 2 now uses Panjul)");
                 }
             }
-        }
-    }
 
-    public List<Mother> getMothers() {
-        return mothers;
+        }
     }
 
     public PakBahlil getPakBahlil() {
@@ -261,7 +384,8 @@ public class NPCManager {
     }
 
     public int getNPCCount() {
-        return mothers.size() + pakBahlils.size() + panjuls.size() + tehDilas.size();
+        return mothers.size() + pakBahlils.size() + panjuls.size() + tehDilas.size() +
+                bismas.size() + randys.size() + pakKhairuls.size() + nengJias.size();
     }
 
     public void spawnChapter2NPCs() {
@@ -279,5 +403,59 @@ public class NPCManager {
             System.out.println("[NPCManager] Spawning Teh Dila at (" + worldX + "," + worldY + ")");
             createTehDila(worldX, worldY);
         }
+    }
+
+    public void spawnChapter3NPCs() {
+        // Now handled mostly by loadNPCsFromTMX, but fallbacks can be added here if
+        // needed
+    }
+
+    // Getter methods for Chapter 3 NPCs
+    public Bisma getBisma() {
+        return bismas.isEmpty() ? null : bismas.get(0);
+    }
+
+    public Randy getRandy() {
+        return randys.isEmpty() ? null : randys.get(0);
+    }
+
+    public PakKhairul getPakKhairul() {
+        return pakKhairuls.isEmpty() ? null : pakKhairuls.get(0);
+    }
+
+    public NengJia getNengJia() {
+        return nengJias.isEmpty() ? null : nengJias.get(0);
+    }
+
+    public List<Mother> getMothers() {
+        return mothers;
+    }
+
+    public List<PakBahlil> getPakBahlils() {
+        return pakBahlils;
+    }
+
+    public List<Panjul> getPanjuls() {
+        return panjuls;
+    }
+
+    public List<TehDila> getTehDilas() {
+        return tehDilas;
+    }
+
+    public List<Bisma> getBismas() {
+        return bismas;
+    }
+
+    public List<Randy> getRandys() {
+        return randys;
+    }
+
+    public List<PakKhairul> getPakKhairuls() {
+        return pakKhairuls;
+    }
+
+    public List<NengJia> getNengJias() {
+        return nengJias;
     }
 }
